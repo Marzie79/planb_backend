@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.core.validators import validate_email
-from planB_back.accounts.managers import UserManager
+from accounts.managers import UserManager
 
 
 class User(AbstractBaseUser):

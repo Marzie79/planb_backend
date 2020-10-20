@@ -5,4 +5,4 @@ class AccountConfig(AppConfig):
     name = 'accounts'
 
     def ready(self):
-        import planB_back.accounts.signals
+        import accounts.signals
