@@ -1,10 +1,10 @@
-# from django.contrib import admin
-# from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-# from django.contrib.auth.models import Group
-# from .forms import UserChangeForm, UserCreationForm
-# from .models import *
-#
-#
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import Group
+from .forms import UserChangeForm, UserCreationForm
+from .models import *
+
+
 # @admin.register(User)
 # class UserAdmin(BaseUserAdmin):
 #     # The forms to add and change user instances
@@ -38,6 +38,12 @@
 # class TempAdmin(admin.ModelAdmin):
 #     fields = ('email', 'code')
 #     list_display = ('email', 'code')
-#
-#
-# admin.site.unregister(Group)
+
+admin.site.register(User)
+admin.site.register(University)
+admin.site.register(City)
+admin.site.register(Project)
+admin.site.register(Province)
+admin.site.register(Skill)
+admin.site.register(User_Project)
+admin.site.unregister(Group)
