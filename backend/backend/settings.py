@@ -51,7 +51,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-ROOT_URLCONF = 'planB_back.urls'
+ROOT_URLCONF = 'backend.urls'
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
@@ -86,15 +86,26 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'planB_back.wsgi.application'
+WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'planBdb',
+        'USER': 'planBuser',
+        'PASSWORD': 'planB_pass_1399',
+        # 'HOST': '%',
+        # 'PORT': '3306',
     }
 }
 

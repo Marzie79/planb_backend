@@ -143,11 +143,6 @@ class User_Project(models.Model):
     user = models.ForeignKey(User, verbose_name='کاربر', on_delete=models.CASCADE)
     situation = models.CharField(max_length=9, verbose_name='وضعیت', choices=SITUATION_CHOICES)
 
-    class Meta:
-        ordering = ['name']
-        verbose_name_plural = "پروژه ها"
-        verbose_name = "پروژه"
-
 
 class Temp(models.Model):
     email = models.EmailField(verbose_name="ایمیل", validators=[validate_email], max_length=255)
