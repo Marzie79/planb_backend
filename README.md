@@ -25,6 +25,8 @@
 - Open a command line window and go to the backend's directory.
 - `pip install -r requirements.txt`
 `source venv/bin/activate` 
+- `npm install`
+- `npm run start`
 - Go to the `backend` directory.
 - `python manage.py runserver`
 
