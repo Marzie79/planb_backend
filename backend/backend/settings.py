@@ -104,8 +104,6 @@ DATABASES = {
         'NAME': 'planBdb',
         'USER': 'planBuser',
         'PASSWORD': 'planB_pass_1399',
-        # 'HOST': '%',
-        # 'PORT': '3306',
     }
 }
 

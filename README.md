@@ -27,3 +27,8 @@
 `source venv/bin/activate` 
 - Go to the `backend` directory.
 - `python manage.py runserver`
+
+### db config for mysql:
+        NAME: planBdb
+        USER: planBuser
+        PASSWORD: planB_pass_1399
