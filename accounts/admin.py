@@ -38,7 +38,7 @@ from .models import *
 # class TempAdmin(admin.ModelAdmin):
 #     fields = ('email', 'code')
 #     list_display = ('email', 'code')
-
+admin.site.register(Temp)
 admin.site.register(User)
 admin.site.register(University)
 admin.site.register(City)
