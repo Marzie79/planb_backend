@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountConfig',
-
+    'core',
     'rest_framework',
     'drf_yasg',
     'corsheaders',
@@ -50,7 +50,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-ROOT_URLCONF = 'backend.urls'
+ROOT_URLCONF = 'planB_backend.urls'
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
@@ -86,15 +86,17 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'backend.wsgi.application'
+WSGI_APPLICATION = 'planB_backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'planBdb',
+        'USER': 'planBuser',
+        'PASSWORD': 'planB_pass_1399',
     }
 }
 from datetime import timedelta

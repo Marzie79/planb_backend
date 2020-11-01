@@ -19,26 +19,29 @@ from rest_framework.filters import BaseFilterBackend
 from accounts.serializers import *
 from accounts.util import sending_email
 from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenRefreshSlidingView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 
-def SET_Cookie_Response(request,username,password):
+
+def set_cookie_response(request, username, password):
     ser = MyTokenObtainPairSerializer()
     # make jwt token
-    JWT_Token = ser.validate({'username':username,'password':password})
-    access_token = {}
-    access_token['access']=JWT_Token['access']
-    #put access token on response
+    jwt_token = ser.validate({'username': username, 'password': password})
+    access_token = {'access': jwt_token['access']}
+    # put access token on response
     response = Response(access_token)
     # create cookie and save refresh token on value and set http only flag
-    response.set_cookie("token",JWT_Token['refresh'],httponly=True,
-                        expires=datetime.datetime.now()+datetime.timedelta(days=180))
+    response.set_cookie("token", jwt_token['refresh'], httponly=True,
+                        expires=datetime.datetime.now() + datetime.timedelta(days=180))
     return response
 
-#create token and use this view as login view
+
+# create token and use this view as login view
 class MyTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
-        return SET_Cookie_Response(request=request,username=request.POST['username'],password=request.POST['password'])
+        return set_cookie_response(request=request, username=request.data['username'],
+                                   password=request.data['password'])
+
 
 class MyTokenRefreshView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
@@ -46,21 +49,21 @@ class MyTokenRefreshView(TokenRefreshView):
             ser = TokenRefreshSerializer()
             # get cookie and refresh token
             refresh = request.COOKIES['token']
-            Jwt_refresh = {}
-            Jwt_refresh['refresh'] = str(refresh)
+            jwt_refresh = {'refresh': str(refresh)}
             # create new access token
-            JWT_Token = {'access':ser.validate(Jwt_refresh)}
+            jwt_token = {'access': ser.validate(jwt_refresh)}
             # send access token
-            return Response(JWT_Token['access'])
+            return Response(jwt_token['access'])
         except:
-            return Response({'error':'you should login again'})
+            return Response({'error': 'you should login again'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 class SimpleFilterBackend(BaseFilterBackend, ABC):
     def get_schema_fields(self, view):
         return [coreapi.Field(name='code', location='query', required=False, type='string')]
 
 
-class Sign_Up(generics.GenericAPIView):
+class SignUp(generics.GenericAPIView):
     permission_classes = (AllowAny,)
     serializer_class = SignUpEmailSerializer
     renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
@@ -72,13 +75,10 @@ class Sign_Up(generics.GenericAPIView):
         obj = Temp.objects.filter(email=serializer.data['email']).first()
         # check this email signup before or not
         obj_user = User.objects.filter(email=serializer.data['email']).first()
-
         if obj_user:
             return Response(status=status.HTTP_409_CONFLICT, data={'error': 'حسابی با این ایمیل موجود می باشد.'})
-
         time_now = timezone.now()
         # check this email have request before for signup or not
-
         if obj:
             # check that this email dont have request in this 2 minutes
             if time_now > obj.date + datetime.timedelta(minutes=2):
@@ -100,16 +100,13 @@ class Sign_Up(generics.GenericAPIView):
             obj.delete()
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             data={'message': 'خطایی رخ داده است لطفا دوباره امتحان کنید.'})
-        return Response(status=status.HTTP_200_OK,template_name='build/index.html')
+        return Response(status=status.HTTP_200_OK, template_name='build/index.html')
 
 
-
-
-class Validate_Email(viewsets.ModelViewSet):
+class ValidateEmail(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
 
     # filter_backends = (SimpleFilterBackend,)
-
     def get_serializer_class(self):
         if self.action == 'list':
             return TempSerializer
@@ -141,10 +138,9 @@ class Validate_Email(viewsets.ModelViewSet):
         user = UserSerializer(data=serialize.data['user'])
         user.is_valid(raise_exception=True)
         user.save()
-        # get token of user
-
         # send token of user
-        return SET_Cookie_Response(request,username=request.POST['user.username'],password=request.POST['user.password'])
+        return set_cookie_response(request, username=request.data['user.username'],
+                                   password=request.data['user.password'])
 
 
 # make authenticate with username and email
@@ -159,7 +155,7 @@ class UsernameOrEmailBackend(BaseBackend):
             return None
 
 
-class Sign_in(generics.GenericAPIView):
+class SignIn(generics.GenericAPIView):
     permission_classes = (AllowAny,)
     serializer_class = SignInSerializer
 
@@ -180,7 +176,7 @@ class Sign_in(generics.GenericAPIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class Request_reset_password(generics.GenericAPIView):
+class RequestResetPassword(generics.GenericAPIView):
     permission_classes = (AllowAny,)
     serializer_class = SignUpEmailSerializer
 
@@ -193,7 +189,6 @@ class Request_reset_password(generics.GenericAPIView):
         obj_user = User.objects.filter(email=serializer.data['email']).first()
         if not obj_user:
             return Response(status=status.HTTP_409_CONFLICT, data={'error': 'کاربری با این ایمیل موجود نمی‌باشد.'})
-
         time_now = timezone.now()
         # check this email have request before for signup or not
         if obj:
@@ -219,7 +214,7 @@ class Request_reset_password(generics.GenericAPIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class Reset_password(generics.GenericAPIView):
+class ResetPassword(generics.GenericAPIView):
     permission_classes = (AllowAny,)
     serializer_class = ResetPasswordSerializer
     filter_backends = (SimpleFilterBackend,)
@@ -228,16 +223,13 @@ class Reset_password(generics.GenericAPIView):
         serializer = ResetPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         get_object_or_404(Temp, code=serializer.data.get('temp').get('code')).delete()
-
         # get user for setting new password
         obj_user = get_object_or_404(User, email=serializer.data.get('temp').get('email'))
         obj_user.set_password(serializer.data['password'])
         obj_user.save()
-
         # get or create token of user
-
         # send token of user
-        return SET_Cookie_Response(request,username=obj_user.username,password=request.POST['password'])
+        return set_cookie_response(request, username=obj_user.username, password=request.data['password'])
 
 # class GoogleView(APIView):
 #     def post(self, request):

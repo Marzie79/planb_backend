@@ -4,12 +4,12 @@ from django.conf.urls.static import static
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from accounts.views import MyTokenObtainPairSerializer
-from backend import settings
+from planB_backend import settings
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 from accounts.views import *
 schema_view = get_schema_view(
     openapi.Info(
-        title="Tabesh API",
+        title="planB API",
         default_version='v1',
         description="Test description",
         terms_of_service="https://www.google.com/policies/terms/",
