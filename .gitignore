@@ -197,7 +197,7 @@ ENV/
 env.bak/
 venv.bak/
 pip-selfcheck.json
-planB_back/accounts/migrations/
+**/migrations/*
 ### VisualStudioCode ###
 /.vscode
 .vscode/*
