@@ -3,6 +3,7 @@ from .views import *
 
 urlpatterns = [
     path('validate-email/', ValidateEmail.as_view({'get': 'list', 'post': 'create'})),
+    path('logout/',Logout.as_view()),
     path('sign-up/', SignUp.as_view()),
     path('sign-in/', MyTokenObtainPairView.as_view()),
     path('request-reset-password/', RequestResetPassword.as_view()),
