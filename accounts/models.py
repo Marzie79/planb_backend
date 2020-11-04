@@ -3,7 +3,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from phonenumber_field.modelfields import PhoneNumberField
 from .managers import UserManager
-
+import jdatetime
+from jalali_date import datetime2jalali
 
 class Province(models.Model):
     name = models.CharField('نام استان', max_length=20, unique=True)
@@ -104,6 +105,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     def has_module_perms(self, app_label):
         return True
 
+    def date_joined_decorated(self):
+        return jdatetime.datetime.fromgregorian(datetime=self.date_joined).strftime("%a, %d %b %Y %H:%M:%S")
+
+    date_joined_decorated.short_description = 'تاریخ عضویت'
+
     @property
     def is_staff(self):
         return self.is_admin
@@ -118,14 +124,20 @@ class Project(models.Model):
     # project_owner_id = models.ForeignKey(User,verbose_name='کارفرما' ,on_delete=models.PROTECT)
     name = models.CharField('نام پروژه', max_length=30)
     skills = models.ManyToManyField(Skill, verbose_name='مهارت ها')
-    creator = models.ManyToManyField(User, through='User_Project', verbose_name='اعضا', blank=True)
     description = models.TextField('توضیحات', null=True, blank=True, max_length=200)
+    users = models.ManyToManyField(User, through='User_Project', verbose_name='اعضا', blank=True, related_name='users_projects')
+    duration = models.DurationField('مدت زمان')
     create_date = models.DateTimeField('تاریخ ایجاد', auto_now_add=True)
     situation = models.CharField('وضعیت پروژه', max_length=7, choices=SITUATION_CHOICES)
-    duration = models.DurationField('مدت زمان')
+    creator = models.ForeignKey(User,verbose_name='سازنده', blank=True, on_delete = models.PROTECT, related_name='created_projects')
 
     def __str__(self):
         return self.name
+
+    def date_created_decorated(self):   
+        return jdatetime.datetime.fromgregorian(datetime=self.create_date).strftime("%a, %d %b %Y %H:%M:%S")
+
+    date_created_decorated.short_description = 'تاریخ ایجاد'
 
     class Meta:
         ordering = ['name']
