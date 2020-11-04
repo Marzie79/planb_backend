@@ -38,12 +38,18 @@ def set_cookie_response(request, username, password):
 
 # create token and use this view as login view
 class MyTokenObtainPairView(TokenObtainPairView):
+    """
+    create token cookie that save refresh in the value of cookie and send access token for authorization
+    """
     def post(self, request, *args, **kwargs):
         return set_cookie_response(request=request, username=request.data['username'],
                                    password=request.data['password'])
 
 
 class MyTokenRefreshView(TokenRefreshView):
+    """
+       when is sent empty post , server send new access token if refresh(saves in the cookie) validate correctly
+    """
     def post(self, request, *args, **kwargs):
         try:
             ser = TokenRefreshSerializer()
@@ -63,6 +69,9 @@ class SimpleFilterBackend(BaseFilterBackend, ABC):
         return [coreapi.Field(name='code', location='query', required=False, type='string')]
 
 class Logout(generics.GenericAPIView):
+    """
+        token cookie will be deleted when user logs out
+    """
     permission_classes = (IsAuthenticated,)
     def post(self, request):
         response = Response("logout user")
