@@ -2,11 +2,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
-from accounts.views import MyTokenObtainPairSerializer
 from planB_backend import settings
-from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 from accounts.views import *
+
 schema_view = get_schema_view(
     openapi.Info(
         title="planB API",

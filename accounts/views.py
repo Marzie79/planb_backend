@@ -1,26 +1,26 @@
 import datetime
 import coreapi
-# import requests
 from abc import ABC
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.crypto import get_random_string
 from django.db.models import Q
 from django.contrib.auth.backends import BaseBackend
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
+
 from rest_framework import status, generics, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.filters import BaseFilterBackend
-# from rest_framework.views import APIView
-# from rest_framework.utils import json
-from accounts.serializers import *
-from accounts.util import sending_email
 from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
+
+from accounts.serializers import *
+from accounts.util import sending_email
 
 
 def set_cookie_response(request, username, password):
@@ -68,15 +68,18 @@ class SimpleFilterBackend(BaseFilterBackend, ABC):
     def get_schema_fields(self, view):
         return [coreapi.Field(name='code', location='query', required=False, type='string')]
 
+
 class Logout(generics.GenericAPIView):
     """
         token cookie will be deleted when user logs out
     """
     permission_classes = (IsAuthenticated,)
+
     def post(self, request):
         response = Response("logout user")
         response.delete_cookie('token')
         return response
+
 
 class SignUp(generics.GenericAPIView):
     permission_classes = (AllowAny,)
@@ -245,27 +248,3 @@ class ResetPassword(generics.GenericAPIView):
         # get or create token of user
         # send token of user
         return set_cookie_response(request, username=obj_user.username, password=request.data['password'])
-
-# class GoogleView(APIView):
-#     def post(self, request):
-#         payload = {'access_token': request.data.get("token")}  # validate the token
-#         r = requests.get('https://www.googleapis.com/oauth2/v2/userinfo', params=payload)
-#         data = json.loads(r.text)
-#
-#         if 'error' in data:
-#             content = {'message': 'wrong google token / this google token is already expired.'}
-#             return Response(content)
-#
-#         # create user if not exist
-#         try:
-#             user = User.objects.get(email=data['email'])
-#         except User.DoesNotExist:
-#             user = User()
-#             user.email = data['email']
-#
-#         token = 'rnfbvksdlbm'  # generate token without username & password
-#         response = {}
-#         response['username'] = user.username
-#         response['access_token'] = str(token)
-#         response['refresh_token'] = str(token)
-#         return Response(response)

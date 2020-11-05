@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from phonenumber_field.modelfields import PhoneNumberField
 from .managers import UserManager
 import jdatetime
-from jalali_date import datetime2jalali
+
 
 class Province(models.Model):
     name = models.CharField('نام استان', max_length=20, unique=True)
@@ -129,6 +129,7 @@ class Project(models.Model):
     duration = models.DurationField('مدت زمان')
     create_date = models.DateTimeField('تاریخ ایجاد', auto_now_add=True)
     situation = models.CharField('وضعیت پروژه', max_length=7, choices=SITUATION_CHOICES)
+    admin = models.ForeignKey(User,verbose_name='ادمین', blank=True, on_delete = models.PROTECT, related_name='admin_projects')
     creator = models.ForeignKey(User,verbose_name='سازنده', blank=True, on_delete = models.PROTECT, related_name='created_projects')
 
     def __str__(self):

@@ -1,9 +1,4 @@
 from django.contrib.auth.models import BaseUserManager
-from rest_framework.exceptions import APIException
-from django.utils.encoding import force_text
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.serializers import raise_errors_on_nested_writes
 
 
 class UserManager(BaseUserManager):

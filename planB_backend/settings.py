@@ -1,5 +1,7 @@
 import os
+import locale
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -102,7 +104,7 @@ DATABASES = {
         'PASSWORD': 'planB_pass_1399',
     }
 }
-from datetime import timedelta
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=2),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=180),
@@ -176,7 +178,6 @@ JALALI_DATE_DEFAULTS = {
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
 LANGUAGE_CODE = 'fa'
-import locale
 
 locale.setlocale(locale.LC_ALL, "fa_IR.UTF-8")
 TIME_ZONE = 'Asia/Tehran'
