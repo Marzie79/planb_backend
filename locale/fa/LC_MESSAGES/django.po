@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-08 15:10+0330\n"
+"POT-Creation-Date: 2020-11-08 17:10+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -269,5 +269,6 @@ msgstr "کاربری با این ایمیل موجود نمی‌باشد"
 
 #: .\accounts\views.py:223
 msgid "EmailTimeError"
-msgstr "در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش فرمایید.'"
-
+msgstr ""
+"در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش "
+"فرمایید.'"
