@@ -9,6 +9,7 @@ django-jalali==4.0.0
 django-jalali-date==0.3.1
 django-phonenumber-field==5.0.0
 djangorestframework==3.11.1
+djangorestframework-camel-case==1.2.0
 djangorestframework-simplejwt==4.4.0
 drf-yasg==1.17.1
 idna==2.10

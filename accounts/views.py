@@ -3,22 +3,21 @@ import coreapi
 from abc import ABC
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.crypto import get_random_string
 from django.db.models import Q
 from django.contrib.auth.backends import BaseBackend
-
 from rest_framework import status, generics, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.filters import BaseFilterBackend
-from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
+from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
-
+from djangorestframework_camel_case.render import CamelCaseJSONRenderer
+# don't use rest_framework.renderers.JsonRenderer !!!
 from accounts.serializers import *
 from accounts.util import sending_email
 
@@ -41,6 +40,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
     """
     create token cookie that save refresh in the value of cookie and send access token for authorization
     """
+
     def post(self, request, *args, **kwargs):
         return set_cookie_response(request=request, username=request.data['username'],
                                    password=request.data['password'])
@@ -50,6 +50,7 @@ class MyTokenRefreshView(TokenRefreshView):
     """
        when is sent empty post , server send new access token if refresh(saves in the cookie) validate correctly
     """
+
     def post(self, request, *args, **kwargs):
         try:
             ser = TokenRefreshSerializer()
@@ -84,7 +85,7 @@ class Logout(generics.GenericAPIView):
 class SignUp(generics.GenericAPIView):
     permission_classes = (AllowAny,)
     serializer_class = SignUpEmailSerializer
-    renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
+    renderer_classes = [TemplateHTMLRenderer, CamelCaseJSONRenderer]
 
     def post(self, request):
         serializer = SignUpEmailSerializer(data=request.data)
