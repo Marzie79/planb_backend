@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from .models import *
-
+from django.utils.translation import gettext_lazy
 
 class UserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -29,7 +29,7 @@ class UserCreationForm(forms.ModelForm):
 
 
 class UserChangeForm(forms.ModelForm):
-    password = ReadOnlyPasswordHashField(label="رمز",
+    password = ReadOnlyPasswordHashField(label=gettext_lazy("Password"),
                                          help_text="<a href=\"../password/\">تغییر رمز</a>.")
 
     class Meta:

@@ -2,9 +2,10 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from .models import *
 from jalali_date.admin import ModelAdminJalaliMixin
+from django.utils.translation import gettext_lazy as _
 
-admin.site.site_header = 'صفحه ادمین'
-admin.site.index_title = 'مدیریت مدل ها'
+admin.site.site_header = _("Admin_page")
+admin.site.index_title = _("Manage_Model")
 
 
 class UserProjectsInline(admin.TabularInline):
@@ -20,11 +21,11 @@ class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': ('username', 'email', 'password', 'date_joined_decorated')}),
-        ('اطلاعات شخص', {'fields': (
+        (_("User_Information"), {'fields': (
             'first_name', 'last_name', 'avatar', 'gender', 'description')}),
-        ('دسترسی ها', {'fields': ('is_admin', 'is_active')}),
-        ('آدرس', {'fields': ('city', 'university')}),
-        ('مهارت ها', {'fields': ('skills',)}))
+        (_("Accesses"), {'fields': ('is_admin', 'is_active')}),
+        (_("Address"), {'fields': ('city', 'university')}),
+        (_("Skills"), {'fields': ('skills',)}))
     inlines = [UserProjectsInline]
 
 
@@ -44,7 +45,7 @@ class ProjectsAdmin(admin.ModelAdmin):
     list_display = ('name', 'creator', 'situation', 'duration')
     readonly_fields = ('date_created_decorated',)
     fieldsets = ((None, {'fields': ('name', 'creator', 'description')}),
-                 ('ویژگی ها', {'fields': ('skills', 'situation')}),
+                 (_("Priority"), {'fields': ('skills', 'situation')}),
                  (None, {'fields': ('date_created_decorated', 'duration')}))
 
 

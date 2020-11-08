@@ -20,6 +20,7 @@ from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 # don't use rest_framework.renderers.JsonRenderer !!!
 from accounts.serializers import *
 from accounts.util import sending_email
+from django.utils.translation import gettext_lazy as _
 
 
 def set_cookie_response(request, username, password):
@@ -95,7 +96,7 @@ class SignUp(generics.GenericAPIView):
         # check this email signup before or not
         obj_user = User.objects.filter(email=serializer.data['email']).first()
         if obj_user:
-            return Response(status=status.HTTP_409_CONFLICT, data={'error': 'حسابی با این ایمیل موجود می باشد.'})
+            return Response(status=status.HTTP_409_CONFLICT, data={'error': _("EmailDoesExist")})
         time_now = timezone.now()
         # check this email have request before for signup or not
         if obj:
@@ -107,7 +108,7 @@ class SignUp(generics.GenericAPIView):
                 obj.save()
             else:
                 return Response(status=status.HTTP_401_UNAUTHORIZED, data={
-                    'error': 'در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش فرمایید.'})
+                    'error': "EmailTimeError"})
 
         else:
             obj = Temp.objects.create(email=serializer.data['email'], date=time_now,
@@ -118,7 +119,7 @@ class SignUp(generics.GenericAPIView):
         if message is not None:
             obj.delete()
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            data={'message': 'خطایی رخ داده است لطفا دوباره امتحان کنید.'})
+                            data={'message': _("ServerError")})
         return Response(status=status.HTTP_200_OK, template_name='build/index.html')
 
 
@@ -142,7 +143,7 @@ class ValidateEmail(viewsets.ModelViewSet):
             # send email and code for making a user and removing temp object
             return Response(data=serialize.data, status=status.HTTP_200_OK)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': 'لینک وارد شده نامعتبر است.'})
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': _("InValidLink")})
 
     def create(self, request, *args, **kwargs):
         # if User.objects.filter(username=request.data['username']).first():
@@ -189,7 +190,7 @@ class SignIn(generics.GenericAPIView):
                 return Response(data={'token': token.key}, status=status.HTTP_200_OK)
             else:
                 # password in not correct
-                return Response(data={'error': 'نام کاربری یا رمز عبور اشتباه است'},
+                return Response(data={'error':_("UsernameOrPasswordWrong")},
                                 status=status.HTTP_406_NOT_ACCEPTABLE)
         # sending empty request
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -207,7 +208,7 @@ class RequestResetPassword(generics.GenericAPIView):
         # check this email signup before or not
         obj_user = User.objects.filter(email=serializer.data['email']).first()
         if not obj_user:
-            return Response(status=status.HTTP_409_CONFLICT, data={'error': 'کاربری با این ایمیل موجود نمی‌باشد.'})
+            return Response(status=status.HTTP_409_CONFLICT, data={'error': _("User_Email_Error")})
         time_now = timezone.now()
         # check this email have request before for signup or not
         if obj:
@@ -219,7 +220,7 @@ class RequestResetPassword(generics.GenericAPIView):
                 obj.save()
             else:
                 return Response(status=status.HTTP_401_UNAUTHORIZED, data={
-                    'error': 'در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش فرمایید.'})
+                    'error': _("EmailTimeError")})
         else:
             obj = Temp.objects.create(email=serializer.data['email'], date=time_now,
                                       code=get_random_string(length=16))
@@ -229,7 +230,7 @@ class RequestResetPassword(generics.GenericAPIView):
         if message is not None:
             obj.delete()
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            data={'message': 'خطایی رخ داده است لطفا دوباره امتحان کنید.'})
+                            data={'message': _("ServerError")})
         return Response(status=status.HTTP_200_OK)
 
 

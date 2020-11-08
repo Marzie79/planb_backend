@@ -4,54 +4,54 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from phonenumber_field.modelfields import PhoneNumberField
 from .managers import UserManager
 import jdatetime
-
+from django.utils.translation import gettext_lazy as _
 
 class Province(models.Model):
-    name = models.CharField('نام استان', max_length=20, unique=True)
-    code = models.CharField('کد استان', max_length=10, unique=True)
+    name = models.CharField(_("Province_name"), max_length=20, unique=True)
+    code = models.CharField(_("Province_code"), max_length=10, unique=True)
 
     class Meta:
         ordering = ['code']
-        verbose_name_plural = 'استان ها'
-        verbose_name = 'استان'
+        verbose_name_plural = _("Province")
+        verbose_name = _("Province")
 
     def __str__(self):
         return self.name
 
 
 class City(models.Model):
-    province = models.ForeignKey(Province, verbose_name='شهر', on_delete=models.PROTECT)
-    name = models.CharField('نام شهر', max_length=20, unique=True)
-    code = models.CharField('کد شهر', max_length=10, unique=True)
+    province = models.ForeignKey(Province, verbose_name=_("Province"), on_delete=models.PROTECT)
+    name = models.CharField(_("City_name"), max_length=20, unique=True)
+    code = models.CharField(_("City_Code"), max_length=10, unique=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
         ordering = ['code']
-        verbose_name_plural = 'شهر ها'
-        verbose_name = 'شهر'
+        verbose_name_plural = _("City")
+        verbose_name = _("City")
         unique_together = ('name', 'province',)
 
 
 class University(models.Model):
-    city = models.ForeignKey(City, verbose_name='شهر', on_delete=models.PROTECT)
-    name = models.CharField('نام دانشگاه', max_length=20)
-    code = models.CharField('کد دانشگاه', max_length=10, unique=True)
+    city = models.ForeignKey(City, verbose_name=_("City"), on_delete=models.PROTECT)
+    name = models.CharField(_("University_name"), max_length=20)
+    code = models.CharField(_("University_code"), max_length=10, unique=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
         ordering = ['code']
-        verbose_name_plural = "دانشگاه ها"
-        verbose_name = "دانشگاه"
+        verbose_name_plural = _("University")
+        verbose_name = _("University")
         unique_together = ('name', 'city',)
 
 
 class Skill(models.Model):
-    name = models.CharField('نام مهارت', max_length=30, unique=True)
-    code = models.CharField('کد مهارت', max_length=10, unique=True)
+    name = models.CharField(_("Skill_name"), max_length=30, unique=True)
+    code = models.CharField(_("Skill_code"), max_length=10, unique=True)
     skill = models.ForeignKey('self', verbose_name='پدر مهارت', on_delete=models.PROTECT, related_name='child_skill',
                               null=True, blank=True)
 
@@ -60,36 +60,36 @@ class Skill(models.Model):
 
     class Meta:
         ordering = ['code']
-        verbose_name_plural = "مهارت ها"
-        verbose_name = "مهارت"
+        verbose_name_plural = _("Skill")
+        verbose_name = _("Skill")
 
 
 class User(AbstractBaseUser, PermissionsMixin):
     GENDER_CHOICES = (
-        ('MALE', 'مرد'),
-        ('FEMALE', 'زن'),
+        ('MALE', _("male")),
+        ('FEMALE', _("female")),
     )
-    username = models.CharField('نام کاربری', max_length=30, unique=True)
-    password = models.CharField('رمز عبور', max_length=128)
-    email = models.EmailField('ایمیل', max_length=254, unique=True)
-    phone_number = PhoneNumberField('شماره تلفن', null=True, blank=True, unique=True)
-    first_name = models.CharField('نام', max_length=30)
-    last_name = models.CharField('نام خانوادگی', max_length=30)
-    gender = models.CharField('جنسیت', max_length=6, choices=GENDER_CHOICES, null=True, blank=True)
-    avatar = models.ImageField('عکس', null=True, blank=True, upload_to='avatars/')
-    is_active = models.BooleanField('فعال', default=True)
-    is_admin = models.BooleanField('کاربر خاص', default=False)
-    date_joined = models.DateTimeField('تاریخ عضویت', auto_now_add=True)
-    description = models.TextField('توضیحات', null=True, blank=True, max_length=200)
-    university = models.ForeignKey(University, verbose_name='نام دانشگاه', on_delete=models.SET_NULL, null=True,
+    username = models.CharField(_("Username"), max_length=30, unique=True)
+    password = models.CharField(_("Password"), max_length=128)
+    email = models.EmailField(_("Email"), max_length=254, unique=True)
+    phone_number = PhoneNumberField(_("Phone_Number"), null=True, blank=True, unique=True)
+    first_name = models.CharField(_("First_Name"), max_length=30)
+    last_name = models.CharField(_("Last_Name"), max_length=30)
+    gender = models.CharField(_("Gender"), max_length=6, choices=GENDER_CHOICES, null=True, blank=True)
+    avatar = models.ImageField(_("Avatar"), null=True, blank=True, upload_to='avatars/')
+    is_active = models.BooleanField(_("is_active"), default=True)
+    is_admin = models.BooleanField(_("is_admin"), default=False)
+    date_joined = models.DateTimeField(_("Date_joined"), auto_now_add=True)
+    description = models.TextField(_("Description"), null=True, blank=True, max_length=200)
+    university = models.ForeignKey(University, verbose_name=_("University_Name"), on_delete=models.SET_NULL, null=True,
                                    blank=True)
-    city = models.ForeignKey(City, verbose_name='شهر', on_delete=models.SET_NULL, null=True, blank=True)
-    skills = models.ManyToManyField(Skill, verbose_name='مهارت ها', blank=True)
+    city = models.ForeignKey(City, verbose_name=_("City"), on_delete=models.SET_NULL, null=True, blank=True)
+    skills = models.ManyToManyField(Skill, verbose_name=_("Skill"), blank=True)
 
     class Meta:
         ordering = ['username']
-        verbose_name_plural = "کاربران"
-        verbose_name = "کاربر"
+        verbose_name_plural = _("Users")
+        verbose_name = _("Users")
 
     objects = UserManager()
 
@@ -108,7 +108,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def date_joined_decorated(self):
         return jdatetime.datetime.fromgregorian(datetime=self.date_joined).strftime("%a, %d %b %Y %H:%M:%S")
 
-    date_joined_decorated.short_description = 'تاریخ عضویت'
+    date_joined_decorated.short_description = _("date_join_decorated")
 
     @property
     def is_staff(self):
@@ -117,20 +117,20 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Project(models.Model):
     SITUATION_CHOICES = (
-        ('WAITING', 'در حال انتظار'),
-        ('STARTED', 'شروع شده'),
-        ('ENDED', 'پایان یافته'),
+        ('WAITING', _("Waiting")),
+        ('STARTED', _("Started")),
+        ('ENDED', _("Ended")),
     )
     # project_owner_id = models.ForeignKey(User,verbose_name='کارفرما' ,on_delete=models.PROTECT)
-    name = models.CharField('نام پروژه', max_length=30)
-    skills = models.ManyToManyField(Skill, verbose_name='مهارت ها')
-    description = models.TextField('توضیحات', null=True, blank=True, max_length=200)
-    users = models.ManyToManyField(User, through='User_Project', verbose_name='اعضا', blank=True, related_name='users_projects')
-    duration = models.DurationField('مدت زمان')
-    create_date = models.DateTimeField('تاریخ ایجاد', auto_now_add=True)
-    situation = models.CharField('وضعیت پروژه', max_length=7, choices=SITUATION_CHOICES)
-    admin = models.ForeignKey(User,verbose_name='ادمین', blank=True, on_delete = models.PROTECT, related_name='admin_projects')
-    creator = models.ForeignKey(User,verbose_name='سازنده', blank=True, on_delete = models.PROTECT, related_name='created_projects')
+    name = models.CharField(_("Project_Name"), max_length=30)
+    skills = models.ManyToManyField(Skill, verbose_name=_("Skills"))
+    description = models.TextField(_("Description"), null=True, blank=True, max_length=200)
+    users = models.ManyToManyField(User, through='User_Project', verbose_name=_("User_Project"), blank=True, related_name='users_projects')
+    duration = models.DurationField(_("Duration"))
+    create_date = models.DateTimeField(_("Create_Date"), auto_now_add=True)
+    situation = models.CharField(_("Project_Situation"), max_length=7, choices=SITUATION_CHOICES)
+    admin = models.ForeignKey(User,verbose_name=_("Scrum_Master"), blank=True, on_delete = models.PROTECT, related_name='admin_projects')
+    creator = models.ForeignKey(User,verbose_name=_("Project_Owner"), blank=True, on_delete = models.PROTECT, related_name='created_projects')
 
     def __str__(self):
         return self.name
@@ -138,31 +138,31 @@ class Project(models.Model):
     def date_created_decorated(self):   
         return jdatetime.datetime.fromgregorian(datetime=self.create_date).strftime("%a, %d %b %Y %H:%M:%S")
 
-    date_created_decorated.short_description = 'تاریخ ایجاد'
+    date_created_decorated.short_description = _("date_created_decorated")
 
     class Meta:
         ordering = ['name']
-        verbose_name_plural = "پروژه ها"
-        verbose_name = "پروژه"
+        verbose_name_plural = _("Project")
+        verbose_name = _("Project")
 
 
 class User_Project(models.Model):
     SITUATION_CHOICES = (
-        ('ACCEPTED', 'پذیرفته شده'),
-        ('REQUESTED', 'درخواست داده شده'),
-        ('DECLINED', 'رد شده'),
+        ('ACCEPTED', _("Accepted")),
+        ('REQUESTED', _("Requested")),
+        ('DECLINED', _("Declined")),
     )
-    project = models.ForeignKey(Project, verbose_name='پروژه', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, verbose_name='کاربر', on_delete=models.CASCADE)
-    situation = models.CharField(max_length=9, verbose_name='وضعیت', choices=SITUATION_CHOICES)
+    project = models.ForeignKey(Project, verbose_name=_("Project"), on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
+    situation = models.CharField(max_length=9, verbose_name=_("Situation"), choices=SITUATION_CHOICES)
 
 
 class Temp(models.Model):
-    email = models.EmailField(verbose_name="ایمیل", validators=[validate_email], max_length=255)
-    date = models.DateTimeField(verbose_name="تاریخ", auto_now=True)
-    code = models.CharField(verbose_name="کد", max_length=20)
+    email = models.EmailField(verbose_name=_("Email"), validators=[validate_email], max_length=255)
+    date = models.DateTimeField(verbose_name=_("Date"), auto_now=True)
+    code = models.CharField(verbose_name=_("Code"), max_length=20)
 
     class Meta:
         ordering = ['date']
-        verbose_name = "میانی"
-        verbose_name_plural = "میانی ها"
+        verbose_name = _("Temps")
+        verbose_name_plural = _("Temps")
