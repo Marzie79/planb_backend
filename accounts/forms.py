@@ -1,11 +1,14 @@
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.hashers import make_password
+from django.utils.translation import gettext_lazy as _
 from .models import *
 from django.utils.translation import gettext_lazy
 
-class UserCreationForm(forms.ModelForm):
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
+
+class UserForm(forms.ModelForm):
+    password1 = forms.CharField(label=_("Password"), required=False, widget=forms.PasswordInput)
+    password2 = forms.CharField(label=_('Confirm Password'), required=False, widget=forms.PasswordInput)
 
     class Meta:
         model = User
@@ -26,15 +29,3 @@ class UserCreationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
-
-
-class UserChangeForm(forms.ModelForm):
-    password = ReadOnlyPasswordHashField(label=gettext_lazy("Password"),
-                                         help_text="<a href=\"../password/\">تغییر رمز</a>.")
-
-    class Meta:
-        model = User
-        fields = '__all__'
-
-    def clean_password(self):
-        return self.initial["password"]

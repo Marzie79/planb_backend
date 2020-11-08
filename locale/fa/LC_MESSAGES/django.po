@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-08 17:12+0330\n"
+"POT-Creation-Date: 2020-11-08 18:40+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,31 +18,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: .\accounts\admin.py:7
+#: .\accounts\admin.py:8
 msgid "Admin_page"
 msgstr "صفحه ادمین"
 
-#: .\accounts\admin.py:8
+#: .\accounts\admin.py:9
 msgid "Manage_Model"
 msgstr "مدیریت مدل ها"
 
-#: .\accounts\admin.py:24
+#: .\accounts\admin.py:26
 msgid "User_Information"
 msgstr "اطلاعات شخص"
 
-#: .\accounts\admin.py:26
+#: .\accounts\admin.py:28
 msgid "Accesses"
 msgstr "دسترسی ها"
 
-#: .\accounts\admin.py:27
+#: .\accounts\admin.py:29
 msgid "Address"
 msgstr "آدرس"
 
-#: .\accounts\admin.py:28 .\accounts\models.py:126
+#: .\accounts\admin.py:30 .\accounts\models.py:126
 msgid "Skills"
 msgstr "مهارت ها"
 
-#: .\accounts\admin.py:48
+#: .\accounts\admin.py:50
 msgid "Priority"
 msgstr "ویژگی ها"
 
@@ -50,9 +50,15 @@ msgstr "ویژگی ها"
 msgid "accounts"
 msgstr "اکانت ها"
 
-#: .\accounts\forms.py:32 .\accounts\models.py:73
+#: .\accounts\forms.py:10 .\accounts\models.py:73
 msgid "Password"
 msgstr "رمز"
+
+#: .\accounts\forms.py:11
+#, fuzzy
+#| msgid "Password"
+msgid "Confirm Password"
+msgstr "تکرار رمز"
 
 #: .\accounts\models.py:10
 msgid "Province_name"
@@ -144,7 +150,7 @@ msgid "is_active"
 msgstr "فعال"
 
 #: .\accounts\models.py:81
-msgid "is_admin"
+msgid "is_superuser"
 msgstr "کاربر خاص"
 
 #: .\accounts\models.py:82
@@ -272,3 +278,6 @@ msgid "EmailTimeError"
 msgstr ""
 "در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش "
 "فرمایید.'"
+
+#~ msgid "is_admin"
+#~ msgstr "کاربر خاص"

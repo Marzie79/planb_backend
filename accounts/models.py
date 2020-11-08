@@ -6,6 +6,7 @@ from .managers import UserManager
 import jdatetime
 from django.utils.translation import gettext_lazy as _
 
+
 class Province(models.Model):
     name = models.CharField(_("Province_name"), max_length=20, unique=True)
     code = models.CharField(_("Province_code"), max_length=10, unique=True)
@@ -78,7 +79,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(_("Gender"), max_length=6, choices=GENDER_CHOICES, null=True, blank=True)
     avatar = models.ImageField(_("Avatar"), null=True, blank=True, upload_to='avatars/')
     is_active = models.BooleanField(_("is_active"), default=True)
-    is_admin = models.BooleanField(_("is_admin"), default=False)
+    is_superuser = models.BooleanField(_("is_superuser"), default=False)
     date_joined = models.DateTimeField(_("Date_joined"), auto_now_add=True)
     description = models.TextField(_("Description"), null=True, blank=True, max_length=200)
     university = models.ForeignKey(University, verbose_name=_("University_Name"), on_delete=models.SET_NULL, null=True,
@@ -112,7 +113,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @property
     def is_staff(self):
-        return self.is_admin
+        return self.is_superuser
 
 
 class Project(models.Model):
@@ -125,17 +126,20 @@ class Project(models.Model):
     name = models.CharField(_("Project_Name"), max_length=30)
     skills = models.ManyToManyField(Skill, verbose_name=_("Skills"))
     description = models.TextField(_("Description"), null=True, blank=True, max_length=200)
-    users = models.ManyToManyField(User, through='User_Project', verbose_name=_("User_Project"), blank=True, related_name='users_projects')
+    users = models.ManyToManyField(User, through='User_Project', verbose_name=_("User_Project"), blank=True,
+                                   related_name='users_projects')
     duration = models.DurationField(_("Duration"))
     create_date = models.DateTimeField(_("Create_Date"), auto_now_add=True)
     situation = models.CharField(_("Project_Situation"), max_length=7, choices=SITUATION_CHOICES)
-    admin = models.ForeignKey(User,verbose_name=_("Scrum_Master"), blank=True, on_delete = models.PROTECT, related_name='admin_projects')
-    creator = models.ForeignKey(User,verbose_name=_("Project_Owner"), blank=True, on_delete = models.PROTECT, related_name='created_projects')
+    admin = models.ForeignKey(User, verbose_name=_("Scrum_Master"), blank=True, on_delete=models.PROTECT,
+                              related_name='admin_projects')
+    creator = models.ForeignKey(User, verbose_name=_("Project_Owner"), blank=True, on_delete=models.PROTECT,
+                                related_name='created_projects')
 
     def __str__(self):
         return self.name
 
-    def date_created_decorated(self):   
+    def date_created_decorated(self):
         return jdatetime.datetime.fromgregorian(datetime=self.create_date).strftime("%a, %d %b %Y %H:%M:%S")
 
     date_created_decorated.short_description = _("date_created_decorated")
