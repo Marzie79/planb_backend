@@ -79,6 +79,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(_("Gender"), max_length=6, choices=GENDER_CHOICES, null=True, blank=True)
     avatar = models.ImageField(_("Avatar"), null=True, blank=True, upload_to='avatars/')
     is_active = models.BooleanField(_("is_active"), default=True)
+    #is_superuser is already used into AbstractBaseUser and only i override it instead of create otherfield
     is_superuser = models.BooleanField(_("is_superuser"), default=False)
     date_joined = models.DateTimeField(_("Date_joined"), auto_now_add=True)
     description = models.TextField(_("Description"), null=True, blank=True, max_length=200)
