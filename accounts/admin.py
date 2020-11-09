@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
+from .forms import UserForm
 from .models import *
 from jalali_date.admin import ModelAdminJalaliMixin
 from django.utils.translation import gettext_lazy as _
@@ -18,12 +19,13 @@ class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'is_active')
     readonly_fields = ('joined_date_decorated',)
     list_filter = ('is_active',)
+    form = UserForm
     fieldsets = (
         (None, {
-            'fields': ('username', 'email', 'password', 'date_joined_decorated')}),
+            'fields': ('username', 'email', 'password1', 'password2', 'date_joined_decorated')}),
         (_("User_Information"), {'fields': (
             'first_name', 'last_name', 'avatar', 'gender', 'description')}),
-        (_("Accesses"), {'fields': ('is_admin', 'is_active')}),
+        (_("Accesses"), {'fields': ('is_superuser', 'is_active')}),
         (_("Address"), {'fields': ('city', 'university')}),
         (_("Skills"), {'fields': ('skills',)}))
     inlines = [UserProjectsInline]

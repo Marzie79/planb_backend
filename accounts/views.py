@@ -23,10 +23,12 @@ from accounts.util import sending_email
 from django.utils.translation import gettext_lazy as _
 
 
-def set_cookie_response(request, username, password):
-    ser = MyTokenObtainPairSerializer()
+def set_cookie_response(request):
+    ser = MyTokenObtainPairSerializer(data=request.data,
+                                           context={'request':request})
+    ser.is_valid(raise_exception=True)
+    jwt_token=ser.validated_data
     # make jwt token
-    jwt_token = ser.validate({'username': username, 'password': password})
     access_token = {'access': jwt_token['access']}
     # put access token on response
     response = Response(access_token)
@@ -43,8 +45,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
     """
 
     def post(self, request, *args, **kwargs):
-        return set_cookie_response(request=request, username=request.data['username'],
-                                   password=request.data['password'])
+        return set_cookie_response(request=request)
 
 
 class MyTokenRefreshView(TokenRefreshView):
@@ -158,9 +159,10 @@ class ValidateEmail(viewsets.ModelViewSet):
         user = UserSerializer(data=serialize.data['user'])
         user.is_valid(raise_exception=True)
         user.save()
+        request.data['username']=request.POST['user.username']
+        request.data['password']=request.POST['user.password']
         # send token of user
-        return set_cookie_response(request, username=request.data['user.username'],
-                                   password=request.data['user.password'])
+        return set_cookie_response(request)
 
 
 # make authenticate with username and email
@@ -247,6 +249,7 @@ class ResetPassword(generics.GenericAPIView):
         obj_user = get_object_or_404(User, email=serializer.data.get('temp').get('email'))
         obj_user.set_password(serializer.data['password'])
         obj_user.save()
+        request.data['username'] = obj_user.username
         # get or create token of user
         # send token of user
-        return set_cookie_response(request, username=obj_user.username, password=request.data['password'])
+        return set_cookie_response(request)
