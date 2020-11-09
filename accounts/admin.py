@@ -16,7 +16,7 @@ class UserProjectsInline(admin.TabularInline):
 
 class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'is_active')
-    readonly_fields = ('date_joined_decorated',)
+    readonly_fields = ('joined_date_decorated',)
     list_filter = ('is_active',)
     fieldsets = (
         (None, {
@@ -41,12 +41,13 @@ class ProvinceAdmin(admin.ModelAdmin):
     inlines = [CityInline]
 
 
-class ProjectsAdmin(admin.ModelAdmin):
-    list_display = ('name', 'creator', 'situation', 'duration')
-    readonly_fields = ('date_created_decorated',)
-    fieldsets = ((None, {'fields': ('name', 'creator', 'description')}),
+class ProjectsAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
+    list_display = ('name', 'creator', 'situation', 'end_date')
+    fieldsets = ((None, {'fields': ('name', 'creator', 'admin', 'description')}),
                  (_("Priority"), {'fields': ('skills', 'situation')}),
-                 (None, {'fields': ('date_created_decorated', 'duration')}))
+                 (None, {'fields': ('last_modified_date', 'start_date', 'end_date')}))
+
+
 
 
 admin.site.register(Temp)
