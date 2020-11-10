@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'corsheaders',
     'jalali_date',
+    'validate_email',
 ]
 
 MIDDLEWARE = [

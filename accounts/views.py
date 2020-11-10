@@ -41,6 +41,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
     """
     create token cookie that save refresh in the value of cookie and send access token for authorization
     """
+
     def post(self, request, *args, **kwargs):
         return set_cookie_response(request=request, username=request.data['username'],
                                    password=request.data['password'])
@@ -50,6 +51,7 @@ class MyTokenRefreshView(TokenRefreshView):
     """
        when is sent empty post , server send new access token if refresh(saves in the cookie) validate correctly
     """
+
     def post(self, request, *args, **kwargs):
         try:
             ser = TokenRefreshSerializer()
@@ -248,3 +250,9 @@ class ResetPassword(generics.GenericAPIView):
         # get or create token of user
         # send token of user
         return set_cookie_response(request, username=obj_user.username, password=request.data['password'])
+
+
+class UpdateUser(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UpdateUserSerializer

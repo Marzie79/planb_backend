@@ -29,4 +29,5 @@ urlpatterns = [
                   path('api/token/refresh/', MyTokenRefreshView.as_view(), name='token_refresh'),
                   path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
                   path('swagger.json/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+                  path('update-profile/<int:pk>/', UpdateUser.as_view(), name='auth_update_profile')
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
