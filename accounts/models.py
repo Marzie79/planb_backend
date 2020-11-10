@@ -131,7 +131,7 @@ class Project(models.Model):
     name = models.CharField(_("Project_Name"), max_length=30)
     skills = models.ManyToManyField(Skill, verbose_name=_("Skills"))
     description = models.TextField(_("Description"), null=True, blank=True, max_length=200)
-    users = models.ManyToManyField(User, through='User_Project', verbose_name=_("User_Project"), blank=True,
+    users = models.ManyToManyField(User, through='UserProject', verbose_name=_("UserProject"), blank=True,
                                    related_name='users_projects')
     end_date = models.DateTimeField(_("End_Date"), default=datetime.now)
     start_date = models.DateTimeField(_("Start_Date"), default=datetime.now)
@@ -165,7 +165,7 @@ class Project(models.Model):
     end_date_decorated.short_description = _("End_Date_Decorated")
 
 
-class User_Project(models.Model):
+class UserProject(models.Model):
     SITUATION_CHOICES = (
         ('ACCEPTED', _("Accepted")),
         ('REQUESTED', _("Requested")),

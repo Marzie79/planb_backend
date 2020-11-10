@@ -10,7 +10,7 @@ admin.site.index_title = _("Manage_Model")
 
 
 class UserProjectsInline(admin.TabularInline):
-    model = User_Project
+    model = UserProject
     extra = 0
     fields = ('project',)
 
