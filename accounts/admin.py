@@ -17,12 +17,12 @@ class UserProjectsInline(admin.TabularInline):
 
 class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'is_active')
-    readonly_fields = ('decorated_joined_date',)
+    readonly_fields = ('joined_date_decorated',)
     list_filter = ('is_active',)
     form = UserForm
     fieldsets = (
         (None, {
-            'fields': ('username', 'email', 'password1', 'password2', 'decorated_date_joined')}),
+            'fields': ('username', 'email', 'password1', 'password2', 'joined_date_decorated')}),
         (_("User_Information"), {'fields': (
             'first_name', 'last_name', 'avatar', 'gender', 'description')}),
         (_("Accesses"), {'fields': ('is_superuser', 'is_active')}),

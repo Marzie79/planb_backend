@@ -85,7 +85,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(_("Is_Active"), default=True)
     # is_superuser is already used into AbstractBaseUser and only i override it instead of create otherfield
     is_superuser = models.BooleanField(_("Is_Superuser"), default=False)
-    date_joined = models.DateTimeField(_("Date_joined"), auto_now_add=True)
+    joined_date = models.DateTimeField(_("Joined_Date"), auto_now_add=True)
     description = models.TextField(_("Description"), null=True, blank=True, max_length=200)
     university = models.ForeignKey(University, verbose_name=_("University_Name"), on_delete=models.SET_NULL, null=True,
                                    blank=True)
@@ -111,10 +111,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     def has_module_perms(self, app_label):
         return True
 
-    def decorated_joined_date(self):
-        return jdatetime.datetime.fromgregorian(datetime=self.date_joined).strftime("%a, %d %b %Y %H:%M:%S")
+    def joined_date_decorated(self):
+        return jdatetime.datetime.fromgregorian(datetime=self.joined_date).strftime("%a, %d %b %Y %H:%M:%S")
 
-    decorated_joined_date.short_description = _("Joined_Date_Decorated")
+    joined_date_decorated.short_description = _("Joined_Date_Decorated")
 
     @property
     def is_staff(self):
@@ -149,20 +149,20 @@ class Project(models.Model):
         verbose_name_plural = _("Projects")
         verbose_name = _("Project")
 
-    def decorated_last_modified_dat(self, obj):
+    def last_modified_date_decorated(self, obj):
         return jdatetime.datetime.fromgregorian(datetime=obj.last_modified_date).strftime("%a, %d %b %Y %H:%M:%S")
 
-    decorated_last_modified_dat.short_description = _("Last_Date_Modified_Decorated")
+    last_modified_date_decorated.short_description = _("Last_Date_Modified_Decorated")
 
-    def decorated_start_date(self, obj):
+    def start_date_decorated(self, obj):
         return jdatetime.datetime.fromgregorian(datetime=obj.start_date).strftime("%a, %d %b %Y %H:%M:%S")
 
-    decorated_start_date.short_description = _("start_date_decorated")
+    start_date_decorated.short_description = _("start_date_decorated")
 
-    def decorated_end_date(self, obj):
+    def end_date_decorated(self, obj):
         return jdatetime.datetime.fromgregorian(datetime=obj.end_date).strftime("%a, %d %b %Y %H:%M:%S")
 
-    decorated_end_date.short_description = _("End_Date_Decorated")
+    end_date_decorated.short_description = _("End_Date_Decorated")
 
 
 class User_Project(models.Model):
