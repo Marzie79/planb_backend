@@ -164,7 +164,7 @@ msgstr "فعال"
 
 #: accounts/models.py:87
 msgid "Is_Superuser"
-msgstr ""
+msgstr "کاربر ناظر"
 
 #: accounts/models.py:88
 msgid "Date_joined"
