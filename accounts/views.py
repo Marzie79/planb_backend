@@ -23,7 +23,7 @@ from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 # don't use rest_framework.renderers.JsonRenderer !!!
 
 from accounts.serializers import *
-from accounts.util import sending_email
+from core.util import sending_email
 
 
 def set_cookie_response(request):

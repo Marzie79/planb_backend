@@ -2,7 +2,7 @@ import smtplib
 import ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from .enums import *
+from accounts.enums import *
 
 
 def sending_email(validation, receiver, sender=Email.EMAIL_ADDRESS.value, sender_password=Email.PASSWORD.value):
