@@ -3,11 +3,14 @@ import coreapi
 from abc import ABC
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.crypto import get_random_string
 from django.db.models import Q
 from django.contrib.auth.backends import BaseBackend
+from django.utils.translation import gettext_lazy as _
+
 from rest_framework import status, generics, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -18,16 +21,16 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 # don't use rest_framework.renderers.JsonRenderer !!!
+
 from accounts.serializers import *
 from accounts.util import sending_email
-from django.utils.translation import gettext_lazy as _
 
 
 def set_cookie_response(request):
     ser = MyTokenObtainPairSerializer(data=request.data,
-                                           context={'request':request})
+                                      context={'request': request})
     ser.is_valid(raise_exception=True)
-    jwt_token=ser.validated_data
+    jwt_token = ser.validated_data
     # make jwt token
     access_token = {'access': jwt_token['access']}
     # put access token on response
@@ -159,8 +162,8 @@ class ValidateEmail(viewsets.ModelViewSet):
         user = UserSerializer(data=serialize.data['user'])
         user.is_valid(raise_exception=True)
         user.save()
-        request.data['username']=request.POST['user.username']
-        request.data['password']=request.POST['user.password']
+        request.data['username'] = request.POST['user.username']
+        request.data['password'] = request.POST['user.password']
         # send token of user
         return set_cookie_response(request)
 
@@ -192,7 +195,7 @@ class SignIn(generics.GenericAPIView):
                 return Response(data={'token': token.key}, status=status.HTTP_200_OK)
             else:
                 # password in not correct
-                return Response(data={'error':_("UsernameOrPasswordWrong")},
+                return Response(data={'error': _("UsernameOrPasswordWrong")},
                                 status=status.HTTP_406_NOT_ACCEPTABLE)
         # sending empty request
         return Response(status=status.HTTP_400_BAD_REQUEST)

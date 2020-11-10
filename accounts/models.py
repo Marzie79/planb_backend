@@ -56,7 +56,8 @@ class University(models.Model):
 class Skill(models.Model):
     name = models.CharField(_("Skill_name"), max_length=30, unique=True)
     code = models.CharField(_("Skill_code"), max_length=10, unique=True)
-    skill = models.ForeignKey('self', verbose_name=_("Skill's_Father"), on_delete=models.PROTECT, related_name='child_skill',
+    skill = models.ForeignKey('self', verbose_name=_("Skill's_Father"), on_delete=models.PROTECT,
+                              related_name='child_skill',
                               null=True, blank=True)
 
     def __str__(self):
@@ -82,7 +83,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(_("Gender"), max_length=6, choices=GENDER_CHOICES, null=True, blank=True)
     avatar = models.ImageField(_("Avatar"), null=True, blank=True, upload_to='avatars/')
     is_active = models.BooleanField(_("Is_Active"), default=True)
-    is_admin = models.BooleanField(_("Is_Admin"), default=False)
+    # is_superuser is already used into AbstractBaseUser and only i override it instead of create otherfield
+    is_superuser = models.BooleanField(_("Is_Superuser"), default=False)
     date_joined = models.DateTimeField(_("Date_joined"), auto_now_add=True)
     description = models.TextField(_("Description"), null=True, blank=True, max_length=200)
     university = models.ForeignKey(University, verbose_name=_("University_Name"), on_delete=models.SET_NULL, null=True,
@@ -109,14 +111,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     def has_module_perms(self, app_label):
         return True
 
-    def joined_date_decorated(self):
+    def decorated_joined_date(self):
         return jdatetime.datetime.fromgregorian(datetime=self.date_joined).strftime("%a, %d %b %Y %H:%M:%S")
 
-    joined_date_decorated.short_description = _("Joined_Date_Decorated")
+    decorated_joined_date.short_description = _("Joined_Date_Decorated")
 
     @property
     def is_staff(self):
-        return self.is_admin
+        return self.is_superuser
 
 
 class Project(models.Model):
@@ -147,20 +149,20 @@ class Project(models.Model):
         verbose_name_plural = _("Projects")
         verbose_name = _("Project")
 
-    def last_modified_date_decorated(self, obj):
+    def decorated_last_modified_dat(self, obj):
         return jdatetime.datetime.fromgregorian(datetime=obj.last_modified_date).strftime("%a, %d %b %Y %H:%M:%S")
 
-    last_modified_date_decorated.short_description = _("Last_Date_Modified_Decorated")
+    decorated_last_modified_dat.short_description = _("Last_Date_Modified_Decorated")
 
-    def start_date_decorated(self, obj):
+    def decorated_start_date(self, obj):
         return jdatetime.datetime.fromgregorian(datetime=obj.start_date).strftime("%a, %d %b %Y %H:%M:%S")
 
-    start_date_decorated.short_description = _("start_date_decorated")
+    decorated_start_date.short_description = _("start_date_decorated")
 
-    def end_date_decorated(self, obj):
+    def decorated_end_date(self, obj):
         return jdatetime.datetime.fromgregorian(datetime=obj.end_date).strftime("%a, %d %b %Y %H:%M:%S")
 
-    end_date_decorated.short_description = _("End_Date_Decorated")
+    decorated_end_date.short_description = _("End_Date_Decorated")
 
 
 class User_Project(models.Model):

@@ -17,12 +17,12 @@ class UserProjectsInline(admin.TabularInline):
 
 class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'is_active')
-    readonly_fields = ('joined_date_decorated',)
+    readonly_fields = ('decorated_joined_date',)
     list_filter = ('is_active',)
     form = UserForm
     fieldsets = (
         (None, {
-            'fields': ('username', 'email', 'password1', 'password2', 'date_joined_decorated')}),
+            'fields': ('username', 'email', 'password1', 'password2', 'decorated_date_joined')}),
         (_("User_Information"), {'fields': (
             'first_name', 'last_name', 'avatar', 'gender', 'description')}),
         (_("Accesses"), {'fields': ('is_superuser', 'is_active')}),
@@ -48,8 +48,6 @@ class ProjectsAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     fieldsets = ((None, {'fields': ('name', 'creator', 'admin', 'description')}),
                  (_("Priority"), {'fields': ('skills', 'situation')}),
                  (None, {'fields': ('last_modified_date', 'start_date', 'end_date')}))
-
-
 
 
 admin.site.register(Temp)

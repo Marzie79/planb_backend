@@ -1,9 +1,6 @@
 from django import forms
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from django.contrib.auth.hashers import make_password
 from django.utils.translation import gettext_lazy as _
 from .models import *
-from django.utils.translation import gettext_lazy
 
 
 class UserForm(forms.ModelForm):
