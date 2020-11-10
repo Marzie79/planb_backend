@@ -1,5 +1,5 @@
 #coverage test config
 [run]
 source = .
-omit = ./venv/*
+omit = */venv/*,*/migrations/*
 

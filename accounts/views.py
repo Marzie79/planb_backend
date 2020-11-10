@@ -37,7 +37,7 @@ def set_cookie_response(request):
     response = Response(access_token)
     # create cookie and save refresh token on value and set http only flag
     response.set_cookie("token", jwt_token['refresh'], httponly=True,
-                        expires=datetime.datetime.now() + datetime.timedelta(days=180))
+                        expires=timezone.now() + timezone.timedelta(days=180))
     return response
 
 

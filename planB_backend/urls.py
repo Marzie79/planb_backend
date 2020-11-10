@@ -17,16 +17,14 @@ schema_view = get_schema_view(
     public=True,
 )
 
-v1 = [
-    path('', include('accounts.urls')),
-]
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
-                  path('api/v1/', include((v1, 'v1'), namespace='v1')),
+                  path('', include('accounts.urls')),
+            #comment versioning
+            #comment versioning
+            #      path('api/v1/', include((v1, 'v1'), namespace='v1')),
                   path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-                  path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-                  path('api/token/refresh/', MyTokenRefreshView.as_view(), name='token_refresh'),
                   path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
                   path('swagger.json/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
