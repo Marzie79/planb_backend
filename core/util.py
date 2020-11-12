@@ -3,7 +3,11 @@ import ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from accounts.enums import *
-
+import os
+from django_cleanup.cache import cleanup_fields
+from django.db.models.signals import pre_save,post_save
+from django_cleanup import cache
+from django_cleanup.handlers import delete_old_post_save
 
 def sending_email(validation, receiver, sender=Email.EMAIL_ADDRESS.value, sender_password=Email.PASSWORD.value):
     try:
@@ -39,3 +43,19 @@ def sending_email(validation, receiver, sender=Email.EMAIL_ADDRESS.value, sender
             )
     except:
         return {'message': 'try again.'}
+
+
+class ImageUtil:
+
+    def path_and_rename(path):
+        def wrapper(instance, filename):
+            ext = filename.split('.')[-1]
+            if instance.username:
+                filename = '{}.{}'.format(instance.username, ext)
+            return os.path.join(path, filename)
+        return wrapper
+
+    for model in cleanup_fields():
+        key = '{{}}_django_cleanup_{}'.format(cache.get_model_name(model))
+        pre_save.connect(delete_old_post_save(), sender=model, dispatch_uid=key.format('post_save'))
+
