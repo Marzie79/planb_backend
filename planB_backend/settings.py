@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'corsheaders',
     'jalali_date',
-    'validate_email',
+    'imagekit',
+    'django_cleanup',
 ]
 
 MIDDLEWARE = [
@@ -56,15 +57,16 @@ CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'planB_backend.urls'
 
+# to parse and render jsons in camelNotation,use camelCase renderer and parser
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
+        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+        'djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer',
     ],
     'DEFAULT_PARSER_CLASSES': [
-        'rest_framework.parsers.JSONParser',
-        'rest_framework.parsers.FormParser',
-        'rest_framework.parsers.MultiPartParser'
+        'djangorestframework_camel_case.parser.CamelCaseFormParser',
+        'djangorestframework_camel_case.parser.CamelCaseMultiPartParser',
+        'djangorestframework_camel_case.parser.CamelCaseJSONParser',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -107,24 +109,35 @@ DATABASES = {
 }
 
 SIMPLE_JWT = {
+    # How long token is valid
     'ACCESS_TOKEN_LIFETIME': timedelta(days=2),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=180),
+    # if it change to true, it will return new refresh with new access
     'ROTATE_REFRESH_TOKENS': False,
+    # blacklist for refresh token that expires or not valid anymore
     'BLACKLIST_AFTER_ROTATION': True,
 
+    # To use symmetric HMAC signing and verification
     'ALGORITHM': 'HS256',
+    # to signed content of the token
     'SIGNING_KEY': SECRET_KEY,
+
     'VERIFYING_KEY': None,
 
+    # send in header for the views need authentication
     'AUTH_HEADER_TYPES': ('Bearer',),
+    # The database field from the user model that will be included in generated tokens to identify users
     'USER_ID_FIELD': 'id',
+    # it will create token with user_id field
     'USER_ID_CLAIM': 'user_id',
-
+    # to identify token type that uses in authentication
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
 
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    #  object which specifies how long sliding tokens are valid to prove authentication
     'SLIDING_TOKEN_LIFETIME': timedelta(days=2),
+    #  object which specifies how long sliding tokens are valid to be refreshed
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=180),
 }
 

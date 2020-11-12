@@ -3,36 +3,40 @@ import coreapi
 from abc import ABC
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.crypto import get_random_string
 from django.db.models import Q
 from django.contrib.auth.backends import BaseBackend
+from django.utils.translation import gettext_lazy as _
 
 from rest_framework import status, generics, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.filters import BaseFilterBackend
-from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
+from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
+from djangorestframework_camel_case.render import CamelCaseJSONRenderer
+# don't use rest_framework.renderers.JsonRenderer !!!
 
 from accounts.serializers import *
-from accounts.util import sending_email
+from core.util import sending_email
 
 
-def set_cookie_response(request, username, password):
-    ser = MyTokenObtainPairSerializer()
+def set_cookie_response(request):
+    ser = MyTokenObtainPairSerializer(data=request.data,
+                                      context={'request': request})
+    ser.is_valid(raise_exception=True)
+    jwt_token = ser.validated_data
     # make jwt token
-    jwt_token = ser.validate({'username': username, 'password': password})
     access_token = {'access': jwt_token['access']}
     # put access token on response
     response = Response(access_token)
     # create cookie and save refresh token on value and set http only flag
     response.set_cookie("token", jwt_token['refresh'], httponly=True,
-                        expires=datetime.datetime.now() + datetime.timedelta(days=180))
+                        expires=timezone.now() + timezone.timedelta(days=180))
     return response
 
 
@@ -43,8 +47,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
     """
 
     def post(self, request, *args, **kwargs):
-        return set_cookie_response(request=request, username=request.data['username'],
-                                   password=request.data['password'])
+        return set_cookie_response(request=request)
 
 
 class MyTokenRefreshView(TokenRefreshView):
@@ -86,7 +89,7 @@ class Logout(generics.GenericAPIView):
 class SignUp(generics.GenericAPIView):
     permission_classes = (AllowAny,)
     serializer_class = SignUpEmailSerializer
-    renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
+    renderer_classes = [TemplateHTMLRenderer, CamelCaseJSONRenderer]
 
     def post(self, request):
         serializer = SignUpEmailSerializer(data=request.data)
@@ -96,7 +99,7 @@ class SignUp(generics.GenericAPIView):
         # check this email signup before or not
         obj_user = User.objects.filter(email=serializer.data['email']).first()
         if obj_user:
-            return Response(status=status.HTTP_409_CONFLICT, data={'error': 'حسابی با این ایمیل موجود می باشد.'})
+            return Response(status=status.HTTP_409_CONFLICT, data={'error': _("EmailDoesExist")})
         time_now = timezone.now()
         # check this email have request before for signup or not
         if obj:
@@ -108,7 +111,7 @@ class SignUp(generics.GenericAPIView):
                 obj.save()
             else:
                 return Response(status=status.HTTP_401_UNAUTHORIZED, data={
-                    'error': 'در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش فرمایید.'})
+                    'error': "EmailTimeError"})
 
         else:
             obj = Temp.objects.create(email=serializer.data['email'], date=time_now,
@@ -119,7 +122,7 @@ class SignUp(generics.GenericAPIView):
         if message is not None:
             obj.delete()
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            data={'message': 'خطایی رخ داده است لطفا دوباره امتحان کنید.'})
+                            data={'message': _("ServerError")})
         return Response(status=status.HTTP_200_OK, template_name='build/index.html')
 
 
@@ -143,7 +146,7 @@ class ValidateEmail(viewsets.ModelViewSet):
             # send email and code for making a user and removing temp object
             return Response(data=serialize.data, status=status.HTTP_200_OK)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': 'لینک وارد شده نامعتبر است.'})
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': _("InValidLink")})
 
     def create(self, request, *args, **kwargs):
         # if User.objects.filter(username=request.data['username']).first():
@@ -158,9 +161,10 @@ class ValidateEmail(viewsets.ModelViewSet):
         user = UserSerializer(data=serialize.data['user'])
         user.is_valid(raise_exception=True)
         user.save()
+        request.data['username'] = request.POST['user.username']
+        request.data['password'] = request.POST['user.password']
         # send token of user
-        return set_cookie_response(request, username=request.data['user.username'],
-                                   password=request.data['user.password'])
+        return set_cookie_response(request)
 
 
 # make authenticate with username and email
@@ -190,7 +194,7 @@ class SignIn(generics.GenericAPIView):
                 return Response(data={'token': token.key}, status=status.HTTP_200_OK)
             else:
                 # password in not correct
-                return Response(data={'error': 'نام کاربری یا رمز عبور اشتباه است'},
+                return Response(data={'error': _("UsernameOrPasswordWrong")},
                                 status=status.HTTP_406_NOT_ACCEPTABLE)
         # sending empty request
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -208,7 +212,7 @@ class RequestResetPassword(generics.GenericAPIView):
         # check this email signup before or not
         obj_user = User.objects.filter(email=serializer.data['email']).first()
         if not obj_user:
-            return Response(status=status.HTTP_409_CONFLICT, data={'error': 'کاربری با این ایمیل موجود نمی‌باشد.'})
+            return Response(status=status.HTTP_409_CONFLICT, data={'error': _("User_Email_Error")})
         time_now = timezone.now()
         # check this email have request before for signup or not
         if obj:
@@ -220,7 +224,7 @@ class RequestResetPassword(generics.GenericAPIView):
                 obj.save()
             else:
                 return Response(status=status.HTTP_401_UNAUTHORIZED, data={
-                    'error': 'در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش فرمایید.'})
+                    'error': _("EmailTimeError")})
         else:
             obj = Temp.objects.create(email=serializer.data['email'], date=time_now,
                                       code=get_random_string(length=16))
@@ -230,7 +234,7 @@ class RequestResetPassword(generics.GenericAPIView):
         if message is not None:
             obj.delete()
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            data={'message': 'خطایی رخ داده است لطفا دوباره امتحان کنید.'})
+                            data={'message': _("ServerError")})
         return Response(status=status.HTTP_200_OK)
 
 
@@ -247,6 +251,7 @@ class ResetPassword(generics.GenericAPIView):
         obj_user = get_object_or_404(User, email=serializer.data.get('temp').get('email'))
         obj_user.set_password(serializer.data['password'])
         obj_user.save()
+        request.data['username'] = obj_user.username
         # get or create token of user
         # send token of user
         return set_cookie_response(request, username=obj_user.username, password=request.data['password'])
