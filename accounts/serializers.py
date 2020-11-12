@@ -2,6 +2,8 @@ from rest_framework import serializers
 from accounts.models import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 import re
+from django.core.validators import validate_email
+from django.db.models import Q
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -53,3 +55,57 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             attrs['username'] = user.username
         # return access and refresh token
         return super().validate(attrs)
+
+
+class UpdateUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'username', 'email', 'city', 'university', 'phone_number', 'description')
+
+    def validate_first_name(self, value):
+        if not re.match('^[\u0600-\u06FF\s]+$', value):
+            raise serializers.ValidationError({'first_name': ' تنها حروف فارسی مجاز است.'})
+        return value
+
+    def validate_last_name(self, value):
+        if not re.match('^[\u0600-\u06FF\s]+$', value):
+            raise serializers.ValidationError({'last_name': ' تنها حروف فارسی مجاز است.'})
+        return value
+
+    def validate_username(self, value):
+        if not re.match('^[a-zA-Z0-9]+$', value):
+            raise serializers.ValidationError({'username': ' نام کاربری تنها باید شامل حروف و اعداد انگلیسی باشد.'})
+        user = User.objects.filter(Q(username=value.lower()))
+        if self.instance is not None:
+            user = user.exclude(id=self.instance.id)
+        if user.exists():
+            raise serializers.ValidationError({'username': 'کاربر با این نام کاربری از قبل موجود است.'})
+        return value.lower()
+
+    def validate_email(self, value):
+        user = self.context['request'].user
+        if not validate_email(value):
+            raise serializers.ValidationError({'email': 'آدرس ایمیل وارد شده نامعتبر است.'})
+        elif User.objects.exclude(pk=user.pk).filter(email=value).exists():
+            raise serializers.ValidationError({'email': 'کابر با این آدرس ایمیل از قبل موجود است.'})
+        return value
+
+    def validate_phone_number(self, value):
+        if value.startswith('0'):
+            value = value[1:]
+            user = User.objects.filter(Q(phone_number=value))
+            if self.instance is not None:
+                user = user.exclude(id=self.instance.id)
+            if user.exists():
+                raise serializers.ValidationError({'phone_number': 'کاربر با این تلفن همراه از قبل موجود است.'})
+        return value
+
+    def validate_avatar_url(self, value):
+        MAX_FILE_SIZE = 12000000
+        if value.size > MAX_FILE_SIZE:
+            raise serializers.ValidationError({'avatar': 'حجم عکس نباید بیشتر از {} مگابایت باشد.'.format(MAX_FILE_SIZE)})
+        return value.url
+
+        instance.save()
+
+        return instance

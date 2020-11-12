@@ -254,4 +254,10 @@ class ResetPassword(generics.GenericAPIView):
         request.data['username'] = obj_user.username
         # get or create token of user
         # send token of user
-        return set_cookie_response(request)
+        return set_cookie_response(request, username=obj_user.username, password=request.data['password'])
+
+
+class UpdateUser(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UpdateUserSerializer
