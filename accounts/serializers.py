@@ -105,7 +105,3 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         if value.size > MAX_FILE_SIZE:
             raise serializers.ValidationError({'avatar': 'حجم عکس نباید بیشتر از {} مگابایت باشد.'.format(MAX_FILE_SIZE)})
         return value.url
-
-        instance.save()
-
-        return instance
