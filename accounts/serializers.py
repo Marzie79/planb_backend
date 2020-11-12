@@ -57,16 +57,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return super().validate(attrs)
 
 
-class UpdateUserSerializer(serializers.Serializer):
+class UpdateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'username', 'email', 'city', 'university', 'phone_number', 'description')
-        extra_kwargs = {
-            'first_name': {'required': True},
-            'last_name': {'required': True},
-            'username': {'required': True},
-            'email': {'required': True},
-        }
 
     def validate_first_name(self, value):
         if not re.match('^[\u0600-\u06FF\s]+$', value):
@@ -96,16 +90,6 @@ class UpdateUserSerializer(serializers.Serializer):
             raise serializers.ValidationError({'email': 'کابر با این آدرس ایمیل از قبل موجود است.'})
         return value
 
-    def validate_city(self, value):
-        if not re.match('^[\u0600-\u06FF\s]+$', value):
-            raise serializers.ValidationError({'city': ' تنها حروف فارسی مجاز است.'})
-        return value.name
-
-    def validate_university(self, value):
-        if not re.match('^[\u0600-\u06FF\s]+$', value):
-            raise serializers.ValidationError({'city': ' تنها حروف فارسی مجاز است.'})
-        return value.name
-
     def validate_phone_number(self, value):
         if value.startswith('0'):
             value = value[1:]
@@ -121,16 +105,6 @@ class UpdateUserSerializer(serializers.Serializer):
         if value.size > MAX_FILE_SIZE:
             raise serializers.ValidationError({'avatar': 'حجم عکس نباید بیشتر از {} مگابایت باشد.'.format(MAX_FILE_SIZE)})
         return value.url
-
-    def update(self, instance, validated_data):
-        instance.first_name = validated_data['first_name']
-        instance.last_name = validated_data['last_name']
-        instance.username = validated_data['username']
-        instance.email = validated_data['email']
-        instance.city = validated_data['city']
-        instance.university = validated_data['university']
-        instance.phone_number = validated_data['phone_number']
-        instance.avatar = validated_data['avatar']
 
         instance.save()
 
