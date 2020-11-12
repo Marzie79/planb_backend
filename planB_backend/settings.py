@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'jalali_date',
     'imagekit',
     'django_cleanup',
+    'validate_email',
 ]
 
 MIDDLEWARE = [
