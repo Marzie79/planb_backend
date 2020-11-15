@@ -84,8 +84,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(_("Gender"), max_length=6, choices=GENDER_CHOICES, null=True, blank=True)
     # avatar = models.ImageField(_("Avatar"), null=True, blank=True, upload_to='avatars/')
     image = ImageUtil('User/avatars/')
-    avatar_thumbnail = ProcessedImageField(_("Avatar"),
-                                           upload_to=image,
+    avatar_thumbnail = ProcessedImageField(upload_to=image,
                                            processors=[ResizeToFill(100, 50)],
                                            format='JPEG',
                                            options={'quality': 60})
