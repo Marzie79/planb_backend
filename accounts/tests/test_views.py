@@ -75,8 +75,10 @@ class TestLogout(APITestCase):
         self.user.save()
         data = {"username": self.user.username, "password": '123'}
         response = self.client.post(SIGNIN_URL, data)
+        self.token = response.data['access']
 
     def test_logout(self):
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
         response = self.client.post(LOGOUT_URL,{})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         try:
