@@ -8,6 +8,9 @@ from django_cleanup.cache import cleanup_fields
 from django.db.models.signals import pre_save,post_save
 from django_cleanup import cache
 from django_cleanup.handlers import delete_old_post_save
+from uuid import uuid4
+from django.utils.deconstruct import deconstructible
+from accounts.models import *
 
 def sending_email(validation, receiver, sender=Email.EMAIL_ADDRESS.value, sender_password=Email.PASSWORD.value):
     try:
@@ -45,17 +48,22 @@ def sending_email(validation, receiver, sender=Email.EMAIL_ADDRESS.value, sender
         return {'message': 'try again.'}
 
 
+
+@deconstructible
 class ImageUtil:
+    def __init__(self, upload_path):
+        self.path = upload_path
 
-    def path_and_rename(path):
-        def wrapper(instance, filename):
-            ext = filename.split('.')[-1]
-            if instance.username:
-                filename = '{}.{}'.format(instance.username, ext)
-            return os.path.join(path, filename)
-        return wrapper
+    def __call__(self, instance, filename):
+        upload_to = self.path
+        ext = filename.split('.')[-1]
+        # get filename
+        if instance.username:
+            filename = '{}.{}'.format(instance.username, ext)
+        else:
+            # set filename as random string
+            filename = '{}.{}'.format(uuid4().hex, ext)
+        # return the whole path to the file
+        return os.path.join(upload_to, filename)
 
-    for model in cleanup_fields():
-        key = '{{}}_django_cleanup_{}'.format(cache.get_model_name(model))
-        pre_save.connect(delete_old_post_save(), sender=model, dispatch_uid=key.format('post_save'))
 

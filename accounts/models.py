@@ -10,6 +10,7 @@ from imagekit.processors import ResizeToFill
 from .managers import UserManager
 from core.util import ImageUtil
 
+
 class Province(models.Model):
     name = models.CharField(_("Province_name"), max_length=20, unique=True)
     code = models.CharField(_("Province_code"), max_length=10, unique=True)
@@ -82,7 +83,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(_("Last_Name"), max_length=30)
     gender = models.CharField(_("Gender"), max_length=6, choices=GENDER_CHOICES, null=True, blank=True)
     # avatar = models.ImageField(_("Avatar"), null=True, blank=True, upload_to='avatars/')
-    avatar_thumbnail = ProcessedImageField(upload_to=ImageUtil.path_and_rename('avatars/'),
+    image = ImageUtil('User/avatars/')
+    avatar_thumbnail = ProcessedImageField(_("Avatar"),
+                                           upload_to=image,
                                            processors=[ResizeToFill(100, 50)],
                                            format='JPEG',
                                            options={'quality': 60})
@@ -180,7 +183,6 @@ class UserProject(models.Model):
     user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
     situation = models.CharField(_("Situation"), max_length=9, choices=SITUATION_CHOICES)
 
-
 class Temp(models.Model):
     email = models.EmailField(_("Email"), validators=[validate_email], max_length=255)
     date = models.DateTimeField(_("Date"), auto_now=True)
@@ -190,3 +192,4 @@ class Temp(models.Model):
         ordering = ['date']
         verbose_name = _("Temp")
         verbose_name_plural = _("Temps")
+

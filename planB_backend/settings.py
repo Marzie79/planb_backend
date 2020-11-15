@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'jalali_date',
     'imagekit',
-    'django_cleanup',
+    # 'django_cleanup',
 ]
 
 MIDDLEWARE = [
@@ -104,7 +104,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'planBdb',
         'USER': 'planBuser',
-        'PASSWORD': 'planB_pass_1399',
+        'PASSWORD': 'planB',
     }
 }
 
