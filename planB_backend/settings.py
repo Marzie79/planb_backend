@@ -104,7 +104,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'planBdb',
         'USER': 'planBuser',
-        'PASSWORD': 'planB',
+        'PASSWORD': 'planB_pass_1399',
     }
 }
 
