@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'corsheaders',
     'jalali_date',
+    'imagekit',
+    # 'django_cleanup',
 ]
 
 MIDDLEWARE = [

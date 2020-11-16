@@ -1,14 +1,14 @@
 from datetime import datetime
 import jdatetime
 from phonenumber_field.modelfields import PhoneNumberField
-
+from imagekit.models import ProcessedImageField
 from django.core.validators import validate_email
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
-
 from .managers import UserManager
-
+from core.util import ImageUtil
+from imagekit.processors import ResizeToFit
 
 class Province(models.Model):
     name = models.CharField(_("Province_name"), max_length=20, unique=True)
@@ -81,7 +81,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_("First_Name"), max_length=30)
     last_name = models.CharField(_("Last_Name"), max_length=30)
     gender = models.CharField(_("Gender"), max_length=6, choices=GENDER_CHOICES, null=True, blank=True)
-    avatar = models.ImageField(_("Avatar"), null=True, blank=True, upload_to='avatars/')
+    # avatar = models.ImageField(_("Avatar"), null=True, blank=True, upload_to='avatars/')
+    image = ImageUtil('User/avatars/')
+    avatar_thumbnail = ProcessedImageField(upload_to=image,
+                                           processors=[ResizeToFit(100, 100)],
+                                           format='JPEG',
+                                           options={'quality': 60},
+                                           default='defaults/default.png'
+                                           )
     is_active = models.BooleanField(_("Is_Active"), default=True)
     # is_superuser is already used into AbstractBaseUser and only i override it instead of create otherfield
     is_superuser = models.BooleanField(_("Is_Superuser"), default=False)
@@ -119,7 +126,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def is_staff(self):
         return self.is_superuser
-
 
 class Project(models.Model):
     SITUATION_CHOICES = (
@@ -177,7 +183,6 @@ class UserProject(models.Model):
     user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
     situation = models.CharField(_("Situation"), max_length=9, choices=SITUATION_CHOICES)
 
-
 class Temp(models.Model):
     email = models.EmailField(_("Email"), validators=[validate_email], max_length=255)
     date = models.DateTimeField(_("Date"), auto_now=True)
@@ -187,3 +192,4 @@ class Temp(models.Model):
         ordering = ['date']
         verbose_name = _("Temp")
         verbose_name_plural = _("Temps")
+

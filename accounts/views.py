@@ -3,7 +3,6 @@ import coreapi
 from abc import ABC
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.crypto import get_random_string
@@ -278,3 +277,9 @@ class SearchUniversity(generics.ListAPIView):
     permission_classes = (AllowAny,)
     search_fields = ('code', 'name', 'city__id')
     queryset = University.objects.all()   
+
+    
+class UpdateUser(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UpdateUserSerializer
