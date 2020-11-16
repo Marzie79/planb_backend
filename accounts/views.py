@@ -13,10 +13,11 @@ from django.utils.translation import gettext_lazy as _
 
 from rest_framework import status, generics, viewsets
 from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.filters import BaseFilterBackend
-from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
@@ -256,3 +257,24 @@ class ResetPassword(generics.GenericAPIView):
         # get or create token of user
         # send token of user
         return set_cookie_response(request)
+
+
+class SearchCity(generics.ListAPIView):
+    serializer_class = CitySerializer
+    permission_classes = (AllowAny,)
+    search_fields = ('province__id','name')
+    queryset = City.objects.all()    
+
+
+class SearchProvince(generics.ListAPIView):
+    serializer_class = ProvinceSerializer
+    permission_classes = (AllowAny,)
+    search_fields = ('code', 'name')
+    queryset = Province.objects.all()    
+
+
+class SearchUniversity(generics.ListAPIView):
+    serializer_class = UniversitySerializer
+    permission_classes = (AllowAny,)
+    search_fields = ('code', 'name', 'city__id')
+    queryset = University.objects.all()   

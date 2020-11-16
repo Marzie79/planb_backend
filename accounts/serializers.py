@@ -53,3 +53,21 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             attrs['username'] = user.username
         # return access and refresh token
         return super().validate(attrs)
+
+
+class CitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = City
+        fields = ('code', 'name', 'province')
+
+
+class ProvinceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Province
+        fields = ('code', 'name')
+
+
+class UniversitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = University
+        fields = ('code', 'name', 'city')            

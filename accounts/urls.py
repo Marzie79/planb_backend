@@ -10,4 +10,7 @@ urlpatterns = [
     path('sign-in/', MyTokenObtainPairView.as_view()),
     path('request-reset-password/', RequestResetPassword.as_view()),
     path('reset-password/', ResetPassword.as_view()),
+    path('cities/', SearchCity.as_view()),
+    path('provinces/', SearchProvince.as_view()),
+    path('universities/', SearchUniversity.as_view()),
 ]

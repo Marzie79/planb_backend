@@ -44,7 +44,7 @@ class ProvinceAdmin(admin.ModelAdmin):
 
 
 class ProjectsAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
-    list_display = ('name', 'creator', 'situation', 'end_date')
+    list_display = ('name', 'creator', 'situation', 'end_date_decorated')
     fieldsets = ((None, {'fields': ('name', 'creator', 'description')}),
                  (_("Priority"), {'fields': ('skills', 'situation')}),
                  (None, {'fields': ('last_modified_date', 'start_date', 'end_date')}))

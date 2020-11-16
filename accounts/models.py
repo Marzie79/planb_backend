@@ -159,8 +159,8 @@ class Project(models.Model):
 
     start_date_decorated.short_description = _("start_date_decorated")
 
-    def end_date_decorated(self, obj):
-        return jdatetime.datetime.fromgregorian(datetime=obj.end_date).strftime("%a, %d %b %Y %H:%M:%S")
+    def end_date_decorated(self):
+        return jdatetime.datetime.fromgregorian(datetime=self.end_date).strftime("%a, %d %b %Y %H:%M:%S")
 
     end_date_decorated.short_description = _("End_Date_Decorated")
 
