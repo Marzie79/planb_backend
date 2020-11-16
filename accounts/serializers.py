@@ -75,7 +75,7 @@ class UniversitySerializer(serializers.ModelSerializer):
         fields = ('code', 'name', 'city')   
         
                  
-class UpdateUserSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'username', 'email', 'city', 'university', 'phone_number', 'description')

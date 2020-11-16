@@ -279,7 +279,10 @@ class SearchUniversity(generics.ListAPIView):
     queryset = University.objects.all()   
 
     
-class UpdateUser(generics.UpdateAPIView):
+class ProfileUser(viewsets.ModelViewSet):
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
-    serializer_class = UpdateUserSerializer
+    serializer_class = ProfileSerializer
+
+    def get_queryset(self):
+        return self.request.user
