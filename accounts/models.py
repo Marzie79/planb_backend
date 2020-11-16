@@ -6,10 +6,9 @@ from django.core.validators import validate_email
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
-from imagekit.processors import ResizeToFill
 from .managers import UserManager
 from core.util import ImageUtil
-
+from imagekit.processors import ResizeToFit
 
 class Province(models.Model):
     name = models.CharField(_("Province_name"), max_length=20, unique=True)
@@ -85,9 +84,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     # avatar = models.ImageField(_("Avatar"), null=True, blank=True, upload_to='avatars/')
     image = ImageUtil('User/avatars/')
     avatar_thumbnail = ProcessedImageField(upload_to=image,
-                                           processors=[ResizeToFill(100, 50)],
+                                           processors=[ResizeToFit(100, 100)],
                                            format='JPEG',
-                                           options={'quality': 60})
+                                           options={'quality': 60},
+                                           default='defaults/default.png'
+                                           )
     is_active = models.BooleanField(_("Is_Active"), default=True)
     # is_superuser is already used into AbstractBaseUser and only i override it instead of create otherfield
     is_superuser = models.BooleanField(_("Is_Superuser"), default=False)
