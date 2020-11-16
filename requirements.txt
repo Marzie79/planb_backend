@@ -10,11 +10,8 @@ Django==3.1.2
 django-appconf==1.0.4
 django-cleanup==5.1.0
 django-cors-headers==3.5.0
-<<<<<<< HEAD
 django-filter==2.4.0
-=======
 django-imagekit==4.0.2
->>>>>>> 454e38ffb08abac87d5fa1db59eba501a0c0cc02
 django-jalali==4.0.0
 django-jalali-date==0.3.1
 django-phonenumber-field==5.0.0
