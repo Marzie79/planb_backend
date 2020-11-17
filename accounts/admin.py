@@ -20,14 +20,9 @@ class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     readonly_fields = ('joined_date_decorated',)
     list_filter = ('is_active',)
     form = UserForm
-    fieldsets = (
-        (None, {
-            'fields': ('username', 'email', 'password1', 'password2', 'joined_date_decorated')}),
-        (_("User_Information"), {'fields': (
-            'first_name', 'last_name', 'avatar_thumbnail', 'gender', 'description')}),
-        (_("Accesses"), {'fields': ('is_superuser', 'is_active')}),
-        (_("Address"), {'fields': ('city', 'university')}),
-        (_("Skills"), {'fields': ('skills',)}))
+    fields = ('username', 'email', 'password1', 'password2', 'joined_date_decorated',
+                 'first_name', 'last_name', 'avatar_thumbnail', 'gender', 'description',
+                 'is_superuser', 'is_active''city', 'university','skills')
     inlines = [UserProjectsInline]
 
 
@@ -39,15 +34,13 @@ class CityInline(admin.TabularInline):
 
 class ProvinceAdmin(admin.ModelAdmin):
     list_display = ('code', 'name')
-    fieldsets = ((None, {'fields': ('code', 'name')}),)
+    fields = ('code', 'name')
     inlines = [CityInline]
 
 
 class ProjectsAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ('name', 'creator', 'situation', 'end_date_decorated')
-    fieldsets = ((None, {'fields': ('name', 'creator', 'description')}),
-                 (_("Priority"), {'fields': ('skills', 'situation')}),
-                 (None, {'fields': ('last_modified_date', 'start_date', 'end_date')}))
+    fields = ('name', 'creator', 'description','fields','last_modified_date', 'start_date', 'end_date')
 
 
 admin.site.register(Temp)

@@ -13,4 +13,6 @@ urlpatterns = [
     path('cities/', SearchCity.as_view()),
     path('provinces/', SearchProvince.as_view()),
     path('universities/', SearchUniversity.as_view()),
+    path('profile/', ProfileUser.as_view({'get': 'retrieve', 'put': 'update'}),
+         name='auth_profile'),
 ]

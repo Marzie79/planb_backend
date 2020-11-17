@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-17 16:14+0330\n"
+"POT-Creation-Date: 2020-11-17 18:00+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,26 +25,6 @@ msgstr "صفحه ادمین"
 #: .\accounts\admin.py:9
 msgid "Manage_Model"
 msgstr "مدیریت مدل ها"
-
-#: .\accounts\admin.py:26
-msgid "User_Information"
-msgstr "اطلاعات شخص"
-
-#: .\accounts\admin.py:28
-msgid "Accesses"
-msgstr "دسترسی ها"
-
-#: .\accounts\admin.py:29
-msgid "Address"
-msgstr "آدرس"
-
-#: .\accounts\admin.py:30 .\accounts\models.py:164 .\accounts\models.py:176
-msgid "Skills"
-msgstr "مهارت ها"
-
-#: .\accounts\admin.py:49
-msgid "Priority"
-msgstr "ویژگی ها"
 
 #: .\accounts\apps.py:7
 msgid "accounts"
@@ -193,6 +173,10 @@ msgstr "کد مهارت"
 #: .\accounts\models.py:155
 msgid "Skill's_Father"
 msgstr "نام پدر مهارت"
+
+#: .\accounts\models.py:164 .\accounts\models.py:176
+msgid "Skills"
+msgstr "مهارت ها"
 
 #: .\accounts\models.py:170
 msgid "Waiting"
@@ -347,6 +331,18 @@ msgstr ""
 #: .\accounts\views.py:228
 msgid "EmailTimeError"
 msgstr ""
+
+#~ msgid "User_Information"
+#~ msgstr "اطلاعات شخص"
+
+#~ msgid "Accesses"
+#~ msgstr "دسترسی ها"
+
+#~ msgid "Address"
+#~ msgstr "آدرس"
+
+#~ msgid "Priority"
+#~ msgstr "ویژگی ها"
 
 #~ msgid "Avatar"
 #~ msgstr "عکس"
