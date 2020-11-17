@@ -24,7 +24,8 @@ class ResetPasswordUserSerializer(serializers.ModelSerializer):
 class TempSerializer(serializers.ModelSerializer):
     class Meta:
         model = Temp
-        fields = ('code', 'email',)
+        fields = ('code', 'email')
+        extra_kwargs = {'email': {'read_only': True}}
 
 
 class SignUpSerializer(serializers.Serializer):
@@ -72,9 +73,9 @@ class ProvinceSerializer(serializers.ModelSerializer):
 class UniversitySerializer(serializers.ModelSerializer):
     class Meta:
         model = University
-        fields = ('code', 'name', 'city')   
-        
-                 
+        fields = ('code', 'name', 'city')
+
+
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -121,5 +122,6 @@ class ProfileSerializer(serializers.ModelSerializer):
     def validate_avatar_url(self, value):
         MAX_FILE_SIZE = 12000000
         if value.size > MAX_FILE_SIZE:
-            raise serializers.ValidationError({'avatar': 'حجم عکس نباید بیشتر از {} مگابایت باشد.'.format(MAX_FILE_SIZE)})
+            raise serializers.ValidationError(
+                {'avatar': 'حجم عکس نباید بیشتر از {} مگابایت باشد.'.format(MAX_FILE_SIZE)})
         return value.url

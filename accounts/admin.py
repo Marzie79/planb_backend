@@ -23,7 +23,7 @@ class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     fields = ('username', 'email', 'password1', 'password2', 'joined_date_decorated',
                  'first_name', 'last_name', 'avatar_thumbnail', 'gender', 'description',
                  'is_superuser', 'is_active''city', 'university','skills')
-    inlines = [UserProjectsInline]
+    iinlines = [UserProjectsInline]
 
 
 class CityInline(admin.TabularInline):
