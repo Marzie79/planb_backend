@@ -34,7 +34,7 @@ msgid "Confirm Password"
 msgstr "تکرار رمز"
 
 msgid "The passwords must be match"
-msgstr "رمز های عبور باید مطابقت داشته باشند"
+msgstr "رمز های وارد شده باید با یکدیگر مطابقت داشته باشند."
 
 msgid "Password is required"
 msgstr "رمز عبور اجباری است"
@@ -169,7 +169,7 @@ msgid "Start_Date"
 msgstr "شروع شده"
 
 msgid "Last_Modify_Date"
-msgstr ""
+msgstr "تاریخ آخرین تغییر"
 
 msgid "Advertisement"
 msgstr ""
@@ -177,32 +177,32 @@ msgstr ""
 #, fuzzy
 #| msgid "Project_Name"
 msgid "Project_Situation"
-msgstr "نام پروژه"
+msgstr "وضعیت پروژه"
 
 #, fuzzy
 #| msgid "Project_Name"
 msgid "Project_Owner"
-msgstr "نام پروژه"
+msgstr "سازنده"
 
 #, fuzzy
 #| msgid "Project_Name"
 msgid "Projects"
-msgstr "نام پروژه"
+msgstr "پروژه ها"
 
 #, fuzzy
 #| msgid "Project_Name"
 msgid "Project"
-msgstr "نام پروژه"
+msgstr "پروژه"
 
 #, fuzzy
 #| msgid "Joined_Date_Decorated"
 msgid "Last_Date_Modified_Decorated"
-msgstr "تاریخ پایان"
+msgstr "تاریخ آخرین تغییر"
 
 #, fuzzy
 #| msgid "Joined_Date_Decorated"
 msgid "start_date_decorated"
-msgstr "تاریخ پایان"
+msgstr "تاریخ شروع"
 
 #, fuzzy
 #| msgid "Joined_Date_Decorated"
@@ -212,53 +212,58 @@ msgstr "تاریخ پایان"
 #, fuzzy
 #| msgid "Accesses"
 msgid "Accepted"
-msgstr "دسترسی ها"
+msgstr "پذیرفته شده"
 
 msgid "Requested"
-msgstr ""
+msgstr "درخواست داده شده"
 
+#: .\accounts\models.py:216
 msgid "Declined"
-msgstr ""
+msgstr "رد شده"
 
 #, fuzzy
 #| msgid "Admin_page"
 msgid "Admin"
-msgstr "صفحه ادمین"
+msgstr "ادمین"
 
+#: .\accounts\models.py:222
 msgid "Situation"
-msgstr ""
+msgstr "وضعیت"
 
 msgid "Date"
-msgstr ""
+msgstr "تاریخ"
 
 #, fuzzy
 #| msgid "City_Code"
 msgid "Code"
-msgstr "کد شهر"
+msgstr "کد"
 
 msgid "Temp"
-msgstr ""
+msgstr "میانی"
 
 msgid "Temps"
-msgstr ""
+msgstr "میانی ها"
 
 msgid "EmailDoesExist"
-msgstr ""
+msgstr "حسابی با این ایمیل موجود می باشد."
 
 msgid "ServerError"
-msgstr ""
+msgstr "خطایی رخ داده است لطفا دوباره امتحان کنید."
 
 msgid "InValidLink"
-msgstr ""
+msgstr "لینک وارد شده نامعتبر است."
 
 msgid "UsernameOrPasswordWrong"
 msgstr ""
 
 msgid "User_Email_Error"
-msgstr ""
+msgstr "کاربری با این ایمیل موجود نمی‌باشد"
 
+#: .\accounts\views.py:233
 msgid "EmailTimeError"
 msgstr ""
+"در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش "
+"فرمایید.'"
 
 #~ msgid "User_Information"
 #~ msgstr "اطلاعات شخص"
