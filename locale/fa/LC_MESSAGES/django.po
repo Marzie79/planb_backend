@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-17 18:30+0330\n"
+"POT-Creation-Date: 2020-11-17 19:09+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,331 +18,288 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: .\accounts\admin.py:8
+#: accounts/admin.py:8
 msgid "Admin_page"
 msgstr "صفحه ادمین"
 
-#: .\accounts\admin.py:9
+#: accounts/admin.py:9
 msgid "Manage_Model"
 msgstr "مدیریت مدل ها"
 
-#: .\accounts\apps.py:7
+#: accounts/apps.py:7
 msgid "accounts"
 msgstr "اکانت ها"
 
-#: .\accounts\forms.py:7 .\accounts\models.py:61
+#: accounts/forms.py:7 accounts/models.py:61
 msgid "Password"
 msgstr "رمز"
 
-#: .\accounts\forms.py:8
+#: accounts/forms.py:8
 msgid "Confirm Password"
 msgstr "تکرار رمز"
 
-#: .\accounts\forms.py:19
+#: accounts/forms.py:19
 msgid "The passwords must be match"
-msgstr "رمز های عبور باید مطابقت داشته باشند"
+msgstr "رمز های وارد شده باید با یکدیگر مطابقت داشته باشند."
 
-#: .\accounts\forms.py:21
+#: accounts/forms.py:21
 msgid "Password is required"
-msgstr "رمز عبور اجباری است"
+msgstr "رمز خالی است."
 
-#: .\accounts\models.py:56
+#: accounts/models.py:56
 msgid "male"
 msgstr "مرد"
 
-#: .\accounts\models.py:57
+#: accounts/models.py:57
 msgid "female"
 msgstr "زن"
 
-#: .\accounts\models.py:60
+#: accounts/models.py:60
 msgid "Username"
 msgstr "نام کاربری"
 
-#: .\accounts\models.py:62 .\accounts\models.py:226
+#: accounts/models.py:62 accounts/models.py:226
 msgid "Email"
 msgstr "ایمیل"
 
-#: .\accounts\models.py:63
+#: accounts/models.py:63
 msgid "Phone_Number"
 msgstr "شماره تلفن"
 
-#: .\accounts\models.py:64
+#: accounts/models.py:64
 msgid "First_Name"
 msgstr "نام"
 
-#: .\accounts\models.py:65
+#: accounts/models.py:65
 msgid "Last_Name"
 msgstr "نام خانوادگی"
 
-#: .\accounts\models.py:66
+#: accounts/models.py:66
 msgid "Gender"
 msgstr "جنسیت"
 
-#: .\accounts\models.py:69
+#: accounts/models.py:69
 msgid "Is_Active"
 msgstr "فعال"
 
-#: .\accounts\models.py:71
+#: accounts/models.py:71
 msgid "Is_Superuser"
 msgstr "کاربر ناظر"
 
-#: .\accounts\models.py:72
+#: accounts/models.py:72
 msgid "Joined_Date"
 msgstr "تاریخ عضویت"
 
-#: .\accounts\models.py:73 .\accounts\models.py:177
+#: accounts/models.py:73 accounts/models.py:177
 msgid "Description"
 msgstr "توضیحات"
 
-#: .\accounts\models.py:74
+#: accounts/models.py:74
 msgid "University_Name"
 msgstr "نام دانشگاه"
 
-#: .\accounts\models.py:77 .\accounts\models.py:133 .\accounts\models.py:138
+#: accounts/models.py:77 accounts/models.py:133 accounts/models.py:138
 msgid "City"
 msgstr "شهر"
 
-#: .\accounts\models.py:78 .\accounts\models.py:165
+#: accounts/models.py:78 accounts/models.py:165
 msgid "Skill"
 msgstr "مهارت"
 
-#: .\accounts\models.py:82
+#: accounts/models.py:82
 msgid "Users"
 msgstr "کاربران"
 
-#: .\accounts\models.py:83 .\accounts\models.py:221
+#: accounts/models.py:83 accounts/models.py:221
 msgid "User"
 msgstr "کاربر"
 
-#: .\accounts\models.py:102
+#: accounts/models.py:102
 msgid "Joined_Date_Decorated"
 msgstr "تاریخ پایان"
 
-#: .\accounts\models.py:110
+#: accounts/models.py:110
 msgid "Province_name"
 msgstr "نام استان"
 
-#: .\accounts\models.py:111
+#: accounts/models.py:111
 msgid "Province_code"
 msgstr "کد استان"
 
-#: .\accounts\models.py:115
+#: accounts/models.py:115
 msgid "Provinces"
 msgstr "استان ها"
 
-#: .\accounts\models.py:116 .\accounts\models.py:123
+#: accounts/models.py:116 accounts/models.py:123
 msgid "Province"
 msgstr "استان"
 
-#: .\accounts\models.py:124
+#: accounts/models.py:124
 msgid "City_name"
 msgstr "نام شهر"
 
-#: .\accounts\models.py:125
+#: accounts/models.py:125
 msgid "City_Code"
 msgstr "کد شهر"
 
-#: .\accounts\models.py:132
+#: accounts/models.py:132
 msgid "Cities"
 msgstr "شهرها"
 
-#: .\accounts\models.py:139
+#: accounts/models.py:139
 msgid "University_name"
 msgstr "نام دانشگاه"
 
-#: .\accounts\models.py:140
+#: accounts/models.py:140
 msgid "University_code"
 msgstr "کد دانشگاه"
 
-#: .\accounts\models.py:147
+#: accounts/models.py:147
 msgid "Universities"
 msgstr "دانشگاه ها"
 
-#: .\accounts\models.py:148
+#: accounts/models.py:148
 msgid "University"
 msgstr "دانشگاه"
 
-#: .\accounts\models.py:153
+#: accounts/models.py:153
 msgid "Skill_name"
 msgstr "نام مهارت"
 
-#: .\accounts\models.py:154
+#: accounts/models.py:154
 msgid "Skill_code"
 msgstr "کد مهارت"
 
-#: .\accounts\models.py:155
+#: accounts/models.py:155
 msgid "Skill's_Father"
 msgstr "نام پدر مهارت"
 
-#: .\accounts\models.py:164 .\accounts\models.py:176
+#: accounts/models.py:164 accounts/models.py:176
 msgid "Skills"
 msgstr "مهارت ها"
 
-#: .\accounts\models.py:170
+#: accounts/models.py:170
 msgid "Waiting"
 msgstr "در حال انتظار"
 
-#: .\accounts\models.py:171
+#: accounts/models.py:171
 msgid "Started"
 msgstr "شروع شده"
 
-#: .\accounts\models.py:172
+#: accounts/models.py:172
 msgid "Ended"
 msgstr "پایان یافته"
 
-#: .\accounts\models.py:173 .\accounts\models.py:217
+#: accounts/models.py:173 accounts/models.py:217
 msgid "Deleted"
 msgstr "حذف شده"
 
-#: .\accounts\models.py:175
+#: accounts/models.py:175
 msgid "Project_Name"
 msgstr "نام پروژه"
 
-#: .\accounts\models.py:178
-#, fuzzy
-#| msgid "Project_Name"
+#: accounts/models.py:178
 msgid "UserProject"
-msgstr "نام پروژه"
+msgstr "مدیریت کاربران پروژه"
 
-#: .\accounts\models.py:180
-#, fuzzy
-#| msgid "Joined_Date"
+#: accounts/models.py:180
 msgid "End_Date"
-msgstr "تاریخ عضویت"
+msgstr "تاریخ"
 
-#: .\accounts\models.py:181
-#, fuzzy
-#| msgid "Started"
+#: accounts/models.py:181
 msgid "Start_Date"
 msgstr "شروع شده"
 
-#: .\accounts\models.py:182
+#: accounts/models.py:182
 msgid "Last_Modify_Date"
-msgstr ""
+msgstr "تاریخ آخرین تغییر"
 
-#: .\accounts\models.py:183
+#: accounts/models.py:183
 msgid "Advertisement"
-msgstr ""
+msgstr "تبلیغ"
 
-#: .\accounts\models.py:184
-#, fuzzy
-#| msgid "Project_Name"
+#: accounts/models.py:184
 msgid "Project_Situation"
-msgstr "نام پروژه"
+msgstr "وضعیت پروژه"
 
-#: .\accounts\models.py:185
-#, fuzzy
-#| msgid "Project_Name"
+#: accounts/models.py:185
 msgid "Project_Owner"
-msgstr "نام پروژه"
+msgstr "سازنده"
 
-#: .\accounts\models.py:193
-#, fuzzy
-#| msgid "Project_Name"
+#: accounts/models.py:193
 msgid "Projects"
-msgstr "نام پروژه"
+msgstr "پروژه ها"
 
-#: .\accounts\models.py:194 .\accounts\models.py:220
-#, fuzzy
-#| msgid "Project_Name"
+#: accounts/models.py:194 accounts/models.py:220
 msgid "Project"
-msgstr "نام پروژه"
+msgstr "پروژه"
 
-#: .\accounts\models.py:199
-#, fuzzy
-#| msgid "Joined_Date_Decorated"
+#: accounts/models.py:199
 msgid "Last_Date_Modified_Decorated"
-msgstr "تاریخ پایان"
+msgstr "تاریخ آخرین تغییر"
 
-#: .\accounts\models.py:204
-#, fuzzy
-#| msgid "Joined_Date_Decorated"
+#: accounts/models.py:204
 msgid "start_date_decorated"
-msgstr "تاریخ پایان"
+msgstr "تاریخ شروع"
 
-#: .\accounts\models.py:209
-#, fuzzy
-#| msgid "Joined_Date_Decorated"
+#: accounts/models.py:209
 msgid "End_Date_Decorated"
 msgstr "تاریخ پایان"
 
-#: .\accounts\models.py:214
-#, fuzzy
-#| msgid "Accesses"
+#: accounts/models.py:214
 msgid "Accepted"
-msgstr "دسترسی ها"
+msgstr "پذیرفته شده"
 
-#: .\accounts\models.py:215
+#: accounts/models.py:215
 msgid "Requested"
-msgstr ""
+msgstr "درخواست داده شده"
 
-#: .\accounts\models.py:216
+#: accounts/models.py:216
 msgid "Declined"
-msgstr ""
+msgstr "رد شده"
 
-#: .\accounts\models.py:219
-#, fuzzy
-#| msgid "Admin_page"
+#: accounts/models.py:219
 msgid "Admin"
-msgstr "صفحه ادمین"
+msgstr "ادمین"
 
-#: .\accounts\models.py:222
+#: accounts/models.py:222
 msgid "Situation"
-msgstr ""
+msgstr "وضعیت"
 
-#: .\accounts\models.py:227
+#: accounts/models.py:227
 msgid "Date"
-msgstr ""
+msgstr "تاریخ"
 
-#: .\accounts\models.py:228
-#, fuzzy
-#| msgid "City_Code"
+#: accounts/models.py:228
 msgid "Code"
-msgstr "کد شهر"
+msgstr "کد"
 
-#: .\accounts\models.py:232
+#: accounts/models.py:232
 msgid "Temp"
-msgstr ""
+msgstr "میانی"
 
-#: .\accounts\models.py:233
+#: accounts/models.py:233
 msgid "Temps"
-msgstr ""
+msgstr "میانی ها"
 
-#: .\accounts\views.py:104
+#: accounts/views.py:96
 msgid "EmailDoesExist"
-msgstr ""
+msgstr "حسابی با این ایمیل موجود می باشد."
 
-#: .\accounts\views.py:127 .\accounts\views.py:243
+#: accounts/views.py:119 accounts/views.py:215
 msgid "ServerError"
-msgstr ""
+msgstr "خطایی رخ داده است لطفا دوباره امتحان کنید."
 
-#: .\accounts\views.py:152
+#: accounts/views.py:145
 msgid "InValidLink"
-msgstr ""
+msgstr "لینک وارد شده نامعتبر است."
 
-#: .\accounts\views.py:200
-msgid "UsernameOrPasswordWrong"
-msgstr ""
-
-#: .\accounts\views.py:221
+#: accounts/views.py:193
 msgid "User_Email_Error"
-msgstr ""
+msgstr "کاربری با این ایمیل موجود نمی‌باشد"
 
-#: .\accounts\views.py:233
+#: accounts/views.py:205
 msgid "EmailTimeError"
 msgstr ""
-
-#~ msgid "User_Information"
-#~ msgstr "اطلاعات شخص"
-
-#~ msgid "Accesses"
-#~ msgstr "دسترسی ها"
-
-#~ msgid "Address"
-#~ msgstr "آدرس"
-
-#~ msgid "Priority"
-#~ msgstr "ویژگی ها"
-
-#~ msgid "Avatar"
-#~ msgstr "عکس"
+"در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش "
+"فرمایید.'"

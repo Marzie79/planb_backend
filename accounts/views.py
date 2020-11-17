@@ -1,5 +1,3 @@
-import coreapi
-from abc import ABC
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from django.shortcuts import get_object_or_404
@@ -12,7 +10,6 @@ from rest_framework import status, generics, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.filters import BaseFilterBackend
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
@@ -42,7 +39,7 @@ def set_cookie_response(request):
 # create token and use this view as login view
 class MyTokenObtainPairView(TokenObtainPairView):
     """
-    create token cookie that save refresh in the value of cookie and send access token for authorization
+    create token cookie that save refresh in the value of cookie and send access token for authorization.
     """
 
     def post(self, request, *args, **kwargs):
@@ -51,7 +48,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 class MyTokenRefreshView(TokenRefreshView):
     """
-       when is sent empty post , server send new access token if refresh(saves in the cookie) validate correctly
+       when is sent empty post , server send new access token if refresh(saves in the cookie) validate correctly.
     """
 
     def post(self, request, *args, **kwargs):
@@ -68,14 +65,9 @@ class MyTokenRefreshView(TokenRefreshView):
             return Response({'error': 'you should login again'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-class SimpleFilterBackend(BaseFilterBackend, ABC):
-    def get_schema_fields(self, view):
-        return [coreapi.Field(name='code', location='query', required=False, type='string')]
-
-
 class Logout(generics.GenericAPIView):
     """
-        token cookie will be deleted when user logs out
+        token cookie will be deleted when user logs out.
     """
     permission_classes = (IsAuthenticated,)
 
@@ -87,7 +79,7 @@ class Logout(generics.GenericAPIView):
 
 class SignUp(generics.GenericAPIView):
     """
-        get just user's email for sending link to verify email
+        get just user's email for sending link to verify email.
     """
     permission_classes = (AllowAny,)
     serializer_class = SignUpEmailSerializer
@@ -119,7 +111,7 @@ class SignUp(generics.GenericAPIView):
             obj = Temp.objects.create(email=serializer.data['email'], date=time_now,
                                       code=get_random_string(length=16))
 
-        url = request.build_absolute_uri('/') + 'api/v1/validate-email/?code=' + obj.code
+        url = 'https://127.0.0.1:3000/users/signup/#verify?code=' + obj.code
         message = sending_email(validation=url, receiver=obj.email)
         if message is not None:
             obj.delete()
@@ -138,10 +130,11 @@ class VerifyAccount(viewsets.ModelViewSet):
         else:
             return SignUpSerializer
 
-    test_param = openapi.Parameter('code', openapi.IN_QUERY, description="unique code in url", type=openapi.TYPE_STRING)
+    test_param = openapi.Parameter('code', openapi.IN_QUERY, description="unique code in url.",
+                                   type=openapi.TYPE_STRING)
 
-    @swagger_auto_schema(manual_parameters=[test_param, ], operation_description="user click on this field and you should get it and send it for server"
-                                                                                 "use in : 1. verify email for password 2. reset password")
+    @swagger_auto_schema(manual_parameters=[test_param, ],
+                         operation_description="user click on a link and you should get code from it and send code for server.\n\r use in : 1. verify email 2. reset password.")
     def list(self, request, *args, **kwargs):
         serialize = TempSerializer(get_object_or_404(Temp, code=request.GET.get('code')))
         # check that user send correct data
@@ -153,7 +146,7 @@ class VerifyAccount(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         """
-            user's email have been validate and we want to get other necessary fields
+            user's email have been validate and we want to get other necessary fields.
         """
         serialize = SignUpSerializer(data=request.data)
         serialize.is_valid(raise_exception=True)
@@ -182,30 +175,9 @@ class UsernameOrEmailBackend(BaseBackend):
             return None
 
 
-class SignIn(generics.GenericAPIView):
-    permission_classes = (AllowAny,)
-    serializer_class = SignInSerializer
-
-    def post(self, request):
-        serializer = SignInSerializer(data=request.data)
-        if serializer.is_valid():
-            user_set = UsernameOrEmailBackend().authenticate(username=serializer.data['username'],
-                                                             password=serializer.data['password'])
-            if user_set is not None:
-                # everything is ok
-                token, created = Token.objects.get_or_create(user=user_set)
-                return Response(data={'token': token.key}, status=status.HTTP_200_OK)
-            else:
-                # password in not correct
-                return Response(data={'error': _("UsernameOrPasswordWrong")},
-                                status=status.HTTP_406_NOT_ACCEPTABLE)
-        # sending empty request
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
 class RequestResetPassword(generics.GenericAPIView):
     """
-        get just user's email for sending a link for changing password
+        get just user's email for sending a link for changing password.
     """
     permission_classes = (AllowAny,)
     serializer_class = SignUpEmailSerializer
@@ -235,7 +207,7 @@ class RequestResetPassword(generics.GenericAPIView):
             obj = Temp.objects.create(email=serializer.data['email'], date=time_now,
                                       code=get_random_string(length=16))
 
-        url = request.build_absolute_uri('/') + 'api/v1/reset-password/?code=' + obj.code
+        url = 'https://127.0.0.1:3000/users/forget-password/verify?code=' + obj.code
         message = sending_email(validation=url, receiver=obj.email)
         if message is not None:
             obj.delete()
@@ -246,11 +218,10 @@ class RequestResetPassword(generics.GenericAPIView):
 
 class ResetPassword(generics.GenericAPIView):
     """
-        save the new password of user
+        write the code that you get before from server and enter new password.
     """
     permission_classes = (AllowAny,)
     serializer_class = ResetPasswordSerializer
-    filter_backends = (SimpleFilterBackend,)
 
     def patch(self, request):
         serializer = ResetPasswordSerializer(data=request.data)
@@ -292,5 +263,5 @@ class ProfileUser(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = ProfileSerializer
 
-    def get_queryset(self):
+    def get_object(self):
         return self.request.user
