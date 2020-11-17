@@ -1,4 +1,3 @@
-import datetime
 import coreapi
 from abc import ABC
 from drf_yasg import openapi
@@ -6,17 +5,15 @@ from drf_yasg.utils import swagger_auto_schema
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.crypto import get_random_string
-from django.db.models import Q
 from django.contrib.auth.backends import BaseBackend
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import status, generics, viewsets
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.filters import BaseFilterBackend
-from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
+from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
@@ -24,6 +21,7 @@ from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 
 from accounts.serializers import *
 from core.util import sending_email
+import datetime
 
 
 def set_cookie_response(request):
@@ -88,6 +86,9 @@ class Logout(generics.GenericAPIView):
 
 
 class SignUp(generics.GenericAPIView):
+    """
+        get just user's email for sending link to verify email
+    """
     permission_classes = (AllowAny,)
     serializer_class = SignUpEmailSerializer
     renderer_classes = [TemplateHTMLRenderer, CamelCaseJSONRenderer]
@@ -127,19 +128,20 @@ class SignUp(generics.GenericAPIView):
         return Response(status=status.HTTP_200_OK, template_name='build/index.html')
 
 
-class ValidateEmail(viewsets.ModelViewSet):
+class VerifyAccount(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
+    filter_backends = None
 
-    # filter_backends = (SimpleFilterBackend,)
     def get_serializer_class(self):
         if self.action == 'list':
             return TempSerializer
         else:
             return SignUpSerializer
 
-    test_param = openapi.Parameter('code', openapi.IN_QUERY, description="test manual param", type=openapi.TYPE_STRING)
+    test_param = openapi.Parameter('code', openapi.IN_QUERY, description="unique code in url", type=openapi.TYPE_STRING)
 
-    @swagger_auto_schema(manual_parameters=[test_param, ], operation_description="partial_update description override")
+    @swagger_auto_schema(manual_parameters=[test_param, ], operation_description="user click on this field and you should get it and send it for server"
+                                                                                 "use in : 1. verify email for password 2. reset password")
     def list(self, request, *args, **kwargs):
         serialize = TempSerializer(get_object_or_404(Temp, code=request.GET.get('code')))
         # check that user send correct data
@@ -150,9 +152,9 @@ class ValidateEmail(viewsets.ModelViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': _("InValidLink")})
 
     def create(self, request, *args, **kwargs):
-        # if User.objects.filter(username=request.data['username']).first():
-        #     return Response(status=status.HTTP_100_CONTINUE)
-
+        """
+            user's email have been validate and we want to get other necessary fields
+        """
         serialize = SignUpSerializer(data=request.data)
         serialize.is_valid(raise_exception=True)
         # check that code is exist
@@ -162,8 +164,8 @@ class ValidateEmail(viewsets.ModelViewSet):
         user = UserSerializer(data=serialize.data['user'])
         user.is_valid(raise_exception=True)
         user.save()
-        request.data['username'] = request.POST['user.username']
-        request.data['password'] = request.POST['user.password']
+        request.data['username'] = serialize.data.get('user').get('username')
+        request.data['password'] = serialize.data.get('user').get('password')
         # send token of user
         return set_cookie_response(request)
 
@@ -202,6 +204,9 @@ class SignIn(generics.GenericAPIView):
 
 
 class RequestResetPassword(generics.GenericAPIView):
+    """
+        get just user's email for sending a link for changing password
+    """
     permission_classes = (AllowAny,)
     serializer_class = SignUpEmailSerializer
 
@@ -240,20 +245,23 @@ class RequestResetPassword(generics.GenericAPIView):
 
 
 class ResetPassword(generics.GenericAPIView):
+    """
+        save the new password of user
+    """
     permission_classes = (AllowAny,)
     serializer_class = ResetPasswordSerializer
     filter_backends = (SimpleFilterBackend,)
 
-    def post(self, request):
+    def patch(self, request):
         serializer = ResetPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        get_object_or_404(Temp, code=serializer.data.get('temp').get('code')).delete()
         # get user for setting new password
-        obj_user = get_object_or_404(User, email=serializer.data.get('temp').get('email'))
+        temp_obj = get_object_or_404(Temp, code=serializer.data.get('temp').get('code'))
+        obj_user = get_object_or_404(User, email=temp_obj.email)
+        temp_obj.delete()
         obj_user.set_password(serializer.data['password'])
         obj_user.save()
         request.data['username'] = obj_user.username
-        # get or create token of user
         # send token of user
         return set_cookie_response(request)
 
@@ -261,24 +269,24 @@ class ResetPassword(generics.GenericAPIView):
 class SearchCity(generics.ListAPIView):
     serializer_class = CitySerializer
     permission_classes = (AllowAny,)
-    search_fields = ('province__id','name')
-    queryset = City.objects.all()    
+    search_fields = ('province__id', 'name')
+    queryset = City.objects.all()
 
 
 class SearchProvince(generics.ListAPIView):
     serializer_class = ProvinceSerializer
     permission_classes = (AllowAny,)
     search_fields = ('code', 'name')
-    queryset = Province.objects.all()    
+    queryset = Province.objects.all()
 
 
 class SearchUniversity(generics.ListAPIView):
     serializer_class = UniversitySerializer
     permission_classes = (AllowAny,)
     search_fields = ('code', 'name', 'city__id')
-    queryset = University.objects.all()   
+    queryset = University.objects.all()
 
-    
+
 class ProfileUser(viewsets.ModelViewSet):
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)

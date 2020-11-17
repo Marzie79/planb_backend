@@ -20,14 +20,9 @@ class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     readonly_fields = ('joined_date_decorated',)
     list_filter = ('is_active',)
     form = UserForm
-    fieldsets = (
-        (None, {
-            'fields': ('username', 'email', 'password1', 'password2', 'joined_date_decorated')}),
-        (_("User_Information"), {'fields': (
-            'first_name', 'last_name', 'avatar_thumbnail', 'gender', 'description')}),
-        (_("Accesses"), {'fields': ('is_superuser', 'is_active')}),
-        (_("Address"), {'fields': ('city', 'university')}),
-        (_("Skills"), {'fields': ('skills',)}))
+    fields = ('username', 'email', 'password1', 'password2', 'joined_date_decorated',
+              'first_name', 'last_name', 'avatar_thumbnail', 'gender', 'description',
+              'is_superuser', 'is_active', 'city', 'university', 'skills',)
     inlines = [UserProjectsInline]
 
 

@@ -57,6 +57,11 @@ CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'planB_backend.urls'
 
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+    'http://localhost:8000',
+)
+
 # to parse and render jsons in camelNotation,use camelCase renderer and parser
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
