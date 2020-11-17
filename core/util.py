@@ -51,19 +51,17 @@ def sending_email(validation, receiver, sender=Email.EMAIL_ADDRESS.value, sender
 
 @deconstructible
 class ImageUtil:
-    def __init__(self, upload_path):
-        self.path = upload_path
 
     def __call__(self, instance, filename):
-        upload_to = self.path
         ext = filename.split('.')[-1]
+        attribute = getattr(instance,instance.getImageName())
         # get filename
-        if instance.username:
-            filename = '{}.{}'.format(instance.username, ext)
+        if attribute:
+            filename = '{}.{}'.format(attribute, ext)
         else:
             # set filename as random string
             filename = '{}.{}'.format(uuid4().hex, ext)
         # return the whole path to the file
-        return os.path.join(upload_to, filename)
+        return os.path.join(instance.getUploadTo(), filename)
 
 
