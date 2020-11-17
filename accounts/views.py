@@ -111,7 +111,7 @@ class SignUp(generics.GenericAPIView):
             obj = Temp.objects.create(email=serializer.data['email'], date=time_now,
                                       code=get_random_string(length=16))
 
-        url = 'https://127.0.0.1:3000/users/signup/#verify?code=' + obj.code
+        url = 'https://127.0.0.1:3000/users/signup/verify?code=' + obj.code
         message = sending_email(validation=url, receiver=obj.email)
         if message is not None:
             obj.delete()
