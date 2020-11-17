@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-17 18:00+0330\n"
+"POT-Creation-Date: 2020-11-17 18:30+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -308,27 +308,27 @@ msgstr ""
 msgid "Temps"
 msgstr ""
 
-#: .\accounts\views.py:103
+#: .\accounts\views.py:104
 msgid "EmailDoesExist"
 msgstr ""
 
-#: .\accounts\views.py:126 .\accounts\views.py:238
+#: .\accounts\views.py:127 .\accounts\views.py:243
 msgid "ServerError"
 msgstr ""
 
-#: .\accounts\views.py:150
+#: .\accounts\views.py:152
 msgid "InValidLink"
 msgstr ""
 
-#: .\accounts\views.py:198
+#: .\accounts\views.py:200
 msgid "UsernameOrPasswordWrong"
 msgstr ""
 
-#: .\accounts\views.py:216
+#: .\accounts\views.py:221
 msgid "User_Email_Error"
 msgstr ""
 
-#: .\accounts\views.py:228
+#: .\accounts\views.py:233
 msgid "EmailTimeError"
 msgstr ""
 
