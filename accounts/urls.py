@@ -6,7 +6,7 @@ urlpatterns = [
     path('api/token/refresh/', MyTokenRefreshView.as_view(), name='token_refresh'),
     path('user/verify/', VerifyAccount.as_view({'get': 'list', 'post': 'create'})),
     path('user/logout/', Logout.as_view(), name='logout'),
-    path('user/signup/', SignUp.as_view()),
+    path('user/signup/', SignUp.as_view(), name='signup'),
     path('user/signin/', MyTokenObtainPairView.as_view()),
     path('user/reset-password/', ResetPassword.as_view()),
     path('list/cities/', SearchCity.as_view()),
