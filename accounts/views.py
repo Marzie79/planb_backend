@@ -265,3 +265,11 @@ class ProfileUser(viewsets.ModelViewSet):
 
     def get_object(self):
         return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        serializer = ProfileSerializer(request.user, data=request.data, partial=True)
+        if serializer.is_valid():
+            # serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(status= status.HTTP_400_BAD_REQUEST)
