@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-17 23:35+0330\n"
+"POT-Creation-Date: 2020-11-19 18:23+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -153,18 +153,12 @@ msgstr "حذف شده"
 msgid "Project_Name"
 msgstr "نام پروژه"
 
-#, fuzzy
-#| msgid "Project_Name"
 msgid "UserProject"
 msgstr "نام پروژه"
 
-#, fuzzy
-#| msgid "Joined_Date"
 msgid "End_Date"
-msgstr "تاریخ عضویت"
+msgstr "تاریخ پایان"
 
-#, fuzzy
-#| msgid "Started"
 msgid "Start_Date"
 msgstr "شروع شده"
 
@@ -172,45 +166,29 @@ msgid "Last_Modify_Date"
 msgstr "تاریخ آخرین تغییر"
 
 msgid "Advertisement"
-msgstr ""
+msgstr "تبلیغات"
 
-#, fuzzy
-#| msgid "Project_Name"
 msgid "Project_Situation"
 msgstr "وضعیت پروژه"
 
-#, fuzzy
-#| msgid "Project_Name"
 msgid "Project_Owner"
 msgstr "سازنده"
 
-#, fuzzy
-#| msgid "Project_Name"
 msgid "Projects"
 msgstr "پروژه ها"
 
-#, fuzzy
-#| msgid "Project_Name"
 msgid "Project"
 msgstr "پروژه"
 
-#, fuzzy
-#| msgid "Joined_Date_Decorated"
 msgid "Last_Date_Modified_Decorated"
 msgstr "تاریخ آخرین تغییر"
 
-#, fuzzy
-#| msgid "Joined_Date_Decorated"
 msgid "start_date_decorated"
 msgstr "تاریخ شروع"
 
-#, fuzzy
-#| msgid "Joined_Date_Decorated"
 msgid "End_Date_Decorated"
 msgstr "تاریخ پایان"
 
-#, fuzzy
-#| msgid "Accesses"
 msgid "Accepted"
 msgstr "پذیرفته شده"
 
@@ -220,8 +198,6 @@ msgstr "درخواست داده شده"
 msgid "Declined"
 msgstr "رد شده"
 
-#, fuzzy
-#| msgid "Admin_page"
 msgid "Admin"
 msgstr "ادمین"
 
@@ -231,8 +207,6 @@ msgstr "وضعیت"
 msgid "Date"
 msgstr "تاریخ"
 
-#, fuzzy
-#| msgid "City_Code"
 msgid "Code"
 msgstr "کد"
 
@@ -258,18 +232,3 @@ msgid "EmailTimeError"
 msgstr ""
 "در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش "
 "فرمایید.'"
-
-#~ msgid "User_Information"
-#~ msgstr "اطلاعات شخص"
-
-#~ msgid "Accesses"
-#~ msgstr "دسترسی ها"
-
-#~ msgid "Address"
-#~ msgstr "آدرس"
-
-#~ msgid "Priority"
-#~ msgstr "ویژگی ها"
-
-#~ msgid "Avatar"
-#~ msgstr "عکس"

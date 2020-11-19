@@ -3,19 +3,16 @@ from drf_yasg.utils import swagger_auto_schema
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.crypto import get_random_string
-from django.contrib.auth.backends import BaseBackend
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import status, generics, viewsets
-from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 # don't use rest_framework.renderers.JsonRenderer !!!
-
+from accounts.enums import *
 from accounts.serializers import *
 from core.util import sending_email
 import datetime
@@ -111,13 +108,13 @@ class SignUp(generics.GenericAPIView):
             obj = Temp.objects.create(email=serializer.data['email'], date=time_now,
                                       code=get_random_string(length=16))
 
-        url = 'https://127.0.0.1:3000/users/signup/verify?code=' + obj.code
+        url = request.headers['Origin'] + FrontURL.SIGNUP.value + obj.code
         message = sending_email(validation=url, receiver=obj.email)
         if message is not None:
             obj.delete()
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             data={'message': _("ServerError")})
-        return Response(status=status.HTTP_200_OK)# , template_name='build/index.html'
+        return Response(status=status.HTTP_200_OK)
 
 
 class VerifyAccount(viewsets.ModelViewSet):
@@ -163,18 +160,6 @@ class VerifyAccount(viewsets.ModelViewSet):
         return set_cookie_response(request)
 
 
-# make authenticate with username and email
-class UsernameOrEmailBackend(BaseBackend):
-    def authenticate(self, username=None, password=None, **kwargs):
-        # Try to fetch the user by searching the username or email field
-        user = get_object_or_404(User, Q(email=username) | Q(username=username))
-        if user.check_password(password):
-            return user
-        # a user with this email or password not exist
-        else:
-            return None
-
-
 class RequestResetPassword(generics.GenericAPIView):
     """
         get just user's email for sending a link for changing password.
@@ -207,7 +192,7 @@ class RequestResetPassword(generics.GenericAPIView):
             obj = Temp.objects.create(email=serializer.data['email'], date=time_now,
                                       code=get_random_string(length=16))
 
-        url = 'https://127.0.0.1:3000/users/forget-password/verify?code=' + obj.code
+        url = request.headers['Origin'] + FrontURL.FORGET_PASSWORD.value + obj.code
         message = sending_email(validation=url, receiver=obj.email)
         if message is not None:
             obj.delete()

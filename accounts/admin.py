@@ -21,9 +21,9 @@ class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_filter = ('is_active',)
     form = UserForm
     fields = ('username', 'email', 'password1', 'password2', 'joined_date_decorated',
-                 'first_name', 'last_name', 'avatar_thumbnail', 'gender', 'description',
-                 'is_superuser', 'is_active','city', 'university','skills')
-    iinlines = [UserProjectsInline]
+              'first_name', 'last_name', 'avatar_thumbnail', 'gender', 'description',
+              'is_superuser', 'is_active', 'city', 'university', 'skills',)
+    inlines = [UserProjectsInline]
 
 
 class CityInline(admin.TabularInline):
@@ -40,7 +40,7 @@ class ProvinceAdmin(admin.ModelAdmin):
 
 class ProjectsAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ('name', 'creator', 'situation', 'end_date_decorated')
-    fields = ('name', 'creator', 'description','fields','last_modified_date', 'start_date', 'end_date')
+    fields = ('name', 'creator', 'description', 'fields', 'last_modified_date', 'start_date', 'end_date')
 
 
 admin.site.register(Temp)
