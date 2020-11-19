@@ -83,7 +83,7 @@ class SignUp(generics.GenericAPIView):
     """
     permission_classes = (AllowAny,)
     serializer_class = SignUpEmailSerializer
-    renderer_classes = [TemplateHTMLRenderer, CamelCaseJSONRenderer]
+    renderer_classes = [CamelCaseJSONRenderer]
 
     def post(self, request):
         serializer = SignUpEmailSerializer(data=request.data)
@@ -117,7 +117,7 @@ class SignUp(generics.GenericAPIView):
             obj.delete()
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             data={'message': _("ServerError")})
-        return Response(status=status.HTTP_200_OK, template_name='build/index.html')
+        return Response(status=status.HTTP_200_OK)# , template_name='build/index.html'
 
 
 class VerifyAccount(viewsets.ModelViewSet):

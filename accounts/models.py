@@ -19,7 +19,7 @@ from imagekit.processors import ResizeToFit
 class AbstractImageModel(models.Model):
     IMAGE_PROCCESS = {
         "upload_to": ImageUtil(),
-        "processors": [ResizeToFit(100, 100)],
+        "processors": [ResizeToFit(200, 200)],
         "format": 'JPEG',
         "options": {'quality': 60},
         "default": None

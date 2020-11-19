@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-17 19:06+0330\n"
+"POT-Creation-Date: 2020-11-17 23:35+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -217,7 +217,6 @@ msgstr "پذیرفته شده"
 msgid "Requested"
 msgstr "درخواست داده شده"
 
-#: .\accounts\models.py:216
 msgid "Declined"
 msgstr "رد شده"
 
@@ -226,7 +225,6 @@ msgstr "رد شده"
 msgid "Admin"
 msgstr "ادمین"
 
-#: .\accounts\models.py:222
 msgid "Situation"
 msgstr "وضعیت"
 
@@ -253,13 +251,9 @@ msgstr "خطایی رخ داده است لطفا دوباره امتحان کن�
 msgid "InValidLink"
 msgstr "لینک وارد شده نامعتبر است."
 
-msgid "UsernameOrPasswordWrong"
-msgstr ""
-
 msgid "User_Email_Error"
 msgstr "کاربری با این ایمیل موجود نمی‌باشد"
 
-#: .\accounts\views.py:233
 msgid "EmailTimeError"
 msgstr ""
 "در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش "
