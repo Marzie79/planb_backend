@@ -117,7 +117,7 @@ class SignUp(generics.GenericAPIView):
             obj.delete()
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             data={'message': _("ServerError")})
-        return Response(status=status.HTTP_200_OK)# , template_name='build/index.html'
+        return Response(status=status.HTTP_200_OK)  # , template_name='build/index.html'
 
 
 class VerifyAccount(viewsets.ModelViewSet):
@@ -263,13 +263,14 @@ class ProfileUser(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = ProfileSerializer
 
-    def get_object(self):
-        return self.request.user
-
-    def update(self, request, *args, **kwargs):
+    def partial_update(self, request):
         serializer = ProfileSerializer(request.user, data=request.data, partial=True)
         if serializer.is_valid():
-            # serializer.save()
+            serializer.save()
+            # return Response(status=status.HTTP_202_ACCEPTED)
             return Response(serializer.data)
         else:
-            return Response(status= status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def get_object(self):
+        return self.request.user

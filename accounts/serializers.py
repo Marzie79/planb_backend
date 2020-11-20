@@ -80,8 +80,8 @@ class UniversitySerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    city = CitySerializer()
-    university = UniversitySerializer()
+    # city = CitySerializer()
+    # university = UniversitySerializer()
 
     class Meta:
         model = User
@@ -109,7 +109,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def validate_email(self, value):
         user = self.context['request'].user
-        if not validate_email(value):
+        if validate_email(value):
             raise serializers.ValidationError({'email': _('The address email entered is invalid.')})
         elif User.objects.exclude(pk=user.pk).filter(email=value).exists():
             raise serializers.ValidationError({'email': _('The user have existed already with this address email.')})

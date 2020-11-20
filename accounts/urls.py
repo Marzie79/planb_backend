@@ -12,6 +12,6 @@ urlpatterns = [
     path('list/cities/', SearchCity.as_view()),
     path('list/provinces/', SearchProvince.as_view()),
     path('list/universities/', SearchUniversity.as_view()),
-    path('profile/', ProfileUser.as_view({'get': 'retrieve', 'put': 'update'}),
+    path('profile/', ProfileUser.as_view({'get': 'retrieve', 'patch': 'partial_update'}),
          name='auth_profile'),
 ]
