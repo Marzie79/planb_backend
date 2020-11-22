@@ -141,8 +141,8 @@ class VerifyAccount(viewsets.ModelViewSet):
         if serialize.is_valid:
             # send email and code for making a user and removing temp object
             return Response(data=serialize.data, status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': _("InValidLink")})
+        # else:
+        #     return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': _("InValidLink")})
 
     def create(self, request, *args, **kwargs):
         """
@@ -157,6 +157,7 @@ class VerifyAccount(viewsets.ModelViewSet):
         user = UserSerializer(data=serialize.data['user'])
         user.is_valid(raise_exception=True)
         user.save()
+
         request.data['username'] = serialize.data.get('user').get('username')
         request.data['password'] = serialize.data.get('user').get('password')
         # send token of user
@@ -224,6 +225,7 @@ class ResetPassword(generics.GenericAPIView):
     serializer_class = ResetPasswordSerializer
 
     def patch(self, request):
+        print(request.data)
         serializer = ResetPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         # get user for setting new password
