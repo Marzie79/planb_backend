@@ -221,7 +221,7 @@ class ResetPassword(generics.GenericAPIView):
     """
         write the code that you get before from server and enter new password.
     """
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = ResetPasswordSerializer
 
     def patch(self, request):
