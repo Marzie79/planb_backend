@@ -232,3 +232,40 @@ msgid "EmailTimeError"
 msgstr ""
 "در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش "
 "فرمایید.'"
+
+#:  .\accounts\serializers.py
+msgid "Only the persion letters is valid."
+msgstr "تنها حروف فارسی مجاز است."
+
+msgid "The username should be included letters and numbers."
+msgstr "نام کاربری تنها باید شامل حروف و اعداد انگلیسی باشد."
+
+msgid "The user have existed already with this username."
+msgstr "کاربر با این نام کاربری از قبل موجود است."
+
+msgid "The user have existed already with this address email."
+msgstr "کابر با این آدرس ایمیل از قبل موجود است."
+
+msgid "The user have existed already with this phone number."
+msgstr "کاربر با این تلفن همراه از قبل موجود است."
+
+msgid "The photo size should be more than {} MB."
+msgstr "حجم عکس نباید بیشتر از %(max_size)d مگابایت باشد."
+
+msgid "The address email entered is invalid.s"
+msgstr "آدرس ایمیل وارد شده نامعتبر است."
+
+#~ msgid "User_Information"
+#~ msgstr "اطلاعات شخص"
+
+#~ msgid "Accesses"
+#~ msgstr "دسترسی ها"
+
+#~ msgid "Address"
+#~ msgstr "آدرس"
+
+#~ msgid "Priority"
+#~ msgstr "ویژگی ها"
+
+#~ msgid "Avatar"
+#~ msgstr "عکس"

@@ -4,6 +4,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 import re
 from django.core.validators import validate_email
 from django.db.models import Q
+from django.utils.translation import gettext as _
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -57,16 +58,20 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # return access and refresh token
         return super().validate(attrs)
 
+
 class ProvinceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Province
         fields = ('code', 'name')
 
+
 class CitySerializer(serializers.ModelSerializer):
     province = ProvinceSerializer()
+
     class Meta:
         model = City
         fields = ('code', 'name', 'province')
+
 
 class UniversitySerializer(serializers.ModelSerializer):
     class Meta:
@@ -75,38 +80,39 @@ class UniversitySerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    city = CitySerializer()
-    university = UniversitySerializer()
+    # city = CitySerializer()
+    # university = UniversitySerializer()
+
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'username', 'email', 'city', 'university', 'phone_number', 'description')
 
     def validate_first_name(self, value):
         if not re.match('^[\u0600-\u06FF\s]+$', value):
-            raise serializers.ValidationError({'first_name': ' تنها حروف فارسی مجاز است.'})
+            raise serializers.ValidationError({'first_name': _("Only the persion letters is valid.")})
         return value
 
     def validate_last_name(self, value):
         if not re.match('^[\u0600-\u06FF\s]+$', value):
-            raise serializers.ValidationError({'last_name': ' تنها حروف فارسی مجاز است.'})
+            raise serializers.ValidationError({'last_name': _("Only the persion letters is valid.")})
         return value
 
     def validate_username(self, value):
         if not re.match('^[a-zA-Z0-9]+$', value):
-            raise serializers.ValidationError({'username': ' نام کاربری تنها باید شامل حروف و اعداد انگلیسی باشد.'})
+            raise serializers.ValidationError({'username': _('The username should be included letters and numbers.')})
         user = User.objects.filter(Q(username=value.lower()))
         if self.instance is not None:
             user = user.exclude(id=self.instance.id)
         if user.exists():
-            raise serializers.ValidationError({'username': 'کاربر با این نام کاربری از قبل موجود است.'})
+            raise serializers.ValidationError({'username': _('The user have existed already with this username.')})
         return value.lower()
 
     def validate_email(self, value):
         user = self.context['request'].user
-        if not validate_email(value):
-            raise serializers.ValidationError({'email': 'آدرس ایمیل وارد شده نامعتبر است.'})
+        if validate_email(value):
+            raise serializers.ValidationError({'email': _('The address email entered is invalid.')})
         elif User.objects.exclude(pk=user.pk).filter(email=value).exists():
-            raise serializers.ValidationError({'email': 'کابر با این آدرس ایمیل از قبل موجود است.'})
+            raise serializers.ValidationError({'email': _('The user have existed already with this address email.')})
         return value
 
     def validate_phone_number(self, value):
@@ -116,12 +122,13 @@ class ProfileSerializer(serializers.ModelSerializer):
             if self.instance is not None:
                 user = user.exclude(id=self.instance.id)
             if user.exists():
-                raise serializers.ValidationError({'phone_number': 'کاربر با این تلفن همراه از قبل موجود است.'})
+                raise serializers.ValidationError(
+                    {'phone_number': _('The user have existed already with this phone number.')})
         return value
 
     def validate_avatar_url(self, value):
         MAX_FILE_SIZE = 12000000
         if value.size > MAX_FILE_SIZE:
             raise serializers.ValidationError(
-                {'avatar': 'حجم عکس نباید بیشتر از {} مگابایت باشد.'.format(MAX_FILE_SIZE)})
+                {'avatar': _('The photo size should be more than %(max_size)d MB.s') % {'max_size': MAX_FILE_SIZE}})
         return value.url

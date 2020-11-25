@@ -138,8 +138,8 @@ class VerifyAccount(viewsets.ModelViewSet):
         if serialize.is_valid:
             # send email and code for making a user and removing temp object
             return Response(data=serialize.data, status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': _("InValidLink")})
+        # else:
+        #     return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': _("InValidLink")})
 
     def create(self, request, *args, **kwargs):
         """
@@ -154,6 +154,7 @@ class VerifyAccount(viewsets.ModelViewSet):
         user = UserSerializer(data=serialize.data['user'])
         user.is_valid(raise_exception=True)
         user.save()
+
         request.data['username'] = serialize.data.get('user').get('username')
         request.data['password'] = serialize.data.get('user').get('password')
         # send token of user
@@ -205,10 +206,11 @@ class ResetPassword(generics.GenericAPIView):
     """
         write the code that you get before from server and enter new password.
     """
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = ResetPasswordSerializer
 
     def patch(self, request):
+        print(request.data)
         serializer = ResetPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         # get user for setting new password
@@ -247,6 +249,15 @@ class ProfileUser(viewsets.ModelViewSet):
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = ProfileSerializer
+
+    def partial_update(self, request):
+        serializer = ProfileSerializer(request.user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            # return Response(status=status.HTTP_202_ACCEPTED)
+            return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def get_object(self):
         return self.request.user
