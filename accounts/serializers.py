@@ -80,8 +80,8 @@ class UniversitySerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    # city = CitySerializer()
-    # university = UniversitySerializer()
+    city = CitySerializer()
+    university = UniversitySerializer()
 
     class Meta:
         model = User

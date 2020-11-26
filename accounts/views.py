@@ -250,14 +250,8 @@ class ProfileUser(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = ProfileSerializer
 
-    def partial_update(self, request):
-        serializer = ProfileSerializer(request.user, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            # return Response(status=status.HTTP_202_ACCEPTED)
-            return Response(serializer.data)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
     def get_object(self):
+        """
+            Returns the object the view is displaying.
+        """
         return self.request.user
