@@ -1,26 +1,23 @@
-from django.test import TestCase
-from accounts.models import User, Temp
+import datetime
+import json
+from freezegun import freeze_time
 from model_mommy import mommy
-from rest_framework.test import APIClient, APITestCase
-from django.urls import reverse
-from rest_framework import status
 from http.cookies import SimpleCookie
+from rest_framework.test import APIClient
+from rest_framework.test import APITestCase
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import status
+from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils import timezone
-from rest_framework.reverse import reverse as drf_reverse
-from rest_framework.test import APIRequestFactory
-import datetime
-from freezegun import freeze_time
-import json
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.test import APIClient
-
+from accounts.models import User, Temp
 
 SIGNIN_URL = reverse('token_obtain_pair')
 REFRESH_URL = reverse('token_refresh')
 LOGOUT_URL = reverse('logout')
 SIGNUP_URL = reverse('signup')
-REQUESTPASSWORD_URL = reverse('resetpassword')
+REQUESTPASSWORD_URL = reverse('reset_password')
+
 
 class ResetPasswordTest(APITestCase):
     def setUp(self):
@@ -89,27 +86,27 @@ class VerifyAccountTest(APITestCase):
         self.post_data = {'user.email': 'example@gmail.com',
                           'user.username': 'example',
                           'user.password': '1234',
-                          'user.first_name': 'exam',
-                          'user.last_name': 'exami',
+                          'user.first_name': 'نمونه',
+                          'user.last_name': 'نمونه',
                           'username': 'example',
                           'password': '1234'}
 
     def test_temp_is_existed_get(self):
         data = {'code': '1234'}
         user_temp = Temp.objects.get(code=data['code'])
-        response = self.client.get(reverse('varify'), data)
+        response = self.client.get(reverse('verify'), data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsNotNone(user_temp)
 
     def test_temp_is_not_existed_get(self):
         data = {'code': '4321'}
-        response = self.client.get(reverse('varify'), data)
+        response = self.client.get(reverse('verify'), data)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_user_is_created_post(self):
         user_temp = Temp.objects.create(code='12345', email="example@gmail.com")
         self.post_data['temp.code'] = user_temp.code
-        response = self.client.post(reverse('varify'), self.post_data)
+        response = self.client.post(reverse('verify'), self.post_data)
         user = User.objects.get(username='example')
         self.assertIsNotNone(user)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -118,7 +115,8 @@ class VerifyAccountTest(APITestCase):
 
     def test_temp_is_not_existed_post(self):
         self.post_data['temp.code'] = '41324'
-        response = self.client.post(reverse('varify'), self.post_data)
+        response = self.client.post(reverse('verify'), self.post_data)
+        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 

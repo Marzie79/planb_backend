@@ -1,44 +1,52 @@
-from datetime import datetime
 import jdatetime
-from imagekit import ImageSpec
-from phonenumber_field.modelfields import PhoneNumberField
+from datetime import datetime
 from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFit
+from phonenumber_field import modelfields
 from django.core.validators import validate_email
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
-from .managers import UserManager
 from core.util import ImageUtil
-from imagekit.processors import ResizeToFit
+from accounts import validators
+from .managers import UserManager
+
+
+class PhoneNumberFieldTranslate(modelfields.PhoneNumberField):
+    default_validators = [validators.validate_international]
 
 
 # use this for models have image field
 # for use this model you must extend this
-# and  create   IMAGE_PROCCESS , getImageField(cls) getImageName(clsc) , getUploadTo(cls) like userModel
+# and  create   IMAGE_PROCESS , getImageField(cls) getImageName(clsc) , getUploadTo(cls) like userModel
 # and delete signal , resize image work for it !
 class AbstractImageModel(models.Model):
-    IMAGE_PROCCESS = {
+    IMAGE_PROCESS = {
         "upload_to": ImageUtil(),
         "processors": [ResizeToFit(200, 200)],
         "format": 'JPEG',
         "options": {'quality': 60},
         "default": None
     }
+
     @classmethod
     def getImageField(cls):
         return None
+
     @classmethod
     def getImageName(clsc):
         return None
+
     @classmethod
     def getUploadTo(cls):
         return None
+
     class Meta:
         abstract = True
 
 
 class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
-    IMAGE_PROCCESS = {**AbstractImageModel.IMAGE_PROCCESS, **{"default": "defaults/default.png"}}
+    IMAGE_PROCESS = {**AbstractImageModel.IMAGE_PROCESS, **{"default": "defaults/default.png"}}
 
     @classmethod
     def getImageField(cls):
@@ -57,24 +65,28 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
         ('FEMALE', _("female")),
     )
 
-    username = models.CharField(_("Username"), max_length=30, unique=True)
+    username = models.CharField(_("Username"), max_length=30, unique=True,
+                                validators=[validators.CHAR_REGEX_VALIDATOR],
+                                error_messages={'unique': _("A user have existed already with this username.")})
     password = models.CharField(_("Password"), max_length=128)
-    email = models.EmailField(_("Email"), max_length=254, unique=True)
-    phone_number = PhoneNumberField(_("Phone_Number"), null=True, blank=True, unique=True)
-    first_name = models.CharField(_("First_Name"), max_length=30)
-    last_name = models.CharField(_("Last_Name"), max_length=30)
+    email = models.EmailField(_("Email"), max_length=254, unique=True,
+                              error_messages={'unique': _('A user have existed already with this email address.')})
+    phone_number = PhoneNumberFieldTranslate(_("Phone_Number"), null=True, blank=True, unique=True)
+    first_name = models.CharField(_("First_Name"), max_length=30, validators=[validators.Persian_REGEX_VALIDATOR])
+    last_name = models.CharField(_("Last_Name"), max_length=30, validators=[validators.Persian_REGEX_VALIDATOR])
     gender = models.CharField(_("Gender"), max_length=6, choices=GENDER_CHOICES, null=True, blank=True)
     # avatar = models.ImageField(_("Avatar"), null=True, blank=True, upload_to='avatars/')
-    avatar_thumbnail = ProcessedImageField(**IMAGE_PROCCESS)
+    avatar_thumbnail = ProcessedImageField(**IMAGE_PROCESS)
     is_active = models.BooleanField(_("Is_Active"), default=True)
     # is_superuser is already used into AbstractBaseUser and only i override it instead of create otherfield
     is_superuser = models.BooleanField(_("Is_Superuser"), default=False)
     joined_date = models.DateTimeField(_("Joined_Date"), auto_now_add=True)
     description = models.TextField(_("Description"), null=True, blank=True, max_length=200)
     university = models.ForeignKey("University", verbose_name=_("University_Name"), on_delete=models.SET_NULL,
-                                   null=True,
-                                   blank=True)
+                                   null=True, blank=True)
     city = models.ForeignKey("City", verbose_name=_("City"), on_delete=models.SET_NULL, null=True, blank=True)
+    province = models.ForeignKey("Province", verbose_name=_("Province"), on_delete=models.SET_NULL, null=True,
+                                 blank=True)
     skills = models.ManyToManyField("Skill", verbose_name=_("Skill"), blank=True)
 
     class Meta:

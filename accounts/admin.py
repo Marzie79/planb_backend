@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
+from django.utils.translation import gettext_lazy as _
+from jalali_date.admin import ModelAdminJalaliMixin
 from .forms import UserForm
 from .models import *
-from jalali_date.admin import ModelAdminJalaliMixin
-from django.utils.translation import gettext_lazy as _
 
 admin.site.site_header = _("Admin_page")
 admin.site.index_title = _("Manage_Model")

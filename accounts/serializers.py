@@ -1,10 +1,8 @@
-from rest_framework import serializers
-from accounts.models import *
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 import re
-from django.core.validators import validate_email
-from django.db.models import Q
+from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.utils.translation import gettext as _
+from accounts.models import *
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -80,51 +78,16 @@ class UniversitySerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    city = CitySerializer()
-    university = UniversitySerializer()
-
+    # city_id = serializers.PrimaryKeyRelatedField(queryset=City.objects.all(), source='city', write_only=True)
+    # city =  CitySerializer()
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username', 'email', 'city', 'university', 'phone_number', 'description')
+        fields = ('first_name', 'last_name', 'username', 'email', 'university', 'city', 'phone_number', 'description')
 
-    def validate_first_name(self, value):
-        if not re.match('^[\u0600-\u06FF\s]+$', value):
-            raise serializers.ValidationError({'first_name': _("Only the persion letters is valid.")})
-        return value
-
-    def validate_last_name(self, value):
-        if not re.match('^[\u0600-\u06FF\s]+$', value):
-            raise serializers.ValidationError({'last_name': _("Only the persion letters is valid.")})
-        return value
-
-    def validate_username(self, value):
-        if not re.match('^[a-zA-Z0-9]+$', value):
-            raise serializers.ValidationError({'username': _('The username should be included letters and numbers.')})
-        user = User.objects.filter(Q(username=value.lower()))
-        if self.instance is not None:
-            user = user.exclude(id=self.instance.id)
-        if user.exists():
-            raise serializers.ValidationError({'username': _('The user have existed already with this username.')})
-        return value.lower()
-
-    def validate_email(self, value):
-        user = self.context['request'].user
-        if validate_email(value):
-            raise serializers.ValidationError({'email': _('The address email entered is invalid.')})
-        elif User.objects.exclude(pk=user.pk).filter(email=value).exists():
-            raise serializers.ValidationError({'email': _('The user have existed already with this address email.')})
-        return value
-
-    def validate_phone_number(self, value):
-        if value.startswith('0'):
-            value = value[1:]
-            user = User.objects.filter(Q(phone_number=value))
-            if self.instance is not None:
-                user = user.exclude(id=self.instance.id)
-            if user.exists():
-                raise serializers.ValidationError(
-                    {'phone_number': _('The user have existed already with this phone number.')})
-        return value
+    # def validate_email(self, value):
+    #     if validate_email(value):
+    #         raise serializers.ValidationError({'email': _('The address email entered is invalid :))')})
+    #     return value
 
     def validate_avatar_url(self, value):
         MAX_FILE_SIZE = 12000000

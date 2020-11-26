@@ -4,7 +4,6 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
-
 from rest_framework import status, generics, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -108,7 +107,11 @@ class SignUp(generics.GenericAPIView):
             obj = Temp.objects.create(email=serializer.data['email'], date=time_now,
                                       code=get_random_string(length=16))
 
-        url = request.headers['Origin'] + FrontURL.SIGNUP.value + obj.code
+        if 'Origin' in request.headers:
+            url = request.headers['Origin'] + FrontURL.SIGNUP.value + obj.code
+        else:
+            url = FrontURL.ROOT.value + FrontURL.SIGNUP.value + obj.code
+
         message = sending_email(validation=url, receiver=obj.email)
         if message is not None:
             obj.delete()
@@ -138,8 +141,6 @@ class VerifyAccount(viewsets.ModelViewSet):
         if serialize.is_valid:
             # send email and code for making a user and removing temp object
             return Response(data=serialize.data, status=status.HTTP_200_OK)
-        # else:
-        #     return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': _("InValidLink")})
 
     def create(self, request, *args, **kwargs):
         """
@@ -161,14 +162,32 @@ class VerifyAccount(viewsets.ModelViewSet):
         return set_cookie_response(request)
 
 
-class RequestResetPassword(generics.GenericAPIView):
+class ResetPassword(viewsets.ModelViewSet):
     """
-        get just user's email for sending a link for changing password.
+        write the code that you get before from server and enter new password.
     """
     permission_classes = (AllowAny,)
-    serializer_class = SignUpEmailSerializer
 
-    def post(self, request):
+    def get_serializer_class(self):
+        if self.action == 'partial_update':
+            return ResetPasswordSerializer
+        else:
+            return SignUpEmailSerializer
+
+    def partial_update(self, request, *args, **kwargs):
+        serializer = ResetPasswordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        # get user for setting new password
+        temp_obj = get_object_or_404(Temp, code=serializer.data.get('temp').get('code'))
+        obj_user = get_object_or_404(User, email=temp_obj.email)
+        temp_obj.delete()
+        obj_user.set_password(serializer.data['password'])
+        obj_user.save()
+        request.data['username'] = obj_user.username
+        # send token of user
+        return set_cookie_response(request)
+
+    def create(self, request, *args, **kwargs):
         serializer = SignUpEmailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         # check that this email try to signup or not
@@ -202,28 +221,6 @@ class RequestResetPassword(generics.GenericAPIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class ResetPassword(generics.GenericAPIView):
-    """
-        write the code that you get before from server and enter new password.
-    """
-    permission_classes = (IsAuthenticated,)
-    serializer_class = ResetPasswordSerializer
-
-    def patch(self, request):
-        print(request.data)
-        serializer = ResetPasswordSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        # get user for setting new password
-        temp_obj = get_object_or_404(Temp, code=serializer.data.get('temp').get('code'))
-        obj_user = get_object_or_404(User, email=temp_obj.email)
-        temp_obj.delete()
-        obj_user.set_password(serializer.data['password'])
-        obj_user.save()
-        request.data['username'] = obj_user.username
-        # send token of user
-        return set_cookie_response(request)
-
-
 class SearchCity(generics.ListAPIView):
     serializer_class = CitySerializer
     permission_classes = (AllowAny,)
@@ -255,3 +252,11 @@ class ProfileUser(viewsets.ModelViewSet):
             Returns the object the view is displaying.
         """
         return self.request.user
+
+
+# def get_redirected(queryset_or_class, lookups, validators):
+#     obj = get_object_or_404(queryset_or_class, **lookups)
+#     for key, value in validators.items():
+#         if value != getattr(obj, key):
+#             return obj
+#     return obj
