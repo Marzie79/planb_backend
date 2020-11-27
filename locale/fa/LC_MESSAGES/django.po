@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 02:44+0330\n"
+"POT-Creation-Date: 2020-11-27 15:14+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,14 +48,8 @@ msgstr "زن"
 msgid "Username"
 msgstr "نام کاربری"
 
-msgid "A user have existed already with this username."
-msgstr "کاربر با این نام کاربری از قبل موجود است."
-
 msgid "Email"
 msgstr "ایمیل"
-
-msgid "A user have existed already with this email address."
-msgstr "کابر با این آدرس ایمیل از قبل موجود است."
 
 msgid "Phone_Number"
 msgstr "شماره تلفن"
@@ -87,9 +81,6 @@ msgstr "نام دانشگاه"
 msgid "City"
 msgstr "شهر"
 
-msgid "Province"
-msgstr "استان"
-
 msgid "Skill"
 msgstr "مهارت"
 
@@ -110,6 +101,9 @@ msgstr "کد استان"
 
 msgid "Provinces"
 msgstr "استان ها"
+
+msgid "Province"
+msgstr "استان"
 
 msgid "City_name"
 msgstr "نام شهر"
@@ -226,6 +220,9 @@ msgstr "میانی ها"
 msgid "The photo size should be more than %(max_size)d MB.s"
 msgstr "حجم عکس نباید بیشتر از %(max_size)d مگابایت باشد."
 
+msgid "example"
+msgstr "نمونه"
+
 msgid "Must only contain English letters and numbers."
 msgstr "تنها باید شامل حروف و اعداد انگلیسی باشد."
 
@@ -251,3 +248,6 @@ msgid "EmailTimeError"
 msgstr ""
 "در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش "
 "فرمایید.'"
+
+#~ msgid "A user have existed already with this username."
+#~ msgstr "کاربر با این نام کاربری از قبل موجود است."

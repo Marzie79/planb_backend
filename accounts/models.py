@@ -2,7 +2,7 @@ import jdatetime
 from datetime import datetime
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
-from phonenumber_field import modelfields
+from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import validate_email
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
@@ -11,9 +11,8 @@ from core.util import ImageUtil
 from accounts import validators
 from .managers import UserManager
 
-
-class PhoneNumberFieldTranslate(modelfields.PhoneNumberField):
-    default_validators = [validators.validate_international]
+# class PhoneNumberFieldTranslate(modelfields.PhoneNumberField):
+#     default_validators = [validators.validate_international]
 
 
 # use this for models have image field
@@ -66,14 +65,12 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
     )
 
     username = models.CharField(_("Username"), max_length=30, unique=True,
-                                validators=[validators.CHAR_REGEX_VALIDATOR],
-                                error_messages={'unique': _("A user have existed already with this username.")})
+                                validators=[validators.CHAR_REGEX_VALIDATOR],)
     password = models.CharField(_("Password"), max_length=128)
-    email = models.EmailField(_("Email"), max_length=254, unique=True,
-                              error_messages={'unique': _('A user have existed already with this email address.')})
-    phone_number = PhoneNumberFieldTranslate(_("Phone_Number"), null=True, blank=True, unique=True)
-    first_name = models.CharField(_("First_Name"), max_length=30, validators=[validators.Persian_REGEX_VALIDATOR])
-    last_name = models.CharField(_("Last_Name"), max_length=30, validators=[validators.Persian_REGEX_VALIDATOR])
+    email = models.EmailField(_("Email"), max_length=254, unique=True,)
+    phone_number = PhoneNumberField(_("Phone_Number"), null=True, blank=True, unique=True)
+    first_name = models.CharField(_("First_Name"), max_length=30, validators=[validators.PERSIAN_REGEX_VALIDATOR])
+    last_name = models.CharField(_("Last_Name"), max_length=30, validators=[validators.PERSIAN_REGEX_VALIDATOR])
     gender = models.CharField(_("Gender"), max_length=6, choices=GENDER_CHOICES, null=True, blank=True)
     # avatar = models.ImageField(_("Avatar"), null=True, blank=True, upload_to='avatars/')
     avatar_thumbnail = ProcessedImageField(**IMAGE_PROCESS)
@@ -85,8 +82,6 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
     university = models.ForeignKey("University", verbose_name=_("University_Name"), on_delete=models.SET_NULL,
                                    null=True, blank=True)
     city = models.ForeignKey("City", verbose_name=_("City"), on_delete=models.SET_NULL, null=True, blank=True)
-    province = models.ForeignKey("Province", verbose_name=_("Province"), on_delete=models.SET_NULL, null=True,
-                                 blank=True)
     skills = models.ManyToManyField("Skill", verbose_name=_("Skill"), blank=True)
 
     class Meta:

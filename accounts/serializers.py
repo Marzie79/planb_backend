@@ -88,7 +88,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     #     if validate_email(value):
     #         raise serializers.ValidationError({'email': _('The address email entered is invalid :))')})
     #     return value
-
+    # TODO this is megabyte ? !!!!
     def validate_avatar_url(self, value):
         MAX_FILE_SIZE = 12000000
         if value.size > MAX_FILE_SIZE:
