@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-19 18:23+0330\n"
+"POT-Creation-Date: 2020-11-29 17:49+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -216,14 +216,30 @@ msgstr "میانی"
 msgid "Temps"
 msgstr "میانی ها"
 
+#, python-format
+msgid "The photo size should be more than %(max_size)d MB.s"
+msgstr "حجم عکس نباید بیشتر از %(max_size)d مگابایت باشد."
+
+msgid "example"
+msgstr "نمونه"
+
+msgid "Must only contain English letters and numbers."
+msgstr "تنها باید شامل حروف و اعداد انگلیسی باشد."
+
+msgid "It should only contain English letters and numbers and special letters."
+msgstr "تنها باید شامل حروف و اعداد انگلیسی و حروف خاص باشد."
+
+msgid "It should only contain Persian letters."
+msgstr "تنها باید شامل حروف فارسی باشد."
+
+msgid "The phone number entered is not valid."
+msgstr "شماره تلفن وارد شده معتبر نمی باشد."
+
 msgid "EmailDoesExist"
 msgstr "حسابی با این ایمیل موجود می باشد."
 
 msgid "ServerError"
 msgstr "خطایی رخ داده است لطفا دوباره امتحان کنید."
-
-msgid "InValidLink"
-msgstr "لینک وارد شده نامعتبر است."
 
 msgid "User_Email_Error"
 msgstr "کاربری با این ایمیل موجود نمی‌باشد"
@@ -233,39 +249,5 @@ msgstr ""
 "در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش "
 "فرمایید.'"
 
-#:  .\accounts\serializers.py
-msgid "Only the persion letters is valid."
-msgstr "تنها حروف فارسی مجاز است."
-
-msgid "The username should be included letters and numbers."
-msgstr "نام کاربری تنها باید شامل حروف و اعداد انگلیسی باشد."
-
-msgid "The user have existed already with this username."
-msgstr "کاربر با این نام کاربری از قبل موجود است."
-
-msgid "The user have existed already with this address email."
-msgstr "کابر با این آدرس ایمیل از قبل موجود است."
-
-msgid "The user have existed already with this phone number."
-msgstr "کاربر با این تلفن همراه از قبل موجود است."
-
-msgid "The photo size should be more than {} MB."
-msgstr "حجم عکس نباید بیشتر از %(max_size)d مگابایت باشد."
-
-msgid "The address email entered is invalid.s"
-msgstr "آدرس ایمیل وارد شده نامعتبر است."
-
-#~ msgid "User_Information"
-#~ msgstr "اطلاعات شخص"
-
-#~ msgid "Accesses"
-#~ msgstr "دسترسی ها"
-
-#~ msgid "Address"
-#~ msgstr "آدرس"
-
-#~ msgid "Priority"
-#~ msgstr "ویژگی ها"
-
-#~ msgid "Avatar"
-#~ msgstr "عکس"
+#~ msgid "A user have existed already with this username."
+#~ msgstr "کاربر با این نام کاربری از قبل موجود است."

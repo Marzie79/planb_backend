@@ -1,4 +1,5 @@
 import os
+import sys
 import locale
 from pathlib import Path
 from datetime import timedelta
@@ -38,6 +39,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'jalali_date',
     'imagekit',
+    'django_filters',
+    
     # 'django_cleanup',
 ]
 
@@ -115,6 +118,13 @@ DATABASES = {
         'PASSWORD': 'planB_pass_1399',
     }
 }
+
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+
 
 SIMPLE_JWT = {
     # How long token is valid
