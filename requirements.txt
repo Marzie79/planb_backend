@@ -11,6 +11,7 @@ Django==3.1.2
 django-appconf==1.0.4
 django-cleanup==5.1.0
 django-cors-headers==3.5.0
+django-environ==0.4.5
 django-filter==2.4.0
 django-imagekit==4.0.2
 django-jalali==4.0.0

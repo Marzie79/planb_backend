@@ -1,9 +1,10 @@
 from enum import Enum
+from planB_backend.settings import local
 
 
 class Email(Enum):
-    EMAIL_ADDRESS = 'planbkhu@gmail.com'
-    PASSWORD = '1234planB'
+    EMAIL_ADDRESS = local.EMAIL_HOST_USER
+    PASSWORD = local.EMAIL_HOST_PASSWORD
 
 
 class FrontURL(Enum):
