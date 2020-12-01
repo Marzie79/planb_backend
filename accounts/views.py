@@ -157,7 +157,6 @@ class VerifyAccount(viewsets.ModelViewSet):
         user = UserSerializer(data=serialize.data['user'])
         user.is_valid(raise_exception=True)
         user.save()
-
         request.data['username'] = serialize.data.get('user').get('username')
         request.data['password'] = serialize.data.get('user').get('password')
         # send token of user

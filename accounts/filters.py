@@ -2,8 +2,8 @@ from django_filters import rest_framework as filters
 from accounts.models import Province, City, University
 
 class ProvinceFilter(filters.FilterSet):
-    title = filters.CharFilter(field_name="name")
-    code = filters.NumberFilter(field_name="code")
+    name = filters.CharFilter(field_name="name")
+    code = filters.CharFilter(field_name="code")
 
     class Meta:
         model: Province
@@ -11,8 +11,8 @@ class ProvinceFilter(filters.FilterSet):
 
 
 class CityFilter(filters.FilterSet):
-    title = filters.CharFilter(field_name="name")
-    code = filters.NumberFilter(field_name="code")
+    name = filters.CharFilter(field_name="name")
+    code = filters.CharFilter(field_name="code")
     province = filters.NumberFilter(field_name="province__id")
 
     class Meta:
@@ -21,8 +21,8 @@ class CityFilter(filters.FilterSet):
 
 
 class UniversityFilter(filters.FilterSet):
-    title = filters.CharFilter(field_name="name")
-    code = filters.NumberFilter(field_name="code")
+    name = filters.CharFilter(field_name="name")
+    code = filters.CharFilter(field_name="code")
     city = filters.NumberFilter(field_name="city__id")
 
     class Meta:
