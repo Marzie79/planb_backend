@@ -40,7 +40,7 @@ class ProvinceAdmin(admin.ModelAdmin):
 
 class ProjectsAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ('name', 'creator', 'situation', 'end_date_decorated')
-    fields = ('name', 'creator', 'description', 'fields', 'last_modified_date', 'start_date', 'end_date')
+    fields = ('name', 'creator', 'description', 'last_modified_date', 'start_date', 'end_date')
 
 
 admin.site.register(Temp)

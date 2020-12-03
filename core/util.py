@@ -4,13 +4,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from accounts.enums import *
 import os
-from django_cleanup.cache import cleanup_fields
-from django.db.models.signals import pre_save,post_save
-from django_cleanup import cache
-from django_cleanup.handlers import delete_old_post_save
 from uuid import uuid4
 from django.utils.deconstruct import deconstructible
-from accounts.models import *
+
 
 def sending_email(validation, receiver, sender=Email.EMAIL_ADDRESS.value, sender_password=Email.PASSWORD.value):
     try:
@@ -48,13 +44,12 @@ def sending_email(validation, receiver, sender=Email.EMAIL_ADDRESS.value, sender
         return {'message': 'try again.'}
 
 
-
 @deconstructible
 class ImageUtil:
 
     def __call__(self, instance, filename):
         ext = filename.split('.')[-1]
-        attribute = getattr(instance,instance.getImageName())
+        attribute = getattr(instance, instance.getImageName())
         # get filename
         if attribute:
             filename = '{}.{}'.format(attribute, ext)
@@ -63,5 +58,3 @@ class ImageUtil:
             filename = '{}.{}'.format(uuid4().hex, ext)
         # return the whole path to the file
         return os.path.join(instance.getUploadTo(), filename)
-
-

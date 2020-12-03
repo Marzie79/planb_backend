@@ -28,7 +28,7 @@ class Command(BaseCommand):
             # management.call_command('shell',
             #                         command=shellCommand)
             # management.call_command('dbbackup')
-            management.call_command('makemessages', locale=['fa', ], ignore=['venv/*', ],*['--no-location'])
+            management.call_command('makemessages', locale=['fa', ], ignore=['venv/*', ], *['--no-location'])
             management.call_command('compilemessages', locale=['fa', ], ignore=['venv/*', ])
             management.call_command('makemigrations')
             management.call_command('migrate')
