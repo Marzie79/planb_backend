@@ -78,7 +78,7 @@ class VerifyAccount(viewsets.ModelViewSet):
 
     @swagger_auto_schema(manual_parameters=[test_param, ],
                          operation_description="user click on a link and you should get code from it and send code for server.\n\r use in : 1. verify email 2. reset password.")
-    def list(self, request, *args, **kwargs):
+    def retrieve(self, request, *args, **kwargs):
         serialize = TempSerializer(get_object_or_404(Temp, code=request.GET.get('code')))
         # check that user send correct data
         if serialize.is_valid:
