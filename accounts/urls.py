@@ -1,5 +1,9 @@
 from django.urls import path
-from .views import *
+from .views.view_list import *
+from .views.view_token import *
+from .views.view_token import *
+from .views.view_signup import *
+from .views.view_profile import *
 
 urlpatterns = [
     path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),

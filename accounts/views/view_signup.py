@@ -5,74 +5,15 @@ from django.utils import timezone
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 from rest_framework import status, generics, viewsets
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework import filters
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 # don't use rest_framework.renderers.JsonRenderer !!!
 from accounts.enums import *
 from accounts.serializers import *
-from .filters import ProvinceFilter, CityFilter, UniversityFilter
+from accounts.views.view_token import set_cookie_response
 from core.util import sending_email
 import datetime
-
-
-def set_cookie_response(request):
-    ser = MyTokenObtainPairSerializer(data=request.data,
-                                      context={'request': request})
-    ser.is_valid(raise_exception=True)
-    jwt_token = ser.validated_data
-    # make jwt token
-    access_token = {'access': jwt_token['access']}
-    # put access token on response
-    response = Response(access_token)
-    # create cookie and save refresh token on value and set http only flag
-    response.set_cookie("token", jwt_token['refresh'], httponly=True,
-                        expires=timezone.now() + timezone.timedelta(days=180))
-    return response
-
-
-# create token and use this view as login view
-class MyTokenObtainPairView(TokenObtainPairView):
-    """
-    create token cookie that save refresh in the value of cookie and send access token for authorization.
-    """
-
-    def post(self, request, *args, **kwargs):
-        return set_cookie_response(request=request)
-
-
-class MyTokenRefreshView(TokenRefreshView):
-    """
-       when is sent empty post , server send new access token if refresh(saves in the cookie) validate correctly.
-    """
-
-    def post(self, request, *args, **kwargs):
-        try:
-            ser = TokenRefreshSerializer()
-            # get cookie and refresh token
-            refresh = request.COOKIES['token']
-            jwt_refresh = {'refresh': str(refresh)}
-            # create new access token
-            jwt_token = {'access': ser.validate(jwt_refresh)}
-            # send access token
-            return Response(jwt_token['access'])
-        except:
-            return Response({'error': 'you should login again'}, status=status.HTTP_401_UNAUTHORIZED)
-
-
-class Logout(generics.GenericAPIView):
-    """
-        token cookie will be deleted when user logs out.
-    """
-    permission_classes = (IsAuthenticated,)
-
-    def post(self, request):
-        response = Response("logout user")
-        response.delete_cookie('token')
-        return response
 
 
 class SignUp(generics.GenericAPIView):
@@ -220,44 +161,3 @@ class ResetPassword(viewsets.ModelViewSet):
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             data={'message': _("ServerError")})
         return Response(status=status.HTTP_200_OK)
-
-
-class SearchCity(generics.ListAPIView):
-    serializer_class = CitySerializer
-    permission_classes = (AllowAny,)
-    filterset_class = CityFilter
-    queryset = City.objects.all()
-
-
-class SearchProvince(generics.ListAPIView):
-    serializer_class = ProvinceSerializer
-    permission_classes = (AllowAny,)
-    filterset_class = ProvinceFilter
-    queryset = Province.objects.all()
-
-
-class SearchUniversity(generics.ListAPIView):
-    serializer_class = UniversitySerializer
-    permission_classes = (AllowAny,)
-    filterset_class = UniversityFilter
-    queryset = University.objects.all()
-
-
-class ProfileUser(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    permission_classes = (IsAuthenticated,)
-    serializer_class = ProfileSerializer
-
-    def get_object(self):
-        """
-            Returns the object the view is displaying.
-        """
-        return self.request.user
-
-
-# def get_redirected(queryset_or_class, lookups, validators):
-#     obj = get_object_or_404(queryset_or_class, **lookups)
-#     for key, value in validators.items():
-#         if value != getattr(obj, key):
-#             return obj
-#     return obj
