@@ -2,7 +2,7 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny
 
 from accounts.serializers import *
-from accounts.filters import ProvinceFilter, CityFilter, UniversityFilter
+from accounts.filters import ProvinceFilter, CityFilter, UniversityFilter, SkillFilter
 
 
 class SearchCity(generics.ListAPIView):
@@ -24,3 +24,10 @@ class SearchUniversity(generics.ListAPIView):
     permission_classes = (AllowAny,)
     filterset_class = UniversityFilter
     queryset = University.objects.all()
+
+
+class SearchSkill(generics.ListAPIView):
+    serializer_class = SkillSerializer
+    permission_classes = (AllowAny,)
+    filterset_class = SkillFilter
+    queryset = Skill.objects.all()
