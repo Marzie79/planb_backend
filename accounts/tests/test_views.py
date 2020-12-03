@@ -12,6 +12,7 @@ from django.utils.crypto import get_random_string
 from django.utils import timezone
 from accounts.models import User, Temp
 from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 
 SIGNIN_URL = reverse('token_obtain_pair')
 REFRESH_URL = reverse('token_refresh')
@@ -117,7 +118,6 @@ class VerifyAccountTest(APITestCase):
     def test_temp_is_not_existed_post(self):
         self.post_data['temp.code'] = '41324'
         response = self.client.post(reverse('verify'), self.post_data)
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
@@ -235,6 +235,19 @@ class TestMyTokenRefreshView(APITestCase):
             self.assertIsNone(response.data['access'])
         except:
             pass
+
+    def test_expire(self):
+        initial_datetime = datetime.datetime.now()
+        with freeze_time(initial_datetime) as frozen_datetime:
+            frozen_datetime.tick()
+            initial_datetime += settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'] + datetime.timedelta(days=1)
+            self.client.cookies = SimpleCookie()
+            response = self.client.post(REFRESH_URL, {})
+            self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+            try:
+                self.assertIsNone(response.data['access'])
+            except:
+                pass
 
 
 class TestLogout(APITestCase):
