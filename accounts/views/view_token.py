@@ -2,6 +2,7 @@ from django.utils import timezone
 from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
@@ -38,19 +39,19 @@ class MyTokenRefreshView(TokenRefreshView):
     """
        when is sent empty post , server send new access token if refresh(saves in the cookie) validate correctly.
     """
-
+    serializer_class = None
     def post(self, request, *args, **kwargs):
+        # get cookie and refresh token
         try:
-            ser = TokenRefreshSerializer()
-            # get cookie and refresh token
             refresh = request.COOKIES['token']
             jwt_refresh = {'refresh': str(refresh)}
-            # create new access token
-            jwt_token = {'access': ser.validate(jwt_refresh)}
-            # send access token
-            return Response(jwt_token['access'])
-        except:
-            return Response({'error': 'you should login again'}, status=status.HTTP_401_UNAUTHORIZED)
+            ser = TokenRefreshSerializer(data=jwt_refresh)
+            ser.is_valid(raise_exception=True)
+        except Exception as e:
+            raise InvalidToken(e.args[0])
+        # create new access token
+        # send access token
+        return Response(ser.validated_data)
 
 
 class Logout(generics.GenericAPIView):
