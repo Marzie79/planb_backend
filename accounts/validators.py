@@ -13,7 +13,7 @@ PERSIAN_REGEX_VALIDATOR = RegexValidator(regex='^[\u0600-\u06FF\s]+$', message=P
 
 PHONE_NUMBER_REGEX_VALIDATOR_MESSAGE = _("The phone number entered is not valid.")
 
-
+JWT_NOT_FOUND_MESSAGE = _("No active account found with the given credentials")
 #
 # def validate_international(value):
 #     phone_number = to_python(value)
