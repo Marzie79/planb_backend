@@ -95,3 +95,9 @@ class ProfileSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {'avatar': _('The photo size should be more than %(max_size)d MB.s') % {'max_size': MAX_FILE_SIZE}})
         return value.url
+
+
+class ProfilePictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('avatar_thumbnail',)

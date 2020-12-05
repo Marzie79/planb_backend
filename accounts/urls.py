@@ -3,7 +3,7 @@ from .views.view_list import *
 from .views.view_token import *
 from .views.view_token import *
 from .views.view_signup import *
-from .views.view_profile import *
+from .views.view_profile import ProfilePicture, ProfileUser
 
 urlpatterns = [
     path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -17,4 +17,5 @@ urlpatterns = [
     path('list/provinces/', SearchProvince.as_view()),
     path('list/universities/', SearchUniversity.as_view()),
     path('profile/', ProfileUser.as_view({'get': 'retrieve', 'patch': 'partial_update'}), name='auth_profile'),
+    path('profile/picture', ProfilePicture.as_view({'post': 'partial_update',}),)
 ]

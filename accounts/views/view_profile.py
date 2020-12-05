@@ -1,5 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+from djangorestframework_camel_case.parser import CamelCaseMultiPartParser
 
 from accounts.serializers import *
 
@@ -21,3 +22,11 @@ class ProfileUser(viewsets.ModelViewSet):
 #         if value != getattr(obj, key):
 #             return obj
 #     return obj
+
+
+class ProfilePicture(ProfileUser):
+    serializer_class = ProfilePictureSerializer
+    parser_classes = [CamelCaseMultiPartParser,]
+
+    def post(self, request):
+        return Response({'received data': request.data})
