@@ -27,6 +27,3 @@ class ProfileUser(viewsets.ModelViewSet):
 class ProfilePicture(ProfileUser):
     serializer_class = ProfilePictureSerializer
     parser_classes = [CamelCaseMultiPartParser,]
-
-    def post(self, request):
-        return Response({'received data': request.data})
