@@ -1,7 +1,10 @@
-from rest_framework import serializers
-from accounts.models import *
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 import re
+from rest_framework import serializers
+from rest_framework.validators import UniqueForYearValidator
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.utils.translation import gettext as _
+from accounts.models import *
+from core.validators import FileSizeValidator, MAX_IMAGE_SIZE
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -22,7 +25,8 @@ class ResetPasswordUserSerializer(serializers.ModelSerializer):
 class TempSerializer(serializers.ModelSerializer):
     class Meta:
         model = Temp
-        fields = ('code', 'email',)
+        fields = ('code', 'email')
+        extra_kwargs = {'email': {'read_only': True}}
 
 
 class SignUpSerializer(serializers.Serializer):
@@ -53,3 +57,52 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             attrs['username'] = user.username
         # return access and refresh token
         return super().validate(attrs)
+
+
+class ProvinceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Province
+        fields = ('code', 'name')
+
+
+class CitySerializer(serializers.ModelSerializer):
+    province = ProvinceSerializer()
+
+    class Meta:
+        model = City
+        fields = ('code', 'name', 'province')
+
+
+class UniversitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = University
+        fields = ('code', 'name', 'city')
+
+
+class SkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skill
+        fields = ('code', 'name', 'skill')
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    # city_id = serializers.PrimaryKeyRelatedField(queryset=City.objects.all(), source='city', write_only=True)
+    # city =  CitySerializer()
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'username', 'email', 'university', 'city', 'phone_number', 'description')
+
+    # def validate_email(self, value):
+    #     if validate_email(value):
+    #         raise serializers.ValidationError({'email': _('The address email entered is invalid :))')})
+    #     return value
+
+class ProfilePictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('avatar',)
+        validators = [
+            FileSizeValidator(
+                size=MAX_IMAGE_SIZE,
+            )
+        ]

@@ -1,30 +1,28 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from .models import *
+from django.utils.translation import gettext_lazy as _
 from jalali_date.admin import ModelAdminJalaliMixin
+from .forms import UserForm
+from .models import *
 
-admin.site.site_header = 'صفحه ادمین'
-admin.site.index_title = 'مدیریت مدل ها'
+admin.site.site_header = _("Admin_page")
+admin.site.index_title = _("Manage_Model")
 
 
 class UserProjectsInline(admin.TabularInline):
-    model = User_Project
+    model = UserProject
     extra = 0
     fields = ('project',)
 
 
 class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'is_active')
-    readonly_fields = ('date_joined_decorated',)
+    readonly_fields = ('joined_date_decorated',)
     list_filter = ('is_active',)
-    fieldsets = (
-        (None, {
-            'fields': ('username', 'email', 'password', 'date_joined_decorated')}),
-        ('اطلاعات شخص', {'fields': (
-            'first_name', 'last_name', 'avatar', 'gender', 'description')}),
-        ('دسترسی ها', {'fields': ('is_admin', 'is_active')}),
-        ('آدرس', {'fields': ('city', 'university')}),
-        ('مهارت ها', {'fields': ('skills',)}))
+    form = UserForm
+    fields = ('username', 'email', 'password1', 'password2', 'joined_date_decorated',
+              'first_name', 'last_name', 'avatar', 'gender', 'description',
+              'is_superuser', 'is_active', 'city', 'university', 'skills',)
     inlines = [UserProjectsInline]
 
 
@@ -36,16 +34,13 @@ class CityInline(admin.TabularInline):
 
 class ProvinceAdmin(admin.ModelAdmin):
     list_display = ('code', 'name')
-    fieldsets = ((None, {'fields': ('code', 'name')}),)
+    fields = ('code', 'name')
     inlines = [CityInline]
 
 
-class ProjectsAdmin(admin.ModelAdmin):
-    list_display = ('name', 'creator', 'situation', 'duration')
-    readonly_fields = ('date_created_decorated',)
-    fieldsets = ((None, {'fields': ('name', 'creator', 'description')}),
-                 ('ویژگی ها', {'fields': ('skills', 'situation')}),
-                 (None, {'fields': ('date_created_decorated', 'duration')}))
+class ProjectsAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
+    list_display = ('name', 'creator', 'situation', 'end_date_decorated')
+    fields = ('name', 'creator', 'description', 'last_modified_date', 'start_date', 'end_date')
 
 
 admin.site.register(Temp)
