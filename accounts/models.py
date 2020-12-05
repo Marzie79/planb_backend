@@ -7,8 +7,8 @@ from django.core.validators import validate_email
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
-from core.util import ImageUtil
-from accounts import validators
+from core.utils import ImageUtils
+from core import validators
 from .managers import UserManager
 
 # class PhoneNumberFieldTranslate(modelfields.PhoneNumberField):
@@ -21,7 +21,7 @@ from .managers import UserManager
 # and delete signal , resize image work for it !
 class AbstractImageModel(models.Model):
     IMAGE_PROCESS = {
-        "upload_to": ImageUtil(),
+        "upload_to": ImageUtils(),
         "processors": [ResizeToFit(200, 200)],
         "format": 'JPEG',
         "options": {'quality': 60},
@@ -49,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
 
     @classmethod
     def getImageField(cls):
-        return "avatar_thumbnail"
+        return "avatar"
 
     @classmethod
     def getImageName(clsc):
@@ -73,7 +73,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
     last_name = models.CharField(_("Last_Name"), max_length=30, validators=[validators.PERSIAN_REGEX_VALIDATOR])
     gender = models.CharField(_("Gender"), max_length=6, choices=GENDER_CHOICES, null=True, blank=True)
     # avatar = models.ImageField(_("Avatar"), null=True, blank=True, upload_to='avatars/')
-    avatar_thumbnail = ProcessedImageField(**IMAGE_PROCESS)
+    avatar = ProcessedImageField(**IMAGE_PROCESS)
     is_active = models.BooleanField(_("Is_Active"), default=True)
     # is_superuser is already used into AbstractBaseUser and only i override it instead of create otherfield
     is_superuser = models.BooleanField(_("Is_Superuser"), default=False)

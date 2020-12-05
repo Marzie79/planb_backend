@@ -1,8 +1,10 @@
 import re
 from rest_framework import serializers
+from rest_framework.validators import UniqueForYearValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.utils.translation import gettext as _
 from accounts.models import *
+from core.validators import FileSizeValidator, MAX_IMAGE_SIZE
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -94,16 +96,13 @@ class ProfileSerializer(serializers.ModelSerializer):
     #     if validate_email(value):
     #         raise serializers.ValidationError({'email': _('The address email entered is invalid :))')})
     #     return value
-    # TODO this is megabyte ? !!!!
-    def validate_avatar_url(self, value):
-        MAX_FILE_SIZE = 12000000
-        if value.size > MAX_FILE_SIZE:
-            raise serializers.ValidationError(
-                {'avatar': _('The photo size should be more than %(max_size)d MB.s') % {'max_size': MAX_FILE_SIZE}})
-        return value.url
-
 
 class ProfilePictureSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('avatar_thumbnail',)
+        fields = ('avatar',)
+        validators = [
+            FileSizeValidator(
+                size=MAX_IMAGE_SIZE,
+            )
+        ]

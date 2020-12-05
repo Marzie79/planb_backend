@@ -1,6 +1,10 @@
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
 
+from .enums import FileSize
+from .utils import FileUtils
+##db validators
+from rest_framework import serializers
 
 ENGLISH_REGEX_VALIDATOR_MESSAGE = _("Must only contain English letters and numbers.")
 ENGLISH_REGEX_VALIDATOR = RegexValidator(regex='^[a-zA-Z0-9]+$', message=ENGLISH_REGEX_VALIDATOR_MESSAGE)
@@ -11,14 +15,23 @@ CHAR_REGEX_VALIDATOR = RegexValidator(regex=r'^[\w.@+-]+$', message=CHAR_REGEX_V
 PERSIAN_REGEX_VALIDATOR_MESSAGE = _("It should only contain Persian letters.")
 PERSIAN_REGEX_VALIDATOR = RegexValidator(regex='^[\u0600-\u06FF\s]+$', message=PERSIAN_REGEX_VALIDATOR_MESSAGE)
 
+##translated message
 PHONE_NUMBER_REGEX_VALIDATOR_MESSAGE = _("The phone number entered is not valid.")
-
 JWT_NOT_FOUND_MESSAGE = _("No active account found with the given credentials")
-#
-# def validate_international(value):
-#     phone_number = to_python(value)
-#     if phone_number and not phone_number.is_valid():
-#         raise ValidationError(
-#             _("The phone number entered is not valid."), code="invalid_phone_number"
-#         )
 
+
+##serializer validators
+
+class FileSizeValidator:
+    def __init__(self, size):
+        ## get size in megabyte
+        self.size = size
+
+    def __call__(self, file):
+        for key, value in file.items():
+            if value.size > FileUtils.convert_to_byte(self.size, 'MB'):
+                message = _('The photo size should be more than {} {}').format( self.size, FileSize['MB'].value)
+                raise serializers.ValidationError({key: [message]})
+
+# enums
+MAX_IMAGE_SIZE = 5  # 12000000

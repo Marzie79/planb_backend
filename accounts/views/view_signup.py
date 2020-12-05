@@ -12,7 +12,7 @@ from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 from accounts.enums import *
 from accounts.serializers import *
 from accounts.views.view_token import set_cookie_response
-from core.util import sending_email
+from core.utils import EmailUtils
 import datetime
 
 
@@ -55,7 +55,7 @@ class SignUp(generics.GenericAPIView):
         else:
             url = FrontURL.ROOT.value + FrontURL.SIGNUP.value + obj.code
 
-        message = sending_email(validation=url, receiver=obj.email)
+        message = EmailUtils.sending_email(validation=url, receiver=obj.email)
         if message is not None:
             obj.delete()
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -155,7 +155,7 @@ class ResetPassword(viewsets.ModelViewSet):
                                       code=get_random_string(length=16))
 
         url = request.headers['Origin'] + FrontURL.FORGET_PASSWORD.value + obj.code
-        message = sending_email(validation=url, receiver=obj.email)
+        message = EmailUtils.sending_email(validation=url, receiver=obj.email)
         if message is not None:
             obj.delete()
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,

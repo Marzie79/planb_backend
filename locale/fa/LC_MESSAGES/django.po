@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-04 21:16+0330\n"
+"POT-Creation-Date: 2020-12-05 23:01+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -216,27 +216,8 @@ msgstr "میانی"
 msgid "Temps"
 msgstr "میانی ها"
 
-#, python-format
-msgid "The photo size should be more than %(max_size)d MB.s"
-msgstr "حجم عکس نباید بیشتر از %(max_size)d مگابایت باشد."
-
 msgid "example"
 msgstr "نمونه"
-
-msgid "Must only contain English letters and numbers."
-msgstr "تنها باید شامل حروف و اعداد انگلیسی باشد."
-
-msgid "It should only contain English letters and numbers and special letters."
-msgstr "تنها باید شامل حروف و اعداد انگلیسی و حروف خاص باشد."
-
-msgid "It should only contain Persian letters."
-msgstr "تنها باید شامل حروف فارسی باشد."
-
-msgid "The phone number entered is not valid."
-msgstr "شماره تلفن وارد شده معتبر نمی باشد."
-
-msgid "No active account found with the given credentials"
-msgstr "رمز عبور یا نام کاربری نامعتبر است"
 
 msgid "EmailDoesExist"
 msgstr "حسابی با این ایمیل موجود می باشد."
@@ -251,6 +232,33 @@ msgid "EmailTimeError"
 msgstr ""
 "در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش "
 "فرمایید.'"
+
+msgid "Byte"
+msgstr ""
+
+msgid "Kilobyte"
+msgstr ""
+
+msgid "Megabyte"
+msgstr "مگابایت"
+
+msgid "Must only contain English letters and numbers."
+msgstr "تنها باید شامل حروف و اعداد انگلیسی باشد."
+
+msgid "It should only contain English letters and numbers and special letters."
+msgstr "تنها باید شامل حروف و اعداد انگلیسی و حروف خاص باشد."
+
+msgid "It should only contain Persian letters."
+msgstr "تنها باید شامل حروف فارسی باشد."
+
+msgid "The phone number entered is not valid."
+msgstr "شماره تلفن وارد شده معتبر نمی باشد."
+
+msgid "No active account found with the given credentials"
+msgstr "رمز عبور یا نام کاربری نامعتبر است."
+
+msgid "The photo size should be more than {} {}"
+msgstr "حجم عکس نباید بیشتر از {} {} باشد."
 
 #~ msgid "A user have existed already with this username."
 #~ msgstr "کاربر با این نام کاربری از قبل موجود است."

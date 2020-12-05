@@ -21,7 +21,7 @@ class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_filter = ('is_active',)
     form = UserForm
     fields = ('username', 'email', 'password1', 'password2', 'joined_date_decorated',
-              'first_name', 'last_name', 'avatar_thumbnail', 'gender', 'description',
+              'first_name', 'last_name', 'avatar', 'gender', 'description',
               'is_superuser', 'is_active', 'city', 'university', 'skills',)
     inlines = [UserProjectsInline]
 
