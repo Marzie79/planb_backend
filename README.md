@@ -35,6 +35,9 @@
         NAME: planBdb
         USER: planBuser
         PASSWORD: planB_pass_1399
+        
+#### for reset database:
+        python manage.py resetdb
 
 #### for backend developers : 
 use `pip freeze > requirements.txt` to add your libraries to site
