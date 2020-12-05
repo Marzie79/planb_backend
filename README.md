@@ -25,12 +25,6 @@
 
     In the System variables list, click Path, click Edit and then New. Add C:\Program Files\gettext-iconv\bin value.
 
-    Update the system PATH:
-
-    Control Panel > System > Advanced > Environment Variables
-
-    In the System variables list, click Pa
-
 ### Running the project (without docker)
 - Open a command line window and go to the backend's directory.
 - `pip install -r requirements.txt`

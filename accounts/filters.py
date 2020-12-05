@@ -28,3 +28,13 @@ class UniversityFilter(filters.FilterSet):
     class Meta:
         model: University
         fields = ['code','name','city']
+
+
+class SkillFilter(filters.FilterSet):
+    name = filters.CharFilter(field_name="name")
+    code = filters.CharFilter(field_name="code")
+    skill = filters.NumberFilter(field_name="skill__id")
+
+    class Meta:
+        model: University
+        fields = ['code', 'name', 'skill']

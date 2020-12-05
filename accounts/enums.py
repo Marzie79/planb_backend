@@ -10,4 +10,4 @@ class Email(Enum):
 class FrontURL(Enum):
     FORGET_PASSWORD = '/users/forget-password/verify?code='
     SIGNUP = '/users/signup/verify?code='
-    ROOT = 'http://1127.0.0.1:3000/'
+    ROOT = 'http://127.0.0.1:3000/'

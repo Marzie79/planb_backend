@@ -34,9 +34,8 @@ class Command(BaseCommand):
             management.call_command('migrate')
             # management.call_command('collectstatic')
             # management.call_command('check','--deploy')
-            # testCommand = 'import subprocess;import sys;subprocess.run("coverage run manage.py test");'
-            # management.call_command('shell',
-            #                          command=testCommand)
+            testCommand = 'import subprocess;import sys;subprocess.run("coverage run manage.py test");'
+           # management.call_command('shell', command=testCommand)
             port = 'localhost:8000'
             if kwargs['ip']:
                 port = kwargs['ip']

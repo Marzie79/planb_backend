@@ -77,6 +77,12 @@ class UniversitySerializer(serializers.ModelSerializer):
         fields = ('code', 'name', 'city')
 
 
+class SkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skill
+        fields = ('code', 'name', 'skill')
+
+
 class ProfileSerializer(serializers.ModelSerializer):
     # city_id = serializers.PrimaryKeyRelatedField(queryset=City.objects.all(), source='city', write_only=True)
     # city =  CitySerializer()
