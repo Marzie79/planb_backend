@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'jalali_date',
     'imagekit',
     'django_filters',
-
     # 'django_cleanup',
 ]
 
@@ -124,14 +123,11 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': False,
     # blacklist for refresh token that expires or not valid anymore
     'BLACKLIST_AFTER_ROTATION': True,
-
     # To use symmetric HMAC signing and verification
     'ALGORITHM': 'HS256',
     # to signed content of the token
     'SIGNING_KEY': SECRET_KEY,
-
     'VERIFYING_KEY': None,
-
     # send in header for the views need authentication
     'AUTH_HEADER_TYPES': ('Bearer',),
     # The database field from the user model that will be included in generated tokens to identify users
@@ -141,7 +137,6 @@ SIMPLE_JWT = {
     # to identify token type that uses in authentication
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
-
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
     #  object which specifies how long sliding tokens are valid to prove authentication
     'SLIDING_TOKEN_LIFETIME': timedelta(days=2),
@@ -152,18 +147,10 @@ SIMPLE_JWT = {
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
 
 JALALI_DATE_DEFAULTS = {

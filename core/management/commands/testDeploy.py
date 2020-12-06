@@ -16,11 +16,6 @@ class Command(BaseCommand):
             help='ip and port',
         )
 
-    # django-admin makemessages --locale=fa
-    # or
-    # django-admin makemessages --locale=fa --ignore=venv/*
-    # django-admin compilemessages
-
     def handle(self, *args, **kwargs):
         try:
             # shellCommand = 'import subprocess;import sys;subprocess.run("pip install -r ' + settings.BASE_DIR.replace(

@@ -1,13 +1,13 @@
 from django.test import TestCase
 from accounts.models import User, AbstractImageModel
-from model_mommy import mommy
+from model_bakery import baker
 from django.core.files.uploadedfile import SimpleUploadedFile
 import inspect
 
 
 class TestAbstractImageModel(TestCase):
     # it's so bad !
-    def test_all(self):
+    def test_properties(self):
         for subclass in AbstractImageModel.__subclasses__():
             self.assertIsNotNone(subclass.getUploadTo())
             try:
@@ -23,7 +23,7 @@ class TestAbstractImageModel(TestCase):
 # we don't test simple methods
 class TestUser(TestCase):
     def setUp(self):
-        self.model = mommy.make(User)
+        self.model = baker.make(User)
 
     def test_str(self):
         self.assertEqual(self.model.__str__(), self.model.first_name + ' ' + self.model.last_name)

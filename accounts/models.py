@@ -22,7 +22,7 @@ from .managers import UserManager
 class AbstractImageModel(models.Model):
     IMAGE_PROCESS = {
         "upload_to": ImageUtils(),
-        "processors": [ResizeToFit(200, 200)],
+        "processors": [ResizeToFit(400, 400)],
         "format": 'JPEG',
         "options": {'quality': 60},
         "default": None

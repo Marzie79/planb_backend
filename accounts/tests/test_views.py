@@ -1,7 +1,7 @@
 import datetime
 import json
 from freezegun import freeze_time
-from model_mommy import mommy
+from model_bakery import baker
 from http.cookies import SimpleCookie
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
@@ -18,23 +18,19 @@ SIGNIN_URL = reverse('token_obtain_pair')
 REFRESH_URL = reverse('token_refresh')
 LOGOUT_URL = reverse('logout')
 SIGNUP_URL = reverse('signup')
-REQUESTPASSWORD_URL = reverse('reset_password')
+REQUEST_PASSWORD_URL = reverse('reset_password')
 
 
 class ResetPasswordTest(APITestCase):
     def setUp(self):
         for i in range(1, 10):
-            user = mommy.make(User)
+            user = baker.make(User)
             Temp.objects.create(email=user.email, date=timezone.now(),
                                 code=get_random_string(length=16))
-        self.user = mommy.make(User)
-        self.user.email = "paryfardnim@gmail.com"
-        self.user.username = "nimapr"
+        self.user = baker.make(User, username="nimapr", email="paryfardnim@gmail.com")
         self.user.set_password('1234')
         self.user.save()
-        self.temp = mommy.make(Temp)
-        self.temp.email = 'paryfardnim@gmail.com'
-        self.temp.code = '1234'
+        self.temp = baker.make(Temp, email='paryfardnim@gmail.com', code='1234')
         self.temp.save()
         self.data = {
             "temp": {
@@ -48,11 +44,12 @@ class ResetPasswordTest(APITestCase):
         #     {'username': self.user.username, 'password': self.user.password}).validate()
         self.refreshtoken = RefreshToken.for_user(self.user)
         self.accesstoken = self.refreshtoken.access_token
+        self.url = REQUEST_PASSWORD_URL
 
     def test_password_changed(self):
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Bearer {}'.format(self.accesstoken))
-        response = client.patch(REQUESTPASSWORD_URL, self.jsondata, content_type="application/json")
+        response = client.patch(self.url, self.jsondata, content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsNotNone(response.data['access'])
         self.assertIsNotNone(client.cookies['token'])
@@ -62,26 +59,27 @@ class ResetPasswordTest(APITestCase):
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION='Bearer {}'.format(self.accesstoken))
         jsondata = json.dumps(self.data)
-        response = client.patch(REQUESTPASSWORD_URL, jsondata, content_type="application/json")
+        response = client.patch(self.url, jsondata, content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def user_is_not_authenticated(self):
-        response = self.client.patch(REQUESTPASSWORD_URL, self.jsondata, content_type="application/json")
+    def test_user_is_not_authenticated(self):
+        response = self.client.patch(self.url, self.jsondata, content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class VerifyAccountTest(APITestCase):
     def setUp(self):
+        self.url = reverse('verify')
         for i in range(1, 10):
-            another_user = mommy.make(User)
+            another_user = baker.make(User)
             Temp.objects.create(email=another_user.email, date=timezone.now(),
                                 code=get_random_string(length=16))
-        self.user = mommy.make(User)
+        self.user = baker.make(User)
         self.user.email = "paryfardnim@gmail.com"
         self.user.username = 'nimapr'
         self.user.set_password('1234')
         self.user.save()
-        temp = mommy.make(Temp)
+        temp = baker.make(Temp)
         temp.email = 'paryfardnim@gmail.com'
         temp.code = '1234'
         temp.save()
@@ -96,19 +94,19 @@ class VerifyAccountTest(APITestCase):
     def test_temp_is_existed_get(self):
         data = {'code': '1234'}
         user_temp = Temp.objects.get(code=data['code'])
-        response = self.client.get(reverse('verify'), data)
+        response = self.client.get(self.url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsNotNone(user_temp)
 
     def test_temp_is_not_existed_get(self):
         data = {'code': '4321'}
-        response = self.client.get(reverse('verify'), data)
+        response = self.client.get(self.url, data)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_user_is_created_post(self):
         user_temp = Temp.objects.create(code='12345', email="example@gmail.com")
         self.post_data['temp.code'] = user_temp.code
-        response = self.client.post(reverse('verify'), self.post_data)
+        response = self.client.post(self.url, self.post_data)
         user = User.objects.get(username='example')
         self.assertIsNotNone(user)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -117,61 +115,53 @@ class VerifyAccountTest(APITestCase):
 
     def test_temp_is_not_existed_post(self):
         self.post_data['temp.code'] = '41324'
-        response = self.client.post(reverse('verify'), self.post_data)
+        response = self.client.post(self.url, self.post_data)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
 class TestSignUpView(APITestCase):
     def setUp(self):
+        self.data = {'email': 'paryfardnim@gmail.com'}
+        self.url = SIGNUP_URL
         for i in range(1, 10):
-            user = mommy.make(User)
+            user = baker.make(User)
             Temp.objects.create(email=user.email, date=timezone.now(),
                                 code=get_random_string(length=16))
 
     def test_valid_sent_response_if_temp_is_not_existed(self):
-        data = {'email': 'paryfardnim@gmail.com'}
-        obj_user = User.objects.filter(email=data['email']).first()
-        temp = Temp.objects.filter(email=data['email']).first()
-        response = self.client.post(SIGNUP_URL, data)
+        obj_user = User.objects.filter(**self.data).first()
+        temp = Temp.objects.filter(**self.data).first()
+        response = self.client.post(self.url, self.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsNone(obj_user)
         self.assertIsNone(temp)
 
     def test_valid_sent_response_if_temp_is_existed(self):
         initial_datetime = datetime.datetime.now()
-        data = {'email': 'example@gmail.com'}
-        obj_user = User.objects.filter(email=data['email']).first()
-        temp_example = mommy.make(Temp)
-        temp_example.email = 'example@gmail.com'
-        temp_example.save()
+        exam_data = {'email': 'example@gmail.com'}
+        obj_user = User.objects.filter(**self.data).first()
+        temp_example = baker.make(Temp, **exam_data)
         with freeze_time(initial_datetime) as frozen_datetime:
             frozen_datetime.tick()
             initial_datetime += datetime.timedelta(minutes=3)
-            temp = Temp.objects.filter(email=data['email']).first()
-            response = self.client.post(SIGNUP_URL, data)
+            temp = Temp.objects.filter(**self.data).first()
+            response = self.client.post(self.url, exam_data)
             self.assertIsNone(obj_user)
             self.assertIsNotNone(temp)
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_User_is_existed(self):
-        data = {'email': 'paryfardnim@gmail.com'}
-        user = mommy.make(User)
-        user.email = data['email']
-        user.save()
-        obj_user = User.objects.filter(email=data['email']).first()
-        response = self.client.post(SIGNUP_URL, data)
+        user = baker.make(User, **self.data)
+        obj_user = User.objects.filter(**self.data).first()
+        response = self.client.post(self.url, self.data)
         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
         self.assertIsNotNone(response.data['error'])
         self.assertIsNotNone(obj_user)
 
     def test_time_expired_Temp(self):
-        data = {'email': 'paryfardnim@gmail.com'}
-        temp = mommy.make(Temp)
-        temp.email = data['email']
-        temp.data = datetime.datetime.now() - datetime.timedelta(minutes=3)
-        temp.save()
-        response = self.client.post(SIGNUP_URL, data)
-        temp_search = Temp.objects.filter(email=data['email']).first()
+        temp = baker.make(Temp, **self.data)
+        response = self.client.post(self.url, self.data)
+        temp_search = Temp.objects.filter(**self.data).first()
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(response.data['error'], 'EmailTimeError')
         self.assertIsNotNone(temp_search)
@@ -181,13 +171,14 @@ class TestSignUpView(APITestCase):
 class TestMyTokenObtainPairView(APITestCase):
 
     def setUp(self):
-        self.user = mommy.make(User)
+        self.user = baker.make(User)
         self.user.set_password('123')
         self.user.save()
+        self.url = SIGNIN_URL
 
     def test_token(self):
         data = {"username": self.user.username, "password": '123'}
-        response = self.client.post(SIGNIN_URL, data)
+        response = self.client.post(self.url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsNotNone(response.data['access'])
         self.assertIsNotNone(self.client.cookies['token'])
@@ -195,32 +186,33 @@ class TestMyTokenObtainPairView(APITestCase):
 
     def test_invalid_username(self):
         data = {"username": "mamad", "password": '123'}
-        response = self.client.post(SIGNIN_URL, data)
+        response = self.client.post(self.url, data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_incorrect_password(self):
         data = {"username": self.user.username, "password": '2131243545423442423'}
-        response = self.client.post(SIGNIN_URL, data)
+        response = self.client.post(self.url, data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class TestMyTokenRefreshView(APITestCase):
     def setUp(self):
-        self.user = mommy.make(User)
+        self.user = baker.make(User)
         self.user.set_password('123')
         self.user.save()
         data = {"username": self.user.username, "password": '123'}
-        response = self.client.post(SIGNIN_URL, data)
+        self.client.post(SIGNIN_URL, data)
+        self.url = REFRESH_URL
 
     def test_refresh(self):
-        response = self.client.post(REFRESH_URL, {})
+        response = self.client.post(self.url, {})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIsNotNone(response.data['access'])
         self.assertIsNotNone(self.client.cookies['token'])
 
     def test_http_only(self):
         self.client.cookies = SimpleCookie({'token': self.client.cookies['token'].value})
-        response = self.client.post(REFRESH_URL, {})
+        response = self.client.post(self.url, {})
         self.assertNotEqual(response.status_code, status.HTTP_200_OK)
         try:
             self.assertIsNone(response.data['access'])
@@ -229,7 +221,7 @@ class TestMyTokenRefreshView(APITestCase):
 
     def test_not_login(self):
         self.client.cookies = SimpleCookie()
-        response = self.client.post(REFRESH_URL, {})
+        response = self.client.post(self.url, {})
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         try:
             self.assertIsNone(response.data['access'])
@@ -252,16 +244,17 @@ class TestMyTokenRefreshView(APITestCase):
 
 class TestLogout(APITestCase):
     def setUp(self):
-        self.user = mommy.make(User)
+        self.user = baker.make(User)
         self.user.set_password('123')
         self.user.save()
         data = {"username": self.user.username, "password": '123'}
         response = self.client.post(SIGNIN_URL, data)
         self.token = response.data['access']
+        self.url = LOGOUT_URL
 
     def test_logout(self):
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
-        response = self.client.post(LOGOUT_URL, {})
+        response = self.client.post(self.url, {})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         try:
             self.assertIsNone(response.data['token'])
@@ -270,7 +263,7 @@ class TestLogout(APITestCase):
 
     def test_not_login(self):
         self.client.cookies = SimpleCookie()
-        response = self.client.post(LOGOUT_URL, {})
+        response = self.client.post(self.url, {})
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         try:
             self.assertIsNone(response.data['token'])
