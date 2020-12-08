@@ -29,7 +29,7 @@ class FileSizeValidator:
 
     def __call__(self, file):
         for key, value in file.items():
-            if value.size > FileUtils.convert_to_byte(self.size, 'MB'):
+            if value.size > FileUtils.convert_to_byte(self.size, FileSize['MB'].name):
                 message = _('The photo size should be more than {} {}').format( self.size, FileSize['MB'].value)
                 raise serializers.ValidationError({key: [message]})
 

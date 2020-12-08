@@ -4,21 +4,6 @@ from model_bakery import baker
 from django.core.files.uploadedfile import SimpleUploadedFile
 import inspect
 
-
-class TestAbstractImageModel(TestCase):
-    # it's so bad !
-    def test_properties(self):
-        for subclass in AbstractImageModel.__subclasses__():
-            self.assertIsNotNone(subclass.getUploadTo())
-            try:
-                imageName = subclass.getImageName()
-            except:
-                self.fail()
-            if imageName:
-                self.assertIsNotNone(getattr(subclass, imageName))
-            self.assertIsNotNone(getattr(subclass, subclass.getImageField()))
-
-
 # this is just example !
 # we don't test simple methods
 class TestUser(TestCase):
