@@ -21,6 +21,7 @@ schema_view = get_schema_view(
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('', include('accounts.urls')),
+                  path('', include('dashboard.urls')),
                   # comment versioning
                   # comment versioning
                   #      path('api/v1/', include((v1, 'v1'), namespace='v1')),

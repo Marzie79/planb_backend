@@ -97,6 +97,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     #         raise serializers.ValidationError({'email': _('The address email entered is invalid :))')})
     #     return value
 
+
 class ProfilePictureSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
