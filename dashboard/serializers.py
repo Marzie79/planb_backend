@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
 from accounts.models import *
 
 
@@ -9,16 +10,18 @@ class SkillSerializer(serializers.ModelSerializer):
 
 
 class UserSkillSerializer(serializers.ModelSerializer):
-    skills = serializers.ReadOnlyField(source='name')
+    skills = SerializerMethodField()
 
     class Meta:
         model = User
         fields = ('id', 'skills',)
 
+    def get_skills(self, instance):
+        skills = instance.skills.order_by('name')
+        return SkillSerializer(skills, many=True).data
 
-class ChildSkillSerializer(serializers.ModelSerializer):
-    skill = serializers.ReadOnlyField(source='name')
 
+class UpdateSkillSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Skill
-        fields = ('id', 'skill',)
+        model = User
+        fields = ('id', 'skills',)
