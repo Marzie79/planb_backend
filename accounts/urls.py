@@ -1,9 +1,5 @@
 from django.urls import path, include
-from .views.view_list import *
-from .views.view_token import *
-from .views.view_token import *
-from .views.view_signup import *
-from .views.view_profile import ProfilePicture, ProfileUser, ProfileResume
+from .views import *
 
 urlpatterns = [
     path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -21,7 +17,9 @@ urlpatterns = [
             path('', ProfileUser.as_view({'get': 'retrieve', 'patch': 'partial_update'}), name='profile'),
             path('picture/',
                  ProfilePicture.as_view({'get': 'retrieve', 'post': 'partial_update', }, name='profile_picture')),
-            path('resume/', ProfileResume.as_view({'get': 'retrieve', 'post': 'partial_update', }, name='profile_resome')),  
+            path('resume/',
+                 ProfileResume.as_view({'get': 'retrieve', 'post': 'partial_update', }, name='profile_resome')),
+            path('skills/', UserSkill.as_view({'get': 'retrieve', 'patch': 'partial_update'}), name="skills"),
         ])),
 
     ])),

@@ -1,7 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from djangorestframework_camel_case.parser import CamelCaseMultiPartParser
-
 from accounts.serializers import *
 
 
@@ -11,17 +10,7 @@ class ProfileUser(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
 
     def get_object(self):
-        """
-            Returns the object the view is displaying.
-        """
         return self.request.user
-
-# def get_redirected(queryset_or_class, lookups, validators):
-#     obj = get_object_or_404(queryset_or_class, **lookups)
-#     for key, value in validators.items():
-#         if value != getattr(obj, key):
-#             return obj
-#     return obj
 
 
 class ProfilePicture(ProfileUser):
@@ -31,4 +20,13 @@ class ProfilePicture(ProfileUser):
 
 class ProfileResume(ProfileUser):
     serializer_class = ProfileResumeSerializer
-    parser_classes = [CamelCaseMultiPartParser,]    
+    parser_classes = [CamelCaseMultiPartParser,]
+
+
+class UserSkill(ProfileUser):
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return UserSkillSerializer
+        elif self.action == 'partial_update':
+            return UpdateSkillSerializer

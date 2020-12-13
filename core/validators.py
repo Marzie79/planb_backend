@@ -30,18 +30,25 @@ class FileSizeValidator:
     def __call__(self, file):
         for key, value in file.items():
             if value.size > FileUtils.convert_to_byte(self.size, FileSize['MB'].name):
-                message = _('The photo size should be more than {} {}').format( self.size, FileSize['MB'].value)
+                message = _('The photo size should be more than {} {}').format(self.size, FileSize['MB'].value)
                 raise serializers.ValidationError({key: [message]})
+
 
 # enums
 MAX_IMAGE_SIZE = 5  # 12000000
 MAX_FILE_SIZE = 5
 
-#file type validators
-def validate_file_extension(value):
+
+# file type validators
+
+def validate_pdf_type(value):
+    return validate_file_type(value, ['.pdf'])
+
+
+# file type validators
+def validate_file_type(value, types):
     import os
     from django.core.exceptions import ValidationError
     ext = os.path.splitext(value.name)[1]  # [0] returns path+filename
-    valid_extensions = ['.pdf',]
-    if not ext.lower() in valid_extensions:
-        raise ValidationError('نوع فایل فقط باید pdf باشد.')
+    if not ext.lower() in types:
+        raise ValidationError(_("File type must be {}").format(','.join(types)))
