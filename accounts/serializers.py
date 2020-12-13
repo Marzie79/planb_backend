@@ -4,7 +4,7 @@ from rest_framework.validators import UniqueForYearValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.utils.translation import gettext as _
 from accounts.models import *
-from core.validators import FileSizeValidator, MAX_IMAGE_SIZE
+from core.validators import FileSizeValidator, MAX_IMAGE_SIZE, MAX_FILE_SIZE, validate_file_extension
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -102,6 +102,17 @@ class ProfilePictureSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('avatar',)
+        validators = [
+            FileSizeValidator(
+                size=MAX_IMAGE_SIZE,
+            )
+        ]
+
+
+class ProfileResumeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('resume',)
         validators = [
             FileSizeValidator(
                 size=MAX_IMAGE_SIZE,

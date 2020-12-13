@@ -27,3 +27,8 @@ class ProfileUser(viewsets.ModelViewSet):
 class ProfilePicture(ProfileUser):
     serializer_class = ProfilePictureSerializer
     parser_classes = [CamelCaseMultiPartParser,]
+
+
+class ProfileResume(ProfileUser):
+    serializer_class = ProfileResumeSerializer
+    parser_classes = [CamelCaseMultiPartParser,]    

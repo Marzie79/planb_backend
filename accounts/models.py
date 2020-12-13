@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from core import validators
 from core.models import AbstractImageModel
 from .managers import UserManager
-
+from core.validators import validate_file_extension
 
 
 class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
@@ -51,6 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
                                    null=True, blank=True)
     city = models.ForeignKey("City", verbose_name=_("City"), on_delete=models.SET_NULL, null=True, blank=True)
     skills = models.ManyToManyField("Skill", verbose_name=_("Skill"), blank=True)
+    resume = models.FileField(_("Resome"),blank=True, null=True, upload_to='user/resome/', validators=[validate_file_extension,])
 
     class Meta:
         ordering = ['username']
