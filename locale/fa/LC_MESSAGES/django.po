@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-13 18:14+0330\n"
+"POT-Creation-Date: 2020-12-14 22:30+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -177,6 +177,9 @@ msgstr "وضعیت پروژه"
 msgid "Project_Owner"
 msgstr "سازنده"
 
+msgid "Url"
+msgstr ""
+
 msgid "Projects"
 msgstr "پروژه ها"
 
@@ -222,19 +225,19 @@ msgstr "میانی ها"
 msgid "example"
 msgstr "نمونه"
 
-msgid "EmailDoesExist"
-msgstr "حسابی با این ایمیل موجود می باشد."
-
-msgid "ServerError"
-msgstr "خطایی رخ داده است لطفا دوباره امتحان کنید."
-
 msgid "User_Email_Error"
 msgstr "کاربری با این ایمیل موجود نمی‌باشد"
+
+msgid "EmailDoesExist"
+msgstr "حسابی با این ایمیل موجود می باشد."
 
 msgid "EmailTimeError"
 msgstr ""
 "در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش "
 "فرمایید.'"
+
+msgid "ServerError"
+msgstr "خطایی رخ داده است لطفا دوباره امتحان کنید."
 
 msgid "Byte"
 msgstr ""

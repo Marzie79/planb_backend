@@ -5,14 +5,15 @@ from django.utils import timezone
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 from rest_framework import status, generics, viewsets
-from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 # don't use rest_framework.renderers.JsonRenderer !!!
 from accounts.enums import *
 from accounts.serializers import *
 from accounts.views.view_token import set_cookie_response
+from core.exceptions import BadRequestError, ServerError
 from core.utils import EmailUtils
+from rest_framework.exceptions import server_error
 import datetime
 
 
@@ -20,7 +21,6 @@ class SignUp(generics.GenericAPIView):
     """
         get just user's email for sending link to verify email.
     """
-    permission_classes = (AllowAny,)
     serializer_class = SignUpEmailSerializer
     renderer_classes = [CamelCaseJSONRenderer]
 
@@ -29,7 +29,6 @@ class SignUp(generics.GenericAPIView):
 
 
 class VerifyAccount(viewsets.ModelViewSet):
-    permission_classes = (AllowAny,)
     filter_backends = None
 
     def get_serializer_class(self):
@@ -73,7 +72,6 @@ class ResetPassword(viewsets.ModelViewSet):
     """
         write the code that you get before from server and enter new password.
     """
-    permission_classes = (AllowAny,)
 
     def get_serializer_class(self):
         if self.action == 'partial_update':
@@ -107,10 +105,10 @@ def send_email(request, is_obj_user):
     obj_user = User.objects.filter(email=serializer.data['email']).first()
     if not is_obj_user:
         if not obj_user:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': _("User_Email_Error")})
+            raise BadRequestError(_("User_Email_Error"))
     else:
         if obj_user:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': _("EmailDoesExist")})
+            raise BadRequestError(_("EmailDoesExist"))
 
     time_now = timezone.now()
     # check this email have request before for signup or not
@@ -122,8 +120,7 @@ def send_email(request, is_obj_user):
             obj.date = time_now
             obj.save()
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={
-                'message': _("EmailTimeError")})
+            raise BadRequestError(_("EmailTimeError"))
     else:
         obj = Temp.objects.create(email=serializer.data['email'], date=time_now,
                                   code=get_random_string(length=16))
@@ -136,6 +133,5 @@ def send_email(request, is_obj_user):
     message = EmailUtils.sending_email(validation=url, receiver=obj.email)
     if message is not None:
         obj.delete()
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                        data={'message': _("ServerError")})
+        raise ServerError( _("ServerError"))
     return Response(status=status.HTTP_200_OK)
