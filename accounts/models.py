@@ -6,6 +6,7 @@ from django.core.validators import validate_email
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
 from core import validators
 from core.models import AbstractImageModel
 from .managers import UserManager
@@ -33,9 +34,9 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
     )
 
     username = models.CharField(_("Username"), max_length=30, unique=True,
-                                validators=[validators.CHAR_REGEX_VALIDATOR],)
+                                validators=[validators.CHAR_REGEX_VALIDATOR], )
     password = models.CharField(_("Password"), max_length=128)
-    email = models.EmailField(_("Email"), max_length=254, unique=True,)
+    email = models.EmailField(_("Email"), max_length=254, unique=True, )
     phone_number = PhoneNumberField(_("Phone_Number"), null=True, blank=True, unique=True)
     first_name = models.CharField(_("First_Name"), max_length=30, validators=[validators.PERSIAN_REGEX_VALIDATOR])
     last_name = models.CharField(_("Last_Name"), max_length=30, validators=[validators.PERSIAN_REGEX_VALIDATOR])
@@ -51,7 +52,8 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
                                    null=True, blank=True)
     city = models.ForeignKey("City", verbose_name=_("City"), on_delete=models.SET_NULL, null=True, blank=True)
     skills = models.ManyToManyField("Skill", verbose_name=_("Skill"), blank=True)
-    resume = models.FileField(_("resume"),blank=True, null=True, upload_to='user/resume/', validators=[validate_pdf_type,])
+    resume = models.FileField(_("resume"), blank=True, null=True, upload_to='user/resume/',
+                              validators=[validate_pdf_type, ])
 
     class Meta:
         ordering = ['username']
@@ -160,6 +162,7 @@ class Project(models.Model):
     situation = models.CharField(_("Project_Situation"), max_length=7, choices=SITUATION_CHOICES, default='WAITING')
     creator = models.ForeignKey(User, verbose_name=_("Project_Owner"), on_delete=models.PROTECT,
                                 related_name='created_projects')
+    slug = models.SlugField(_("Url"), allow_unicode=True, unique=True, blank=True, )
 
     def __str__(self):
         return self.name
@@ -168,6 +171,10 @@ class Project(models.Model):
         ordering = ['name']
         verbose_name_plural = _("Projects")
         verbose_name = _("Project")
+
+    def clean(self):
+        if self.slug == '':
+            self.slug = slugify(self.name, allow_unicode=True)
 
     def last_modified_date_decorated(self, obj):
         return jdatetime.datetime.fromgregorian(datetime=obj.last_modified_date).strftime("%a, %d %b %Y %H:%M:%S")

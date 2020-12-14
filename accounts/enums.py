@@ -8,6 +8,6 @@ class Email(Enum):
 
 
 class FrontURL(Enum):
-    FORGET_PASSWORD = '/users/forget-password/verify?code='
-    SIGNUP = '/users/signup/verify?code='
+    FORGET_PASSWORD = '/user/forget-password/verify?code='
+    SIGNUP = '/user/signup/verify?code='
     ROOT = 'http://127.0.0.1:3000/'

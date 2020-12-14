@@ -1,3 +1,4 @@
+import datetime
 import os
 import environ
 from datetime import timedelta
@@ -195,3 +196,41 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{}] %(name)s - %(levelname)s - %(message)s'.format(
+                datetime.datetime.now().strftime("%d/%b/%Y %H:%M:%S"))
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'bug.log'),
+            'when': 'W0',  # this specifies the interval
+            'backupCount': 10,  # how many backup file to keep, 10 days
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+        },
+        'django.request': {
+            'handlers': ['file', ],
+        }
+
+    },
+}

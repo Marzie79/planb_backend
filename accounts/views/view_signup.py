@@ -25,42 +25,7 @@ class SignUp(generics.GenericAPIView):
     renderer_classes = [CamelCaseJSONRenderer]
 
     def post(self, request):
-        serializer = SignUpEmailSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        # check that this email try to signup or not before
-        obj = Temp.objects.filter(email=serializer.data['email']).first()
-        # check this email signup before or not
-        obj_user = User.objects.filter(email=serializer.data['email']).first()
-        if obj_user:
-            return Response(status=status.HTTP_409_CONFLICT, data={'error': _("EmailDoesExist")})
-        time_now = timezone.now()
-        # check this email have request before for signup or not
-        if obj:
-            # check that this email dont have request in this 2 minutes
-            if time_now > obj.date + datetime.timedelta(minutes=2):
-                # make a random string for making a unique url
-                obj.code = get_random_string(length=16)
-                obj.date = time_now
-                obj.save()
-            else:
-                return Response(status=status.HTTP_401_UNAUTHORIZED, data={
-                    'error': "EmailTimeError"})
-
-        else:
-            obj = Temp.objects.create(email=serializer.data['email'], date=time_now,
-                                      code=get_random_string(length=16))
-
-        if 'Origin' in request.headers:
-            url = request.headers['Origin'] + FrontURL.SIGNUP.value + obj.code
-        else:
-            url = FrontURL.ROOT.value + FrontURL.SIGNUP.value + obj.code
-
-        message = EmailUtils.sending_email(validation=url, receiver=obj.email)
-        if message is not None:
-            obj.delete()
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            data={'message': _("ServerError")})
-        return Response(status=status.HTTP_200_OK)
+        return send_email(request, True)
 
 
 class VerifyAccount(viewsets.ModelViewSet):
@@ -130,34 +95,47 @@ class ResetPassword(viewsets.ModelViewSet):
         return set_cookie_response(request)
 
     def create(self, request, *args, **kwargs):
-        serializer = SignUpEmailSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        # check that this email try to signup or not
-        obj = Temp.objects.filter(email=serializer.data['email']).first()
-        # check this email signup before or not
-        obj_user = User.objects.filter(email=serializer.data['email']).first()
-        if not obj_user:
-            return Response(status=status.HTTP_409_CONFLICT, data={'error': _("User_Email_Error")})
-        time_now = timezone.now()
-        # check this email have request before for signup or not
-        if obj:
-            # check that this email dont have request in this 2 minutes
-            if time_now > obj.date + datetime.timedelta(minutes=2):
-                # make a random string for making a unique url
-                obj.code = get_random_string(length=16)
-                obj.date = time_now
-                obj.save()
-            else:
-                return Response(status=status.HTTP_401_UNAUTHORIZED, data={
-                    'error': _("EmailTimeError")})
-        else:
-            obj = Temp.objects.create(email=serializer.data['email'], date=time_now,
-                                      code=get_random_string(length=16))
+        return send_email(request, False)
 
-        url = request.headers['Origin'] + FrontURL.FORGET_PASSWORD.value + obj.code
-        message = EmailUtils.sending_email(validation=url, receiver=obj.email)
-        if message is not None:
-            obj.delete()
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            data={'message': _("ServerError")})
-        return Response(status=status.HTTP_200_OK)
+
+def send_email(request, is_obj_user):
+    serializer = SignUpEmailSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    # check that this email try to signup or not
+    obj = Temp.objects.filter(email=serializer.data['email']).first()
+    # check this email signup before or not
+    obj_user = User.objects.filter(email=serializer.data['email']).first()
+    if not is_obj_user:
+        if not obj_user:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': _("User_Email_Error")})
+    else:
+        if obj_user:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': _("EmailDoesExist")})
+
+    time_now = timezone.now()
+    # check this email have request before for signup or not
+    if obj:
+        # check that this email dont have request in this 2 minutes
+        if time_now > obj.date + datetime.timedelta(minutes=2):
+            # make a random string for making a unique url
+            obj.code = get_random_string(length=16)
+            obj.date = time_now
+            obj.save()
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={
+                'message': _("EmailTimeError")})
+    else:
+        obj = Temp.objects.create(email=serializer.data['email'], date=time_now,
+                                  code=get_random_string(length=16))
+
+    if 'Origin' in request.headers:
+        url = request.headers['Origin'] + FrontURL.SIGNUP.value + obj.code
+    else:
+        url = FrontURL.ROOT.value + FrontURL.SIGNUP.value + obj.code
+
+    message = EmailUtils.sending_email(validation=url, receiver=obj.email)
+    if message is not None:
+        obj.delete()
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                        data={'message': _("ServerError")})
+    return Response(status=status.HTTP_200_OK)
