@@ -5,12 +5,14 @@ from accounts.models import *
 class ProjectBriefSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('id', 'name', 'description', )
+        fields = ('id', 'name', 'description',)
 
 
 class UserProjectSerializer(serializers.ModelSerializer):
-    project = ProjectBriefSerializer()
+    situation = serializers.CharField(source='get_situation_display', read_only=True)
+    name = serializers.ReadOnlyField(source='project.name')
+    description = serializers.ReadOnlyField(source='project.description')
 
     class Meta:
         model = UserProject
-        exclude = ('user', )
+        exclude = ('id', 'user', )

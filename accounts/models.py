@@ -202,7 +202,7 @@ class UserProject(models.Model):
     admin = models.BooleanField(_("Admin"), default=False)
     project = models.ForeignKey(Project, verbose_name=_("Project"), on_delete=models.CASCADE)
     user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
-    situation = models.CharField(_("Situation"), max_length=9, choices=SITUATION_CHOICES)
+    situation = models.CharField(_("Situation"), max_length=9, choices=SITUATION_CHOICES, default='REQUESTED')
 
 
 class Temp(models.Model):
