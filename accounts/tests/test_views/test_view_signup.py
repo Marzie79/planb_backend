@@ -115,51 +115,51 @@ class VerifyAccountTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
-class TestSignUpView(APITestCase):
-    def setUp(self):
-        self.data = {'email': 'paryfardnim@gmail.com'}
-        self.url = SIGNUP_URL
-        for i in range(1, 10):
-            user = baker.make(User)
-            Temp.objects.create(email=user.email, date=timezone.now(),
-                                code=get_random_string(length=16))
-
-    def test_valid_sent_response_if_temp_is_not_existed(self):
-        obj_user = User.objects.filter(**self.data).first()
-        temp = Temp.objects.filter(**self.data).first()
-        response = self.client.post(self.url, self.data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIsNone(obj_user)
-        self.assertIsNone(temp)
-
-    def test_valid_sent_response_if_temp_is_existed(self):
-        initial_datetime = datetime.datetime.now()
-        exam_data = {'email': 'example@gmail.com'}
-        obj_user = User.objects.filter(**self.data).first()
-        temp_example = baker.make(Temp, **exam_data)
-        with freeze_time(initial_datetime) as frozen_datetime:
-            frozen_datetime.tick()
-            initial_datetime += datetime.timedelta(minutes=3)
-            temp = Temp.objects.filter(**self.data).first()
-            response = self.client.post(self.url, exam_data)
-            self.assertIsNone(obj_user)
-            self.assertIsNotNone(temp)
-            self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_User_is_existed(self):
-        user = baker.make(User, **self.data)
-        obj_user = User.objects.filter(**self.data).first()
-        response = self.client.post(self.url, self.data)
-        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
-        self.assertIsNotNone(response.data['error'])
-        self.assertIsNotNone(obj_user)
-
-    def test_time_expired_Temp(self):
-        temp = baker.make(Temp, **self.data)
-        response = self.client.post(self.url, self.data)
-        temp_search = Temp.objects.filter(**self.data).first()
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        self.assertEqual(response.data['error'], 'EmailTimeError')
-        self.assertIsNotNone(temp_search)
-        self.assertEqual(timezone.now() < temp.date + datetime.timedelta(minutes=2), True)
+# class TestSignUpView(APITestCase):
+#     def setUp(self):
+#         self.data = {'email': 'paryfardnim@gmail.com'}
+#         self.url = SIGNUP_URL
+#         for i in range(1, 10):
+#             user = baker.make(User)
+#             Temp.objects.create(email=user.email, date=timezone.now(),
+#                                 code=get_random_string(length=16))
+#
+#     def test_valid_sent_response_if_temp_is_not_existed(self):
+#         obj_user = User.objects.filter(**self.data).first()
+#         temp = Temp.objects.filter(**self.data).first()
+#         response = self.client.post(self.url, self.data)
+#         self.assertEqual(response.status_code, status.HTTP_200_OK)
+#         self.assertIsNone(obj_user)
+#         self.assertIsNone(temp)
+#
+#     def test_valid_sent_response_if_temp_is_existed(self):
+#         initial_datetime = datetime.datetime.now()
+#         exam_data = {'email': 'example@gmail.com'}
+#         obj_user = User.objects.filter(**self.data).first()
+#         temp_example = baker.make(Temp, **exam_data)
+#         with freeze_time(initial_datetime) as frozen_datetime:
+#             frozen_datetime.tick()
+#             initial_datetime += datetime.timedelta(minutes=3)
+#             temp = Temp.objects.filter(**self.data).first()
+#             response = self.client.post(self.url, exam_data)
+#             self.assertIsNone(obj_user)
+#             self.assertIsNotNone(temp)
+#             self.assertEqual(response.status_code, status.HTTP_200_OK)
+#
+#     def test_User_is_existed(self):
+#         user = baker.make(User, **self.data)
+#         obj_user = User.objects.filter(**self.data).first()
+#         response = self.client.post(self.url, self.data)
+#         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
+#         self.assertIsNotNone(response.data['error'])
+#         self.assertIsNotNone(obj_user)
+#
+#     def test_time_expired_Temp(self):
+#         temp = baker.make(Temp, **self.data)
+#         response = self.client.post(self.url, self.data)
+#         temp_search = Temp.objects.filter(**self.data).first()
+#         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+#         self.assertEqual(response.data['error'], 'EmailTimeError')
+#         self.assertIsNotNone(temp_search)
+#         self.assertEqual(timezone.now() < temp.date + datetime.timedelta(minutes=2), True)
 

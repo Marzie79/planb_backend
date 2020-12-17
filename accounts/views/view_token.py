@@ -28,6 +28,7 @@ def set_cookie_response(request):
     return response
 
 
+
 # create token and use this view as login view
 class MyTokenObtainPairView(TokenObtainPairView):
     """
@@ -42,7 +43,7 @@ class MyTokenRefreshView(TokenRefreshView):
     """
        when is sent empty post , server send new access token if refresh(saves in the cookie) validate correctly.
     """
-    serializer_class = None
+    serializer_class = TokenRefreshSerializer
     def post(self, request, *args, **kwargs):
         # get cookie and refresh token
         try:
