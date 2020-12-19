@@ -9,7 +9,7 @@ class ProjectBriefSerializer(serializers.ModelSerializer):
 
 
 class UserProjectSerializer(serializers.ModelSerializer):
-    situation = serializers.CharField(source='get_situation_display', read_only=True)
+    status = serializers.CharField(source='get_status_display', read_only=True)
     name = serializers.ReadOnlyField(source='project.name')
     description = serializers.ReadOnlyField(source='project.description')
 

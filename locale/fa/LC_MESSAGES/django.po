@@ -171,7 +171,7 @@ msgstr "تاریخ آخرین تغییر"
 msgid "Advertisement"
 msgstr "تبلیغات"
 
-msgid "Project_Situation"
+msgid "Project_Status"
 msgstr "وضعیت پروژه"
 
 msgid "Project_Owner"
@@ -207,7 +207,7 @@ msgstr "رد شده"
 msgid "Admin"
 msgstr "ادمین"
 
-msgid "Situation"
+msgid "Status"
 msgstr "وضعیت"
 
 msgid "Date"

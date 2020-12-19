@@ -144,7 +144,7 @@ class Skill(models.Model):
 
 
 class Project(models.Model):
-    SITUATION_CHOICES = (
+    STATUS_CHOICES = (
         ('WAITING', _("Waiting")),
         ('STARTED', _("Started")),
         ('ENDED', _("Ended")),
@@ -159,7 +159,7 @@ class Project(models.Model):
     start_date = models.DateTimeField(_("Start_Date"), default=datetime.now)
     last_modified_date = models.DateTimeField(_("Last_Modify_Date"), default=datetime.now)
     advertisement = models.BooleanField(_("Advertisement"), default=True)
-    situation = models.CharField(_("Project_Situation"), max_length=7, choices=SITUATION_CHOICES, default='WAITING')
+    status = models.CharField(_("Project_Status"), max_length=7, choices=STATUS_CHOICES, default='WAITING')
     creator = models.ForeignKey(User, verbose_name=_("Project_Owner"), on_delete=models.PROTECT,
                                 related_name='created_projects')
     slug = models.SlugField(_("Url"), allow_unicode=True, unique=True, blank=True, )
@@ -193,7 +193,7 @@ class Project(models.Model):
 
 
 class UserProject(models.Model):
-    SITUATION_CHOICES = (
+    STATUS_CHOICES = (
         ('ACCEPTED', _("Accepted")),
         ('REQUESTED', _("Requested")),
         ('DECLINED', _("Declined")),
@@ -202,7 +202,7 @@ class UserProject(models.Model):
     admin = models.BooleanField(_("Admin"), default=False)
     project = models.ForeignKey(Project, verbose_name=_("Project"), on_delete=models.CASCADE)
     user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
-    situation = models.CharField(_("Situation"), max_length=9, choices=SITUATION_CHOICES, default='REQUESTED')
+    status = models.CharField(_("Status"), max_length=9, choices=STATUS_CHOICES, default='REQUESTED')
 
 
 class Temp(models.Model):
