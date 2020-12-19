@@ -26,3 +26,8 @@ class SearchSkill(generics.ListAPIView):
     serializer_class = SkillSerializer
     filterset_class = SkillFilter
     queryset = Skill.objects.all()
+
+    def get_queryset(self):
+        if self.request.META['QUERY_STRING']:
+            return  super(SearchSkill, self).get_queryset()
+        return Skill.objects.filter(skill__isnull=True)

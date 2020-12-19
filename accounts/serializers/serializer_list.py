@@ -36,5 +36,5 @@ class SkillBriefSerializer(serializers.ModelSerializer):
 class SkillSerializer(SkillBriefSerializer):
     class Meta:
         model = Skill
-        fields = ('code', 'name', 'skill')
+        fields = ('code', 'name', 'skill','image')
 

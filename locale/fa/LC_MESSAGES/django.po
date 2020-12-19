@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-15 10:57+0330\n"
+"POT-Creation-Date: 2020-12-19 20:14+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -138,6 +138,9 @@ msgstr "کد مهارت"
 msgid "Skill's_Father"
 msgstr "نام پدر مهارت"
 
+msgid "image"
+msgstr ""
+
 msgid "Skills"
 msgstr "مهارت ها"
 
@@ -248,6 +251,9 @@ msgstr ""
 msgid "Megabyte"
 msgstr "مگابایت"
 
+msgid "File type must be {}"
+msgstr "نوع فایل باید {} باشد"
+
 msgid "Must only contain English letters and numbers."
 msgstr "تنها باید شامل حروف و اعداد انگلیسی باشد."
 
@@ -265,6 +271,3 @@ msgstr "رمز عبور یا نام کاربری نامعتبر است."
 
 msgid "The photo size should be more than {} {}"
 msgstr "حجم عکس نباید بیشتر از {} {} باشد."
-
-msgid "File type must be {}"
-msgstr "نوع فایل باید {} باشد"

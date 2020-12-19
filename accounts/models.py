@@ -10,7 +10,7 @@ from django.utils.text import slugify
 from core import validators
 from core.models import AbstractImageModel
 from .managers import UserManager
-from core.validators import validate_pdf_type
+from core.validators import PDF_TYPE_VALIDATOR, SVG_TYPE_VALIDATOR
 
 
 class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
     city = models.ForeignKey("City", verbose_name=_("City"), on_delete=models.SET_NULL, null=True, blank=True)
     skills = models.ManyToManyField("Skill", verbose_name=_("Skill"), blank=True)
     resume = models.FileField(_("resume"), blank=True, null=True, upload_to='user/resume/',
-                              validators=[validate_pdf_type, ])
+                              validators=[PDF_TYPE_VALIDATOR ])
 
     class Meta:
         ordering = ['username']
@@ -133,6 +133,8 @@ class Skill(models.Model):
     skill = models.ForeignKey('self', verbose_name=_("Skill's_Father"), on_delete=models.PROTECT,
                               related_name='child_skill',
                               null=True, blank=True)
+    image = models.FileField(_("image"), blank=True, null=True, upload_to='skill/image/',
+                              validators=[SVG_TYPE_VALIDATOR ])
 
     def __str__(self):
         return self.name
@@ -148,7 +150,7 @@ class Project(models.Model):
         ('WAITING', _("Waiting")),
         ('STARTED', _("Started")),
         ('ENDED', _("Ended")),
-        ('Deleted', _("Deleted")),
+        ('DELETED', _("Deleted")),
     )
     name = models.CharField(_("Project_Name"), max_length=30)
     skills = models.ManyToManyField(Skill, verbose_name=_("Skills"))
