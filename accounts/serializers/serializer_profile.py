@@ -5,9 +5,10 @@ from core.validators import FileSizeValidator, MAX_IMAGE_SIZE, MAX_FILE_SIZE
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    gender_display = serializers.CharField(source='get_gender_display', read_only=True)
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username', 'email', 'university', 'city', 'phone_number', 'description')
+        fields = ('first_name', 'last_name', 'username', 'email', 'university', 'city', 'phone_number', 'description','gender','gender_display')
 
 
 class ProfilePictureSerializer(serializers.ModelSerializer):
