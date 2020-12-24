@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
     city = models.ForeignKey("City", verbose_name=_("City"), on_delete=models.SET_NULL, null=True, blank=True)
     skills = models.ManyToManyField("Skill", verbose_name=_("Skill"), blank=True)
     resume = models.FileField(_("resume"), blank=True, null=True, upload_to='user/resume/',
-                              validators=[PDF_TYPE_VALIDATOR ])
+                              validators=[PDF_TYPE_VALIDATOR])
 
     class Meta:
         ordering = ['username']
@@ -134,7 +134,7 @@ class Skill(models.Model):
                               related_name='child_skill',
                               null=True, blank=True)
     image = models.FileField(_("image"), blank=True, null=True, upload_to='skill/image/',
-                              validators=[SVG_TYPE_VALIDATOR ])
+                             validators=[SVG_TYPE_VALIDATOR])
 
     def __str__(self):
         return self.name
@@ -201,10 +201,16 @@ class UserProject(models.Model):
         ('DECLINED', _("Declined")),
         ('DELETED', _("Deleted")),
     )
-    admin = models.BooleanField(_("Admin"), default=False)
     project = models.ForeignKey(Project, verbose_name=_("Project"), on_delete=models.CASCADE)
     user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
     status = models.CharField(_("Status"), max_length=9, choices=STATUS_CHOICES, default='REQUESTED')
+    admin = models.BooleanField(_("Admin"), default=False)
+
+    def get_role_display(self):
+        if self.admin:
+            return _("Admin")
+        else:
+            return _("Team_Member")
 
 
 class Temp(models.Model):
