@@ -16,3 +16,9 @@ class UserProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProject
         exclude = ('id', 'user', )
+
+
+class CreateProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ('name', 'skills', 'description','end_date', 'category', 'creator')

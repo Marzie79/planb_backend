@@ -165,7 +165,9 @@ class Project(models.Model):
     creator = models.ForeignKey(User, verbose_name=_("Project_Owner"), on_delete=models.PROTECT,
                                 related_name='created_projects')
     slug = models.SlugField(_("Url"), allow_unicode=True, unique=True, blank=True, )
-
+    category = models.ForeignKey(Skill, verbose_name=_('Category'), on_delete = models.PROTECT,
+                                 related_name='Category', blank=True, null=True)
+    
     def __str__(self):
         return self.name
 

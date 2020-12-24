@@ -12,3 +12,14 @@ class UserProjectView(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
+
+
+class CreateProjectView(viewsets.ModelViewSet):
+    queryset = Project.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = CreateProjectSerializer
+    
+    def get_queryset(self):
+        return self.queryset.filter(creator=self.request.user)
+
+
