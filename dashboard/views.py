@@ -1,10 +1,16 @@
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import viewsets, generics
+from rest_framework import viewsets
 from .serializers import *
 from .filters import UserProjectFilter
 
 
 class UserProjectView(viewsets.ReadOnlyModelViewSet):
+    """
+        Enter "PROJECT" or "REQUEST" as category,
+        then you can also enter following items as status:
+        for PROJECT --> WAITING, STARTED, ENDED, DELETED
+        for REQUEST --> REQUESTED, DECLINED
+    """
     queryset = UserProject.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = UserProjectSerializer

@@ -12,7 +12,6 @@ admin.site.index_title = _("Manage_Model")
 class UserProjectsInline(admin.TabularInline):
     model = UserProject
     extra = 0
-    fields = ('project',)
 
 
 class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
@@ -22,7 +21,7 @@ class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     form = UserForm
     fields = ('username', 'email', 'password1', 'password2', 'joined_date_decorated',
               'first_name', 'last_name', 'avatar', 'gender', 'description',
-              'is_superuser', 'is_active', 'city', 'university', 'skills','resume')
+              'is_superuser', 'is_active', 'city', 'university', 'skills', 'resume')
     inlines = [UserProjectsInline]
 
 
