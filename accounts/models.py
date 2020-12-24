@@ -167,19 +167,19 @@ class Project(models.Model):
     slug = models.SlugField(_("Url"), allow_unicode=True, unique=True, blank=True, )
     category = models.ForeignKey(Skill, verbose_name=_('Category'), on_delete = models.PROTECT,
                                  related_name='Category', blank=True, null=True)
-    
-    def __str__(self):
-        return self.name
 
     class Meta:
         ordering = ['name']
         verbose_name_plural = _("Projects")
         verbose_name = _("Project")
 
-    def clean(self):
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
         if not self.slug or  self.slug == '':
             self.slug = slugify(self.name, allow_unicode=True)
-            print(self.slug)
+        super(Project, self).save()
 
 
     def last_modified_date_decorated(self, obj):
