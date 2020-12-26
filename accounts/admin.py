@@ -13,6 +13,19 @@ class UserProjectsInline(admin.TabularInline):
     model = UserProject
     extra = 0
 
+    def get_readonly_fields(self, request, obj=None):
+        if isinstance(obj, User):
+            return ('status',)
+        else:
+            return super(UserProjectsInline, self).get_readonly_fields(request, obj)
+
+
+class CreatorInline(admin.TabularInline):
+    model = Project
+    fields = ('name', 'status',)
+    readonly_fields = ('name', 'status',)
+    extra = 0
+
 
 class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'is_active')
@@ -22,7 +35,7 @@ class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     fields = ('username', 'email', 'password1', 'password2', 'joined_date_decorated',
               'first_name', 'last_name', 'avatar', 'gender', 'description',
               'is_superuser', 'is_active', 'city', 'university', 'skills', 'resume','phone_number')
-    inlines = [UserProjectsInline]
+    inlines = [UserProjectsInline, CreatorInline]
 
 
 class CityInline(admin.TabularInline):
@@ -39,7 +52,8 @@ class ProvinceAdmin(admin.ModelAdmin):
 
 class ProjectsAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ('name', 'creator', 'status', 'end_date_decorated')
-    fields = ('name', 'creator', 'description', 'last_modified_date', 'start_date', 'end_date')
+    fields = ('name', 'creator', 'description', 'status', 'last_modified_date', 'start_date', 'end_date')
+    inlines = [UserProjectsInline]
 
 
 admin.site.register(Temp)

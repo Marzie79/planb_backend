@@ -6,10 +6,10 @@ from .filters import UserProjectFilter
 
 class UserProjectView(viewsets.ReadOnlyModelViewSet):
     """
-        Enter "PROJECT" or "REQUEST" as category,
+        Enter "PROJECT" or "PENDING" as category,
         then you can also enter following items as status:
         for PROJECT --> WAITING, STARTED, ENDED, DELETED
-        for REQUEST --> REQUESTED, DECLINED
+        for PENDING --> REQUESTED, DECLINED
     """
     queryset = UserProject.objects.all()
     permission_classes = (IsAuthenticated,)
