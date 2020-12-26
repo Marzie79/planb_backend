@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from accounts.models import *
+from django.utils.translation import gettext_lazy as _
 
 
 class ProjectBriefSerializer(serializers.ModelSerializer):
@@ -27,30 +28,22 @@ class CreateProjectSerializer(serializers.ModelSerializer):
     def validate(self, data):
         attrs = super(CreateProjectSerializer, self).validate(data)  # calling default validation
         # skills must be child of category skill
-        for x in data['skills']:
-            parent_skill = x
-            while True:
-                print(parent_skill)
-                parent_skill = Skill.objects.get(name=parent_skill)
-                print(parent_skill.skill_id)
-                if parent_skill.skill_id is None:
-                    if Skill.objects.get(name = parent_skill) != data['category']:
-                        print(attrs['category'])
-                        raise serializers.ValidationError('مهارت انتخاب شده فرزند زمینه نیست')
-                    else :
-                        break
-                else:
-                    parent_skill = Skill.objects.get(code= parent_skill.skill_id).name   
+        for skill in data['skills']:
+            parent_skill = skill
+            while parent_skill.skill :
+                parent_skill = parent_skill.skill
+            if parent_skill != data['category']:
+                raise serializers.ValidationError(_('The chosen skill of the child is not the context'))
         return data
 
     def validate_category(self, value):
         # category must be a parent skill
-        if Skill.objects.get(name=value).skill_id is not None:
-            raise serializers.ValidationError('زمینه باید یک مهارت پدر باشد.')
+        if value.skill :
+            raise serializers.ValidationError(_('The background should be a father skill.'))
         return value
 
     def validate_skills(self, value):
         # number of skills must be between 3 to 10
         if not (len(value) >= 3 and len(value) <= 10):
-            raise serializers.ValidationError('تعداد مهارت ها باید بین ۳ تا ۱۰ باشد.')
+            raise serializers.ValidationError(_('The number of skills must be between {} and {}').format(3,10))
         return value

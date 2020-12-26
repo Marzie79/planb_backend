@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-25 13:26+0330\n"
+"POT-Creation-Date: 2020-12-26 20:23+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -277,3 +277,12 @@ msgstr "رمز عبور یا نام کاربری نامعتبر است."
 
 msgid "The photo size should be more than {} {}"
 msgstr "حجم عکس نباید بیشتر از {} {} باشد."
+
+msgid "The chosen skill of the child is not the context"
+msgstr "مهارت انتخاب شده فرزند زمینه نیست"
+
+msgid "The background should be a father skill."
+msgstr "زمینه باید یک مهارت پدر باشد."
+
+msgid "The number of skills must be between {} and {}"
+msgstr "تعداد مهارت ها باید بین {} تا {} باشد."

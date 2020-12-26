@@ -37,7 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
                                 validators=[validators.CHAR_REGEX_VALIDATOR], )
     password = models.CharField(_("Password"), max_length=128)
     email = models.EmailField(_("Email"), max_length=254, unique=True, )
-    phone_number = PhoneNumberField(_("Phone_Number"), null=True, blank=True, unique=True)
+    phone_number = PhoneNumberField(_("Phone_Number"), null=True, blank=True, unique=True,region='IR')
     first_name = models.CharField(_("First_Name"), max_length=30, validators=[validators.PERSIAN_REGEX_VALIDATOR])
     last_name = models.CharField(_("Last_Name"), max_length=30, validators=[validators.PERSIAN_REGEX_VALIDATOR])
     gender = models.CharField(_("Gender"), max_length=6, choices=GENDER_CHOICES, null=True, blank=True)
