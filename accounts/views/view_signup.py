@@ -126,12 +126,12 @@ def send_email(request, is_obj_user):
                                   code=get_random_string(length=16))
 
     if 'Origin' in request.headers:
-        if obj_user:
+        if not is_obj_user:
             url = request.headers['Origin'] + FrontURL.FORGET_PASSWORD.value + obj.code
         else:
             url = request.headers['Origin'] + FrontURL.SIGNUP.value + obj.code
     else:
-        if obj_user:
+        if not is_obj_user:
             url = FrontURL.ROOT.value + FrontURL.FORGET_PASSWORD.value + obj.code
         else:
             url = FrontURL.ROOT.value + FrontURL.SIGNUP.value + obj.code
