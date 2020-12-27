@@ -28,4 +28,5 @@ class CreateProjectView(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.queryset.filter(creator=self.request.user)
 
-
+    def perform_create(self, serializer):
+        return serializer.save(creator=self.request.user)

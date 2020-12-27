@@ -37,7 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
                                 validators=[validators.CHAR_REGEX_VALIDATOR], )
     password = models.CharField(_("Password"), max_length=128)
     email = models.EmailField(_("Email"), max_length=254, unique=True, )
-    phone_number = PhoneNumberField(_("Phone_Number"), null=True, blank=True, unique=True,region='IR')
+    phone_number = PhoneNumberField(_("Phone_Number"), null=True, blank=True, unique=True, region='IR')
     first_name = models.CharField(_("First_Name"), max_length=30, validators=[validators.PERSIAN_REGEX_VALIDATOR])
     last_name = models.CharField(_("Last_Name"), max_length=30, validators=[validators.PERSIAN_REGEX_VALIDATOR])
     gender = models.CharField(_("Gender"), max_length=6, choices=GENDER_CHOICES, null=True, blank=True)
@@ -82,6 +82,9 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
     @property
     def is_staff(self):
         return self.is_superuser
+
+    def get_full_name(self):
+        return ('%s %s' % (self.first_name, self.last_name)).strip()
 
 
 class Province(models.Model):
@@ -165,7 +168,7 @@ class Project(models.Model):
     creator = models.ForeignKey(User, verbose_name=_("Project_Owner"), on_delete=models.PROTECT,
                                 related_name='created_projects')
     slug = models.SlugField(_("Url"), allow_unicode=True, unique=True, blank=True, )
-    category = models.ForeignKey(Skill, verbose_name=_('Category'), on_delete = models.PROTECT,
+    category = models.ForeignKey(Skill, verbose_name=_('Category'), on_delete=models.PROTECT,
                                  related_name='Category', blank=True, null=True)
 
     class Meta:
@@ -177,10 +180,9 @@ class Project(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        if not self.slug or  self.slug == '':
+        if not self.slug or self.slug == '':
             self.slug = slugify(self.name, allow_unicode=True)
         super(Project, self).save()
-
 
     def last_modified_date_decorated(self, obj):
         return jdatetime.datetime.fromgregorian(datetime=obj.last_modified_date).strftime("%a, %d %b %Y %H:%M:%S")
