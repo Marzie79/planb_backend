@@ -201,13 +201,13 @@ class Project(models.Model):
 class UserProject(models.Model):
     STATUS_CHOICES = (
         ('ACCEPTED', _("Accepted")),
-        ('REQUESTED', _("Requested")),
+        ('PENDING', _("Pending")),
         ('DECLINED', _("Declined")),
         ('DELETED', _("Deleted")),
     )
     project = models.ForeignKey(Project, verbose_name=_("Project"), on_delete=models.CASCADE)
     user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
-    status = models.CharField(_("Status"), max_length=9, choices=STATUS_CHOICES, default='REQUESTED')
+    status = models.CharField(_("Status"), max_length=9, choices=STATUS_CHOICES, default='PENDING')
     admin = models.BooleanField(_("Admin"), default=False)
 
     def get_role_display(self):
