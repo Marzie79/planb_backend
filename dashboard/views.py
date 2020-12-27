@@ -25,7 +25,6 @@ class CreateProjectView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = CreateProjectSerializer
     
-    
     def get_queryset(self):
         return self.queryset.filter(creator=self.request.user)
 
