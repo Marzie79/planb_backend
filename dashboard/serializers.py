@@ -21,12 +21,18 @@ class UserProjectSerializer(serializers.ModelSerializer):
 
 
 class CreateProjectSerializer(serializers.ModelSerializer):
+    creator = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(), read_only=True)
+    creator = serializers.ReadOnlyField(source='get_creator_full_name')
+
     class Meta:
         model = Project
         fields = ('name', 'skills', 'description','end_date', 'category', 'creator')
 
+    def get_creator_full_name(self,obj):
+        return obj.get_creator_full_name()
+
     def validate(self, data):
-        attrs = super(CreateProjectSerializer, self).validate(data)  # calling default validation
+        data = super(CreateProjectSerializer, self).validate(data)  # calling default validation
         # skills must be child of category skill
         for skill in data['skills']:
             parent_skill = skill

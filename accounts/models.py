@@ -197,6 +197,9 @@ class Project(models.Model):
 
     end_date_decorated.short_description = _("End_Date_Decorated")
 
+    def get_creator_full_name(self):
+        full_name = '%s %s' % (self.creator.first_name, self.creator.last_name)
+        return full_name.strip()
 
 class UserProject(models.Model):
     STATUS_CHOICES = (
