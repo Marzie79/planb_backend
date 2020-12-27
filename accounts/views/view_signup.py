@@ -126,12 +126,18 @@ def send_email(request, is_obj_user):
                                   code=get_random_string(length=16))
 
     if 'Origin' in request.headers:
-        url = request.headers['Origin'] + FrontURL.SIGNUP.value + obj.code
+        if obj_user:
+            url = request.headers['Origin'] + FrontURL.FORGET_PASSWORD.value + obj.code
+        else:
+            url = request.headers['Origin'] + FrontURL.SIGNUP.value + obj.code
     else:
-        url = FrontURL.ROOT.value + FrontURL.SIGNUP.value + obj.code
+        if obj_user:
+            url = FrontURL.ROOT.value + FrontURL.FORGET_PASSWORD.value + obj.code
+        else:
+            url = FrontURL.ROOT.value + FrontURL.SIGNUP.value + obj.code
 
     message = EmailUtils.sending_email(validation=url, receiver=obj.email)
     if message is not None:
         obj.delete()
-        raise ServerError( _("ServerError"))
+        raise ServerError(_("ServerError"))
     return Response(status=status.HTTP_200_OK)
