@@ -19,12 +19,12 @@ class ProfileUser(ProfileBaseUser):
 
 
 
-class ProfilePicture(ProfileUser):
+class ProfilePicture(ProfileBaseUser):
     serializer_class = ProfilePictureSerializer
     parser_classes = [CamelCaseMultiPartParser,]
 
 
-class ProfileResume(ProfileUser):
+class ProfileResume(ProfileBaseUser):
     serializer_class = ProfileResumeSerializer
     parser_classes = [CamelCaseMultiPartParser,]
 
