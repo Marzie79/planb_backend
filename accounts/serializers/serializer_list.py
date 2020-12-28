@@ -7,10 +7,11 @@ from django.utils.translation import gettext as _
 from accounts.models import *
 from core.validators import FileSizeValidator, MAX_IMAGE_SIZE, MAX_FILE_SIZE
 
+
 class ProvinceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Province
-        fields = ('code', 'name')
+        fields = ('id' , 'code', 'name')
 
 
 class CitySerializer(serializers.ModelSerializer):
@@ -18,13 +19,13 @@ class CitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = City
-        fields = ('code', 'name', 'province')
+        fields = ('id', 'code', 'name', 'province')
 
 
 class UniversitySerializer(serializers.ModelSerializer):
     class Meta:
         model = University
-        fields = ('code', 'name', 'city')
+        fields = ('id', 'code', 'name', 'city')
 
 
 class SkillBriefSerializer(serializers.ModelSerializer):

@@ -52,7 +52,6 @@ class CreateProjectSerializer(serializers.ModelSerializer):
     def validate_category(self, value):
         # category must be a parent skill
         if value.skill:
-            raise serializers.ValidationError(_('The background should be a father skill.'))
             raise serializers.ValidationError(_('The category should be a father skill.'))
         return value
 
