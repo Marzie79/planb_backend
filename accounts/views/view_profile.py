@@ -4,13 +4,19 @@ from djangorestframework_camel_case.parser import CamelCaseMultiPartParser
 from accounts.serializers import *
 
 
-class ProfileUser(viewsets.ModelViewSet):
+class ProfileBaseUser(viewsets.ModelViewSet):
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
-    serializer_class = ProfileSerializer
-
     def get_object(self):
         return self.request.user
+
+class ProfileUser(ProfileBaseUser):
+    serializer_class = ProfileSerializer
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return ProfileGetSerializer
+        return self.serializer_class
+
 
 
 class ProfilePicture(ProfileUser):
