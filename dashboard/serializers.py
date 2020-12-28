@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
 from accounts.models import *
 from django.utils.translation import gettext_lazy as _
 
@@ -9,25 +10,38 @@ class ProjectBriefSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'description',)
 
 
+class Status:
+    def __init__(self, code, label):
+        self.code = code
+        self.label = label
+
+
+class StatusSerializer(serializers.Serializer):
+    code = serializers.CharField()
+    label = serializers.CharField(max_length=200)
+
+
 class UserProjectSerializer(serializers.ModelSerializer):
-    status_UserProject = serializers.CharField(source='status')
-    status_Project = serializers.ReadOnlyField(source='project.status')
     name = serializers.ReadOnlyField(source='project.name')
     description = serializers.ReadOnlyField(source='project.description')
     role = serializers.CharField(source='get_role_display')
+    status = SerializerMethodField()
 
     class Meta:
         model = UserProject
-        exclude = ('id', 'user', 'admin', 'status')
+        exclude = ('id', 'user', 'admin')
 
-    """Do not display status_UserProject when category is PROJECT or NULL"""
+    """Do not display status when category is PROJECT or NULL"""
     def __init__(self, *args, **kwargs):
         try:
             if kwargs['context']['request'].query_params['category'] == 'PROJECT':
-                del self.fields['status_UserProject']
+                del self.fields['status']
         except:
-            del self.fields['status_UserProject']
+            del self.fields['status']
         super().__init__(*args, **kwargs)
+
+    def get_status(self, instance):
+        return StatusSerializer(Status(code=instance.status, label=instance.get_status_display)).data
 
 
 class CreateProjectSerializer(serializers.ModelSerializer):
