@@ -29,7 +29,7 @@ class ProfileResume(ProfileBaseUser):
     parser_classes = [CamelCaseMultiPartParser,]
 
 
-class UserSkill(ProfileUser):
+class UserSkill(ProfileBaseUser):
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
