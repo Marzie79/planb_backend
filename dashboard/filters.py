@@ -25,7 +25,7 @@ class UserProjectFilter(filters.FilterSet):
 
     def get_category(self, queryset, name, value):
         if value == "PROJECT":
-            return queryset.filter(status='ACCEPTED')
+            return queryset.filter(Q(status='ACCEPTED') | Q(status='ADMIN') | Q(status='CREATOR'))
         elif value == "REQUEST":
             return queryset.filter(Q(status='PENDING') | Q(status='DECLINED'))
 

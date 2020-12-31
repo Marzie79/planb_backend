@@ -20,12 +20,6 @@ class UserProjectsInline(admin.TabularInline):
             return super(UserProjectsInline, self).get_readonly_fields(request, obj)
 
 
-class CreatorInline(admin.TabularInline):
-    model = Project
-    fields = ('name', 'status',)
-    readonly_fields = ('name', 'status',)
-    extra = 0
-
 
 class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'is_active')
@@ -35,7 +29,7 @@ class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     fields = ('username', 'email', 'password1', 'password2', 'joined_date_decorated',
               'first_name', 'last_name', 'avatar', 'gender', 'description',
               'is_superuser', 'is_active', 'city', 'university', 'skills', 'resume','phone_number')
-    inlines = [UserProjectsInline, CreatorInline]
+    inlines = [UserProjectsInline]
 
 
 class CityInline(admin.TabularInline):
@@ -51,8 +45,8 @@ class ProvinceAdmin(admin.ModelAdmin):
 
 
 class ProjectsAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
-    list_display = ('name', 'creator', 'status', 'end_date_decorated')
-    fields = ('name', 'creator', 'description', 'status', 'last_modified_date', 'start_date', 'end_date')
+    list_display = ('name', 'status', 'end_date_decorated')
+    fields = ('name', 'description', 'status', 'last_modified_date', 'start_date', 'end_date')
     inlines = [UserProjectsInline]
 
 

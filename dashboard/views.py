@@ -2,6 +2,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from .serializers import *
 from .filters import UserProjectFilter
+from rest_framework import generics
 
 
 class UserProjectView(viewsets.ReadOnlyModelViewSet):
@@ -20,13 +21,25 @@ class UserProjectView(viewsets.ReadOnlyModelViewSet):
         return self.queryset.filter(user=self.request.user)
 
 
-class CreateProjectView(viewsets.ModelViewSet):
+class ProjectView(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     permission_classes = (IsAuthenticated,)
-    serializer_class = CreateProjectSerializer
-    
-    def get_queryset(self):
-        return self.queryset.filter(creator=self.request.user)
+    serializer_class = ProjectSerializer
+    lookup_field = 'slug'
 
     def perform_create(self, serializer):
-        return serializer.save(creator=self.request.user)
+        model = serializer.save()
+        UserProject.objects.create(user=self.request.user,project=model,status='CREATOR')
+
+
+
+
+# class CreateProjectView(generics.ListAPIView):
+#     queryset = Project.objects.all()
+#     permission_classes = (IsAuthenticated,)
+#     serializer_class = ProjectSerializer
+#
+#     def get_queryset(self):
+#         return self.queryset.filter(creator=self.request.user)
+
+

@@ -26,10 +26,12 @@ class UserProjectSerializer(serializers.ModelSerializer):
     description = serializers.ReadOnlyField(source='project.description')
     role = serializers.CharField(source='get_role_display')
     status = SerializerMethodField()
+  #  url = serializers.HyperlinkedIdentityField(view_name='project-detail')
+
 
     class Meta:
         model = UserProject
-        exclude = ('id', 'user', 'admin')
+        exclude = ('id', 'user',)
 
     """Do not display status when category is PROJECT or NULL"""
     def __init__(self, *args, **kwargs):
@@ -44,15 +46,16 @@ class UserProjectSerializer(serializers.ModelSerializer):
         return StatusSerializer(Status(code=instance.status, label=instance.get_status_display)).data
 
 
-class CreateProjectSerializer(serializers.ModelSerializer):
+class ProjectSerializer(serializers.ModelSerializer):
     creator = serializers.ReadOnlyField(source='creator.get_full_name')
+  #  url = serializers.HyperlinkedIdentityField(view_name='project-detail')
 
     class Meta:
         model = Project
-        fields = ('name', 'skills', 'description', 'end_date', 'category', 'creator')
+        fields = ('name', 'skills', 'description', 'end_date', 'category', 'creator',)
 
     def validate(self, data):
-        data = super(CreateProjectSerializer, self).validate(data)  # calling default validation
+        data = super(ProjectSerializer, self).validate(data)  # calling default validation
         # skills must be child of category skill
         for skill in data['skills']:
             parent_skill = skill

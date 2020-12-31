@@ -165,8 +165,6 @@ class Project(models.Model):
     last_modified_date = models.DateTimeField(_("Last_Modify_Date"), default=datetime.now)
     advertisement = models.BooleanField(_("Advertisement"), default=True)
     status = models.CharField(_("Project_Status"), max_length=7, choices=STATUS_CHOICES, default='WAITING')
-    creator = models.ForeignKey(User, verbose_name=_("Project_Owner"), on_delete=models.PROTECT,
-                                related_name='created_projects')
     slug = models.SlugField(_("Url"), allow_unicode=True, unique=True, blank=True, )
     category = models.ForeignKey(Skill, verbose_name=_('Category'), on_delete=models.PROTECT,
                                  related_name='Category', blank=True, null=True)
@@ -192,12 +190,16 @@ class Project(models.Model):
     def start_date_decorated(self, obj):
         return jdatetime.datetime.fromgregorian(datetime=obj.start_date).strftime("%a, %d %b %Y %H:%M:%S")
 
-    start_date_decorated.short_description = _("start_date_decorated")
+    start_date_decorated.short_description = _("Start_Date_Decorated")
 
     def end_date_decorated(self):
         return jdatetime.datetime.fromgregorian(datetime=self.end_date).strftime("%a, %d %b %Y %H:%M:%S")
 
     end_date_decorated.short_description = _("End_Date_Decorated")
+
+    @property
+    def creator(self):
+        return self.userproject_set.get(status='CREATOR').user
 
 
 class UserProject(models.Model):
@@ -206,19 +208,18 @@ class UserProject(models.Model):
         ('PENDING', _("Pending")),
         ('DECLINED', _("Declined")),
         ('DELETED', _("Deleted")),
+        ('ADMIN', _("Admin")),
+        ('CREATOR', _("Project_Owner")),
+
     )
     project = models.ForeignKey(Project, verbose_name=_("Project"), on_delete=models.CASCADE)
     user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
     status = models.CharField(_("Status"), max_length=9, choices=STATUS_CHOICES, default='PENDING')
-    admin = models.BooleanField(_("Admin"), default=False)
 
     def get_role_display(self):
-        if self.admin:
-            return _("Admin")
-        else:
+        if self.status=='ACCEPTED':
             return _("Team_Member")
-
-
+        return self.get_status_display()
 class Temp(models.Model):
     email = models.EmailField(_("Email"), validators=[validate_email], max_length=255)
     date = models.DateTimeField(_("Date"), auto_now=True)
