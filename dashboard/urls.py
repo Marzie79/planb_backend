@@ -6,5 +6,4 @@ router.register('user-projects', UserProjectView)
 # router.register(r'user-project/filter', StatusUserProjectView)
 router.register('projects', ProjectView)
 
-
 urlpatterns = router.urls
