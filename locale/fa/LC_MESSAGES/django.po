@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-31 17:57+0330\n"
+"POT-Creation-Date: 2020-12-31 18:13+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -177,9 +177,6 @@ msgstr "تبلیغات"
 msgid "Project_Status"
 msgstr "وضعیت پروژه"
 
-msgid "Project_Owner"
-msgstr "سازنده"
-
 msgid "Url"
 msgstr ""
 
@@ -195,7 +192,7 @@ msgstr "پروژه"
 msgid "Last_Date_Modified_Decorated"
 msgstr "تاریخ آخرین تغییر"
 
-msgid "start_date_decorated"
+msgid "Start_Date_Decorated"
 msgstr "تاریخ شروع"
 
 msgid "End_Date_Decorated"
@@ -209,9 +206,6 @@ msgstr "درخواست داده شده"
 
 msgid "Declined"
 msgstr "رد شده"
-
-msgid "Status"
-msgstr "وضعیت"
 
 msgid "Admin"
 msgstr "ادمین"
@@ -286,11 +280,6 @@ msgstr "حجم عکس نباید بیشتر از {} {} باشد."
 
 msgid "The {} skill is not in the {} category"
 msgstr "مهارت {} در دسته {} نیست"
-
-#, fuzzy
-#| msgid "The category should be a father skill."
-msgid "The background should be a father skill."
-msgstr "دسته بندی باید یک مهارت پدر باشد."
 
 msgid "The category should be a father skill."
 msgstr "دسته بندی باید یک مهارت پدر باشد."
