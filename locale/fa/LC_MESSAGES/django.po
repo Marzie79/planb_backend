@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-28 11:28+0330\n"
+"POT-Creation-Date: 2020-12-31 13:32+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -205,7 +205,7 @@ msgid "Accepted"
 msgstr "پذیرفته شده"
 
 msgid "Pending"
-msgstr ""
+msgstr "در انتظار تایید"
 
 msgid "Declined"
 msgstr "رد شده"
@@ -281,16 +281,91 @@ msgstr "حجم عکس نباید بیشتر از {} {} باشد."
 msgid "The {} skill is not in the {} category"
 msgstr "مهارت {} در دسته {} نیست"
 
-#, fuzzy
-#| msgid "The category should be a father skill."
-msgid "The background should be a father skill."
-msgstr "دسته بندی باید یک مهارت پدر باشد."
-
 msgid "The category should be a father skill."
 msgstr "دسته بندی باید یک مهارت پدر باشد."
 
 msgid "The number of skills must be between {} and {}"
 msgstr "تعداد مهارت ها باید بین {} تا {} باشد."
 
-#~ msgid "Requested"
-#~ msgstr "درخواست داده شده"
+#, fuzzy
+#~| msgid "The phone number entered is not valid."
+#~ msgid "That page number is not an integer"
+#~ msgstr "شماره تلفن وارد شده معتبر نمی باشد."
+
+#, fuzzy
+#~| msgid "Description"
+#~ msgid "Duration"
+#~ msgstr "توضیحات"
+
+#, fuzzy
+#~| msgid "Password is required"
+#~ msgid "This field is required."
+#~ msgstr "رمز عبور اجباری است"
+
+#, fuzzy, python-brace-format
+#~| msgid "The number of skills must be between {} and {}"
+#~ msgid "The number of days must be between {min_days} and {max_days}."
+#~ msgstr "تعداد مهارت ها باید بین {} تا {} باشد."
+
+#, fuzzy
+#~| msgid "Deleted"
+#~ msgid "Delete"
+#~ msgstr "حذف شده"
+
+#, fuzzy
+#~| msgid "Status"
+#~ msgid "Sat"
+#~ msgstr "وضعیت"
+
+#, fuzzy
+#~| msgid "Team_Member"
+#~ msgid "September"
+#~ msgstr "عضو تیم"
+
+#, fuzzy
+#~| msgid "Phone_Number"
+#~ msgid "November"
+#~ msgstr "شماره تلفن"
+
+#, fuzzy
+#~| msgid "Team_Member"
+#~ msgid "December"
+#~ msgstr "عضو تیم"
+
+#, fuzzy
+#~| msgid "Project"
+#~ msgid "oct"
+#~ msgstr "پروژه"
+
+#, fuzzy
+#~| msgid "Team_Member"
+#~ msgctxt "alt. month"
+#~ msgid "September"
+#~ msgstr "عضو تیم"
+
+#, fuzzy
+#~| msgid "Phone_Number"
+#~ msgctxt "alt. month"
+#~ msgid "November"
+#~ msgstr "شماره تلفن"
+
+#, fuzzy
+#~| msgid "Team_Member"
+#~ msgctxt "alt. month"
+#~ msgid "December"
+#~ msgstr "عضو تیم"
+
+#, fuzzy
+#~| msgid "Date"
+#~ msgid "Date:"
+#~ msgstr "تاریخ"
+
+#, fuzzy
+#~| msgid "Deleted"
+#~ msgid "Delete?"
+#~ msgstr "حذف شده"
+
+#, fuzzy
+#~| msgid "The category should be a father skill."
+#~ msgid "The background should be a father skill."
+#~ msgstr "دسته بندی باید یک مهارت پدر باشد."

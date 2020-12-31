@@ -18,7 +18,7 @@ class Status:
 
 class StatusSerializer(serializers.Serializer):
     code = serializers.CharField()
-    label = serializers.CharField(max_length=200)
+    label = serializers.CharField()
 
 
 class UserProjectSerializer(serializers.ModelSerializer):
@@ -31,17 +31,25 @@ class UserProjectSerializer(serializers.ModelSerializer):
         model = UserProject
         exclude = ('id', 'user', 'admin')
 
-    """Do not display status when category is PROJECT or NULL"""
+    """Do not display role when category is REQUEST"""
     def __init__(self, *args, **kwargs):
-        try:
-            if kwargs['context']['request'].query_params['category'] == 'PROJECT':
-                del self.fields['status']
-        except:
-            del self.fields['status']
+        query_params = kwargs['context']['request'].query_params
+        if (len(query_params) != 0) and query_params['category'] == 'REQUEST':
+            del self.fields['role']
         super().__init__(*args, **kwargs)
 
     def get_status(self, instance):
-        return StatusSerializer(Status(code=instance.status, label=instance.get_status_display)).data
+        query_params = self.context['request'].query_params
+        if len(query_params) != 0:
+            if query_params['category'] == 'PROJECT':
+                return StatusSerializer(
+                    Status(code=instance.project.status, label=instance.project.get_status_display)).data
+            else:
+                return StatusSerializer(
+                    Status(code=instance.status, label=instance.get_status_display)).data
+        else:
+            return StatusSerializer(
+                Status(code=instance.project.status, label=instance.project.get_status_display)).data
 
 
 class CreateProjectSerializer(serializers.ModelSerializer):
