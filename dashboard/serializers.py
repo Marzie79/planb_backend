@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, status
 from rest_framework.fields import SerializerMethodField
 from accounts.models import *
 from django.utils.translation import gettext_lazy as _
@@ -26,14 +26,15 @@ class UserProjectSerializer(serializers.ModelSerializer):
     description = serializers.ReadOnlyField(source='project.description')
     role = serializers.CharField(source='get_role_display')
     status = SerializerMethodField()
-  #  url = serializers.HyperlinkedIdentityField(view_name='project-detail')
 
+    #  url = serializers.HyperlinkedIdentityField(view_name='project-detail')
 
     class Meta:
         model = UserProject
         exclude = ('id', 'user',)
 
     """Do not display role when category is REQUEST"""
+
     def __init__(self, *args, **kwargs):
         query_params = kwargs['context']['request'].query_params
         if (len(query_params) != 0) and query_params['category'] == 'REQUEST':
@@ -56,7 +57,8 @@ class UserProjectSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     creator = serializers.ReadOnlyField(source='creator.get_full_name')
-  #  url = serializers.HyperlinkedIdentityField(view_name='project-detail')
+
+    #  url = serializers.HyperlinkedIdentityField(view_name='project-detail')
 
     class Meta:
         model = Project
@@ -85,3 +87,20 @@ class ProjectSerializer(serializers.ModelSerializer):
         if not (len(value) >= 3 and len(value) <= 10):
             raise serializers.ValidationError(_('The number of skills must be between {} and {}').format(3, 10))
         return value
+
+
+class ProjectTeamSerializer(serializers.ModelSerializer):
+    avatar = serializers.ImageField(source='user.avatar')
+    city = serializers.ReadOnlyField(source='user.city.name')
+    description = serializers.ReadOnlyField(source='user.description')
+    name = serializers.ReadOnlyField(source='user.__str__')
+    province = serializers.ReadOnlyField(source='user.city.province.name')
+    role = serializers.ReadOnlyField(source='get_role_display')
+    username = serializers.CharField(source='user.username')
+
+    class Meta:
+        model = UserProject
+        fields = ('id', 'name', 'city', 'role', 'province', 'description', 'avatar', 'status', 'username')
+        extra_kwargs = {
+            'status': {'write_only': True},
+        }

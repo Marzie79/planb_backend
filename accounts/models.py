@@ -217,9 +217,14 @@ class UserProject(models.Model):
     status = models.CharField(_("Status"), max_length=9, choices=STATUS_CHOICES, default='PENDING')
 
     def get_role_display(self):
-        if self.status=='ACCEPTED':
+        if self.status == 'ACCEPTED':
             return _("Team_Member")
         return self.get_status_display()
+
+    # class Meta:
+    #     unique_together = ('project', 'user',)
+
+
 class Temp(models.Model):
     email = models.EmailField(_("Email"), validators=[validate_email], max_length=255)
     date = models.DateTimeField(_("Date"), auto_now=True)

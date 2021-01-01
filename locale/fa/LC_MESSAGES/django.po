@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-31 18:13+0330\n"
+"POT-Creation-Date: 2021-01-02 00:02+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgid "The passwords must be match"
 msgstr "رمز های وارد شده باید با یکدیگر مطابقت داشته باشند."
 
 msgid "Password is required"
-msgstr "رمز عبور اجباری است"
+msgstr "رمز عبور اجباری است."
 
 msgid "male"
 msgstr "مرد"
@@ -235,7 +235,7 @@ msgid "example"
 msgstr "نمونه"
 
 msgid "User_Email_Error"
-msgstr "کاربری با این ایمیل موجود نمی‌باشد"
+msgstr "کاربری با این ایمیل موجود نمی‌باشد."
 
 msgid "EmailDoesExist"
 msgstr "حسابی با این ایمیل موجود می باشد."
@@ -258,7 +258,7 @@ msgid "Megabyte"
 msgstr "مگابایت"
 
 msgid "File type must be {}"
-msgstr "نوع فایل باید {} باشد"
+msgstr "نوع فایل باید {} باشد."
 
 msgid "Must only contain English letters and numbers."
 msgstr "تنها باید شامل حروف و اعداد انگلیسی باشد."
@@ -279,13 +279,19 @@ msgid "The photo size should be more than {} {}"
 msgstr "حجم عکس نباید بیشتر از {} {} باشد."
 
 msgid "The {} skill is not in the {} category"
-msgstr "مهارت {} در دسته {} نیست"
+msgstr "مهارت {} در دسته {} نیست."
 
 msgid "The category should be a father skill."
 msgstr "دسته بندی باید یک مهارت پدر باشد."
 
 msgid "The number of skills must be between {} and {}"
 msgstr "تعداد مهارت ها باید بین {} تا {} باشد."
+
+msgid "ThisUserNotExist"
+msgstr "کاربری با این اطلاعات موجود نمی باشد."
+
+#~ msgid "TheValueIsNotCorrect"
+#~ msgstr "مقدار وارد شده معتبر نمی باشد."
 
 #, fuzzy
 #~| msgid "The category should be a father skill."

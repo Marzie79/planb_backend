@@ -17,6 +17,7 @@ class UserProjectFilter(filters.FilterSet):
         fields = ['status', ]
 
     """Display accepted projects when category is null"""
+
     def __init__(self, data, *args, **kwargs):
         if not data.get('category'):
             data = data.copy()
@@ -34,3 +35,23 @@ class UserProjectFilter(filters.FilterSet):
             return queryset.filter(project__status=value)
         elif self.data['category'] == "REQUEST":
             return queryset.filter(status=value)
+
+
+class TeamProjectFilter(filters.FilterSet):
+    status = filters.ChoiceFilter(choices=(UserProject.STATUS_CHOICES + Project.STATUS_CHOICES), method='get_status')
+
+    class Meta:
+        model: UserProject
+        fields = ['status', ]
+
+    def __init__(self, data, *args, **kwargs):
+        if not data.get('status'):
+            data = data.copy()
+            data['status'] = 'ACCEPTED'
+        super().__init__(data, *args, **kwargs)
+
+    def get_status(self, queryset, name, value):
+        if value == 'ACCEPTED':
+            return queryset.filter(Q(status='ACCEPTED') | Q(status='ADMIN') | Q(status='CREATOR'))
+        elif value == 'PENDING':
+            return queryset.filter(Q(status='Pending'))

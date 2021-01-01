@@ -4,23 +4,28 @@ from accounts.models import *
 from core.validators import FileSizeValidator, MAX_IMAGE_SIZE, MAX_FILE_SIZE
 from .serializer_list import CitySerializer
 
+
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username', 'email', 'university', 'city', 'phone_number', 'description','gender')
+        fields = (
+        'first_name', 'last_name', 'username', 'email', 'university', 'city', 'phone_number', 'description', 'gender')
+
 
 class CityProfileSerializer(CitySerializer):
     from .serializer_list import ProvinceSerializer
     province = ProvinceSerializer()
+
 
 class ProfileGetSerializer(ProfileSerializer):
     from .serializer_list import UniversitySerializer
     gender_display = serializers.CharField(source='get_gender_display', read_only=True)
     city = CityProfileSerializer()
     university = UniversitySerializer()
+
     class Meta:
         model = User
-        fields = ProfileSerializer.Meta.fields+('gender_display',)
+        fields = ProfileSerializer.Meta.fields + ('gender_display',)
 
 
 class ProfilePictureSerializer(serializers.ModelSerializer):
@@ -44,6 +49,7 @@ class ProfileResumeSerializer(serializers.ModelSerializer):
             )
         ]
 
+
 class UpdateSkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -57,6 +63,3 @@ class UserSkillSerializer(UpdateSkillSerializer):
         from accounts.serializers import SkillBriefSerializer
         skills = instance.skills.order_by('name')
         return SkillBriefSerializer(skills, many=True).data
-
-
-
