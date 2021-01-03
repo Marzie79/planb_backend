@@ -1,19 +1,22 @@
 from django.utils import timezone
-from rest_framework import status, generics
+from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-
+from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 # don't use rest_framework.renderers.JsonRenderer !!!
 from accounts.serializers import *
+from core.exceptions import BadRequestError
 
 
 def set_cookie_response(request):
     ser = MyTokenObtainPairSerializer(data=request.data,
                                       context={'request': request})
-    ser.is_valid(raise_exception=True)
+    try:
+        ser.is_valid(raise_exception=True)
+    except Exception as e:
+        raise BadRequestError(e.args[0])
     jwt_token = ser.validated_data
     # make jwt token
     access_token = {'access': jwt_token['access']}
@@ -23,6 +26,7 @@ def set_cookie_response(request):
     response.set_cookie("token", jwt_token['refresh'], httponly=True,
                         expires=timezone.now() + timezone.timedelta(days=180))
     return response
+
 
 
 # create token and use this view as login view
@@ -39,7 +43,7 @@ class MyTokenRefreshView(TokenRefreshView):
     """
        when is sent empty post , server send new access token if refresh(saves in the cookie) validate correctly.
     """
-    serializer_class = None
+    serializer_class = TokenRefreshSerializer
     def post(self, request, *args, **kwargs):
         # get cookie and refresh token
         try:

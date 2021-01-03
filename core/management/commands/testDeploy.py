@@ -16,11 +16,6 @@ class Command(BaseCommand):
             help='ip and port',
         )
 
-    # django-admin makemessages --locale=fa
-    # or
-    # django-admin makemessages --locale=fa --ignore=venv/*
-    # django-admin compilemessages
-
     def handle(self, *args, **kwargs):
         try:
             # shellCommand = 'import subprocess;import sys;subprocess.run("pip install -r ' + settings.BASE_DIR.replace(
@@ -34,8 +29,9 @@ class Command(BaseCommand):
             management.call_command('migrate')
             # management.call_command('collectstatic')
             # management.call_command('check','--deploy')
-            testCommand = 'import subprocess;import sys;subprocess.run("coverage run manage.py test");'
-           # management.call_command('shell', command=testCommand)
+            testCommand = 'import subprocess;import sys;subprocess.run("coverage run manage.py test ");' \
+                          'subprocess.run("coverage html");'
+            # management.call_command('shell', command=testCommand)
             port = 'localhost:8000'
             if kwargs['ip']:
                 port = kwargs['ip']

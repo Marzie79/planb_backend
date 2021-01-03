@@ -12,7 +12,13 @@ admin.site.index_title = _("Manage_Model")
 class UserProjectsInline(admin.TabularInline):
     model = UserProject
     extra = 0
-    fields = ('project',)
+
+    def get_readonly_fields(self, request, obj=None):
+        if isinstance(obj, User):
+            return ('status',)
+        else:
+            return super(UserProjectsInline, self).get_readonly_fields(request, obj)
+
 
 
 class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
@@ -22,7 +28,7 @@ class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     form = UserForm
     fields = ('username', 'email', 'password1', 'password2', 'joined_date_decorated',
               'first_name', 'last_name', 'avatar', 'gender', 'description',
-              'is_superuser', 'is_active', 'city', 'university', 'skills',)
+              'is_superuser', 'is_active', 'city', 'university', 'skills', 'resume','phone_number')
     inlines = [UserProjectsInline]
 
 
@@ -39,8 +45,9 @@ class ProvinceAdmin(admin.ModelAdmin):
 
 
 class ProjectsAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
-    list_display = ('name', 'creator', 'situation', 'end_date_decorated')
-    fields = ('name', 'creator', 'description', 'last_modified_date', 'start_date', 'end_date')
+    list_display = ('name', 'status', 'end_date_decorated')
+    fields = ('name', 'description', 'status', 'last_modified_date', 'start_date', 'end_date')
+    inlines = [UserProjectsInline]
 
 
 admin.site.register(Temp)

@@ -1,29 +1,38 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from djangorestframework_camel_case.parser import CamelCaseMultiPartParser
-
 from accounts.serializers import *
 
 
-class ProfileUser(viewsets.ModelViewSet):
+class ProfileBaseUser(viewsets.ModelViewSet):
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
-    serializer_class = ProfileSerializer
-
     def get_object(self):
-        """
-            Returns the object the view is displaying.
-        """
         return self.request.user
 
-# def get_redirected(queryset_or_class, lookups, validators):
-#     obj = get_object_or_404(queryset_or_class, **lookups)
-#     for key, value in validators.items():
-#         if value != getattr(obj, key):
-#             return obj
-#     return obj
+class ProfileUser(ProfileBaseUser):
+    serializer_class = ProfileSerializer
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return ProfileGetSerializer
+        return self.serializer_class
 
 
-class ProfilePicture(ProfileUser):
+
+class ProfilePicture(ProfileBaseUser):
     serializer_class = ProfilePictureSerializer
     parser_classes = [CamelCaseMultiPartParser,]
+
+
+class ProfileResume(ProfileBaseUser):
+    serializer_class = ProfileResumeSerializer
+    parser_classes = [CamelCaseMultiPartParser,]
+
+
+class UserSkill(ProfileBaseUser):
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return UserSkillSerializer
+        elif self.action == 'partial_update':
+            return UpdateSkillSerializer
