@@ -8,7 +8,7 @@ router.register('user-projects', UserProjectView)
 router.register('projects', ProjectView)
 
 urlpatterns = [
-    path('project/<str:slug>/memmbers/', ProjectTeam.as_view({'get': 'list', 'patch': 'update'})),
+    path('projects/<str:slug>/members/', ProjectTeam.as_view({'get': 'list', 'patch': 'update'})),
 ]
 
 urlpatterns += router.urls
