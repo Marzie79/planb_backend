@@ -221,6 +221,13 @@ class UserProject(models.Model):
             return _("Team_Member")
         return self.get_status_display()
 
+    def get_slug(self):
+        return self.project.slug
+
+    @property
+    def project__slug(self):
+        return self.project.slug    
+
     # class Meta:
     #     unique_together = ('project', 'user',)
 

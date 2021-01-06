@@ -26,12 +26,15 @@ class UserProjectSerializer(serializers.ModelSerializer):
     description = serializers.ReadOnlyField(source='project.description')
     role = serializers.CharField(source='get_role_display')
     status = SerializerMethodField()
-
-    #  url = serializers.HyperlinkedIdentityField(view_name='project-detail')
+    # url = serializers.HyperlinkedRelatedField(read_only=True, view_name='project-detail')
 
     class Meta:
         model = UserProject
-        exclude = ('id', 'user',)
+        fields = ('name', 'description','role', 'status', 'url' ,)
+        # exclude = ('id', 'user',)
+        extra_kwargs = {
+            'url': {'lookup_field': 'project__slug'}
+        }
 
     """Do not display role when category is REQUEST"""
 
@@ -58,11 +61,15 @@ class UserProjectSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     creator = serializers.ReadOnlyField(source='creator.get_full_name')
 
-    #  url = serializers.HyperlinkedIdentityField(view_name='project-detail')
+    # url = serializers.HyperlinkedIdentityField(view_name='project-detail')
 
     class Meta:
         model = Project
-        fields = ('name', 'skills', 'description', 'end_date', 'category', 'creator',)
+        fields = ('name', 'skills', 'description', 'end_date', 'category', 'creator', 'url')
+        extra_kwargs = {
+            'url': {'lookup_field': 'slug'},
+        }
+
 
     def validate(self, data):
         data = super(ProjectSerializer, self).validate(data)  # calling default validation

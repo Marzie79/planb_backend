@@ -17,7 +17,7 @@ urlpatterns = [
             path('avatar/',
                  ProfilePicture.as_view({'get': 'retrieve', 'post': 'partial_update', }, name='profile_picture')),
             path('resume/',
-                 ProfileResume.as_view({'get': 'retrieve', 'post': 'partial_update', }, name='profile_resome')),
+                 ProfileResume.as_view({'get': 'retrieve', 'post': 'partial_update', 'delete': 'destroy', }, name='profile_resome')),
             path('skills/', UserSkill.as_view({'get': 'retrieve', 'patch': 'partial_update'}), name="skills"),
         ])),
 

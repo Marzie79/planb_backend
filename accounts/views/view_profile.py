@@ -1,5 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
 from djangorestframework_camel_case.parser import CamelCaseMultiPartParser
 from accounts.serializers import *
 
@@ -27,6 +29,13 @@ class ProfilePicture(ProfileBaseUser):
 class ProfileResume(ProfileBaseUser):
     serializer_class = ProfileResumeSerializer
     parser_classes = [CamelCaseMultiPartParser,]
+
+    def destroy(self, request):
+        try: 
+            instance = self.queryset.filter(id = self.request.user.id).update(resume= None) 
+            return Response(status=status.HTTP_204_NO_CONTENT) 
+        except User.DoesNotExist: 
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserSkill(ProfileBaseUser):

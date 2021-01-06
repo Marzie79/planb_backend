@@ -18,6 +18,7 @@ class UserProjectView(viewsets.ReadOnlyModelViewSet):
     queryset = UserProject.objects.all()
     serializer_class = UserProjectSerializer
     filterset_class = UserProjectFilter
+    lookup_field = 'project__slug'
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
