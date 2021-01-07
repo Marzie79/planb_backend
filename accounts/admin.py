@@ -46,7 +46,7 @@ class ProvinceAdmin(admin.ModelAdmin):
 
 class ProjectsAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ('name', 'status', 'end_date_decorated')
-    fields = ('name', 'description', 'status', 'last_modified_date', 'start_date', 'end_date')
+    fields = ('name', 'description', 'status', 'last_modified_date', 'start_date', 'end_date', 'slug')
     inlines = [UserProjectsInline]
 
 

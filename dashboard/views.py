@@ -1,8 +1,9 @@
 from django.utils.translation import gettext_lazy as _
 
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 
 from .serializers import *
 from .filters import UserProjectFilter, TeamProjectFilter
@@ -35,34 +36,21 @@ class ProjectView(viewsets.ModelViewSet):
         UserProject.objects.create(user=self.request.user, project=model, status='CREATOR')
 
 
-class ProjectTeam(viewsets.ModelViewSet):
-    """
-    make a json like this:
-    {
-    "status": "ACCEPTED",
-    "id": 305
-    }
-    """
+class ProjectTeam(mixins.UpdateModelMixin, GenericViewSet):
     serializer_class = ProjectTeamSerializer
     filterset_class = TeamProjectFilter
-    queryset = UserProject.objects.all()
-    lookup_field = 'slug'
 
     def get_queryset(self):
-        return UserProject.objects.filter(project__slug=self.kwargs['slug'])
+        return Project.objects.filter(slug=self.kwargs['slug'])
 
-    def update(self, request, *args, **kwargs):
+    def partial_update(self, request, *args, **kwargs):
         try:
-            instance = UserProject.objects.get(pk=request.data['id'])
+            instance = UserProject.objects.get(pk=self.kwargs['pk'])
         except UserProject.DoesNotExist:
             return Response(data={"bad_request": _('ThisUserNotExist')})
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-
-        if getattr(instance, '_prefetched_objects_cache', None):
-            instance._prefetched_objects_cache = {}
-
         return Response(serializer.data)
 
 # class CreateProjectView(generics.ListAPIView):
