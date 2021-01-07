@@ -36,12 +36,12 @@ class ProjectView(viewsets.ModelViewSet):
         UserProject.objects.create(user=self.request.user, project=model, status='CREATOR')
 
 
-class ProjectTeam(mixins.UpdateModelMixin, GenericViewSet):
+class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, GenericViewSet):
     serializer_class = ProjectTeamSerializer
     filterset_class = TeamProjectFilter
 
     def get_queryset(self):
-        return Project.objects.filter(slug=self.kwargs['slug'])
+        return UserProject.objects.filter(project__slug=self.kwargs['slug_slug'])
 
     def partial_update(self, request, *args, **kwargs):
         try:
@@ -52,6 +52,7 @@ class ProjectTeam(mixins.UpdateModelMixin, GenericViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
+
 
 # class CreateProjectView(generics.ListAPIView):
 #     queryset = Project.objects.all()
