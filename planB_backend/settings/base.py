@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'jalali_date',
     'imagekit',
     'django_filters',
+    'dry_rest_permissions',
     # 'django_cleanup',
 ]
 

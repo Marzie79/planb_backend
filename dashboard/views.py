@@ -1,7 +1,8 @@
 from django.utils.translation import gettext_lazy as _
+from dry_rest_permissions.generics import DRYPermissions
 
 from rest_framework import viewsets, mixins
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
@@ -27,9 +28,14 @@ class UserProjectView(viewsets.ReadOnlyModelViewSet):
 
 class ProjectView(viewsets.ModelViewSet):
     queryset = Project.objects.all()
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (DRYPermissions,)
     serializer_class = ProjectSerializer
     lookup_field = 'slug'
+
+    def get_permissions(self):
+        if self.request.method == 'PATCH' or self.request.method == 'DELETE':
+            return [DRYPermissions(), ]
+        return []
 
     def perform_create(self, serializer):
         model = serializer.save()
@@ -39,8 +45,17 @@ class ProjectView(viewsets.ModelViewSet):
 class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, GenericViewSet):
     serializer_class = ProjectTeamSerializer
     filterset_class = TeamProjectFilter
+    permission_classes = (DRYPermissions,)
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [DRYPermissions(), ]
+        return []
 
     def get_queryset(self):
+        obj = get_object_or_404(
+            UserProject.objects.filter(Q(user=self.request.user) & Q(project__slug=self.kwargs['slug_slug'])))
+        self.check_object_permissions(self.request, obj)
         return UserProject.objects.filter(project__slug=self.kwargs['slug_slug'])
 
     def partial_update(self, request, *args, **kwargs):
@@ -52,7 +67,6 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, GenericViewSet
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
-
 
 # class CreateProjectView(generics.ListAPIView):
 #     queryset = Project.objects.all()

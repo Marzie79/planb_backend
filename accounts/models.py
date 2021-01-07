@@ -11,6 +11,7 @@ from core import validators
 from core.models import AbstractImageModel
 from .managers import UserManager
 from core.validators import PDF_TYPE_VALIDATOR, SVG_TYPE_VALIDATOR
+from django.db.models import Q
 
 
 class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
@@ -201,6 +202,26 @@ class Project(models.Model):
     def creator(self):
         return self.userproject_set.get(status='CREATOR').user
 
+    @staticmethod
+    def has_update_permission(request):
+        return True
+
+    def has_object_update_permission(self, request):
+        if self.status != 'ENDED':
+            user_project = UserProject.objects.get(Q(user=request.user) & Q(project=self))
+            is_admin = user_project.status == 'ADMIN'
+            is_creator = user_project.status == 'CREATOR'
+            return is_admin or is_creator
+        return False
+
+    @staticmethod
+    def has_destroy_permission(request):
+        return True
+
+    def has_object_destroy_permission(self, request):
+        user_project = UserProject.objects.get(Q(user=request.user) & Q(project=self))
+        return user_project.status == 'CREATOR'
+
 
 class UserProject(models.Model):
     STATUS_CHOICES = (
@@ -226,7 +247,19 @@ class UserProject(models.Model):
 
     @property
     def project__slug(self):
-        return self.project.slug    
+        return self.project.slug
+
+    @staticmethod
+    def has_read_permission(request):
+        return True
+
+    def has_object_read_permission(self, request):
+        query_params = request.query_params
+        if ('status' in query_params) and query_params['status'] == 'PENDING':
+            is_admin = self.status == 'ADMIN'
+            is_creator = self.status == 'CREATOR'
+            return is_admin or is_creator
+        return True
 
     # class Meta:
     #     unique_together = ('project', 'user',)
