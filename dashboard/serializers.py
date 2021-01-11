@@ -11,14 +11,21 @@ class ProjectBriefSerializer(serializers.ModelSerializer):
 
 
 class Status:
-    def __init__(self, code, label):
-        self.code = code
-        self.label = label
+        def __init__(self, code, label):
+            self.code = code
+            self.label = label
 
 
 class StatusSerializer(serializers.Serializer):
     code = serializers.CharField()
     label = serializers.CharField()
+
+    def __init__(self,instance):
+        # Don't pass the 'fields' arg up to the superclass
+        if instance is None :
+            super(StatusSerializer, self).__init__(None)
+        else:
+            super(StatusSerializer, self).__init__(Status(code=instance.status, label=instance.get_status_display))
 
 
 class UserProjectSerializer(serializers.ModelSerializer):
@@ -37,7 +44,6 @@ class UserProjectSerializer(serializers.ModelSerializer):
         }
 
     """Do not display role when category is REQUEST"""
-
     def __init__(self, *args, **kwargs):
         query_params = kwargs['context']['request'].query_params
         if (len(query_params) != 0) and query_params['category'] == 'REQUEST':
@@ -46,29 +52,31 @@ class UserProjectSerializer(serializers.ModelSerializer):
 
     def get_status(self, instance):
         query_params = self.context['request'].query_params
-        if len(query_params) != 0:
-            if query_params['category'] == 'PROJECT':
-                return StatusSerializer(
-                    Status(code=instance.project.status, label=instance.project.get_status_display)).data
-            else:
-                return StatusSerializer(
-                    Status(code=instance.status, label=instance.get_status_display)).data
-        else:
-            return StatusSerializer(
-                Status(code=instance.project.status, label=instance.project.get_status_display)).data
+        if len(query_params) != 0 and query_params['category'] != 'PROJECT' :
+            return StatusSerializer(instance).data
+        return StatusSerializer(instance.project).data
 
 
 class ProjectSerializer(serializers.ModelSerializer):
     creator = serializers.ReadOnlyField(source='creator.get_full_name')
+    status = serializers.SerializerMethodField(method_name='get_status')
 
     # url = serializers.HyperlinkedIdentityField(view_name='project-detail')
 
     class Meta:
         model = Project
-        fields = ('name', 'skills', 'description', 'end_date', 'category', 'creator', 'url')
+        fields = ('name', 'skills', 'description', 'end_date', 'category', 'creator', 'url','status')
         extra_kwargs = {
             'url': {'lookup_field': 'slug'},
         }
+
+    def get_status(self, instance):
+        user = self.context['request'].user
+        try:
+            userProject = UserProject.objects.get(user=user,project=instance)
+            return  StatusSerializer(userProject).data
+        except:
+            return None
 
 
     def validate(self, data):
