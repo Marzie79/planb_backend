@@ -2,7 +2,7 @@ import jdatetime
 from datetime import datetime
 from imagekit.models import ProcessedImageField
 from phonenumber_field.modelfields import PhoneNumberField
-from django.core.validators import validate_email
+from django.core.validators import validate_email, MinValueValidator
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
@@ -169,6 +169,7 @@ class Project(models.Model):
     slug = models.SlugField(_("Url"), allow_unicode=True, unique=True, blank=True, )
     category = models.ForeignKey(Skill, verbose_name=_('Category'), on_delete=models.PROTECT,
                                  related_name='Category', blank=True, null=True)
+    amount = models.FloatField(_("amount"), default=float(0), validators=[MinValueValidator(0)])
 
     class Meta:
         ordering = ['name']
@@ -208,7 +209,10 @@ class Project(models.Model):
 
     def has_object_update_permission(self, request):
         if self.status != 'ENDED':
-            user_project = UserProject.objects.get(Q(user=request.user) & Q(project=self))
+            try:
+                user_project = UserProject.objects.get(Q(user=request.user) & Q(project=self))
+            except:
+                return False
             is_admin = user_project.status == 'ADMIN'
             is_creator = user_project.status == 'CREATOR'
             return is_admin or is_creator
@@ -219,7 +223,10 @@ class Project(models.Model):
         return True
 
     def has_object_destroy_permission(self, request):
-        user_project = UserProject.objects.get(Q(user=request.user) & Q(project=self))
+        try:
+            user_project = UserProject.objects.get(Q(user=request.user) & Q(project=self))
+        except:
+            return False
         return user_project.status == 'CREATOR'
 
 
