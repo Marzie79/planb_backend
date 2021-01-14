@@ -1,7 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 from dry_rest_permissions.generics import DRYPermissions
 
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, generics
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -10,7 +10,7 @@ from .serializers import *
 from .filters import UserProjectFilter, TeamProjectFilter
 
 
-class UserProjectView(viewsets.ReadOnlyModelViewSet):
+class UserProjectView(generics.ListAPIView):
     """
         Enter "PROJECT" or "REQUEST" as category,
         then you can also enter following items as status:
@@ -20,7 +20,6 @@ class UserProjectView(viewsets.ReadOnlyModelViewSet):
     queryset = UserProject.objects.all()
     serializer_class = UserProjectSerializer
     filterset_class = UserProjectFilter
-    lookup_field = 'project__slug'
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)

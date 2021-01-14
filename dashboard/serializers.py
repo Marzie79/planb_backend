@@ -28,20 +28,19 @@ class StatusSerializer(serializers.Serializer):
             super(StatusSerializer, self).__init__(Status(code=instance.status, label=instance.get_status_display))
 
 
-class UserProjectSerializer(serializers.ModelSerializer):
+class UserProjectSerializer(serializers.HyperlinkedModelSerializer):
     name = serializers.ReadOnlyField(source='project.name')
     description = serializers.ReadOnlyField(source='project.description')
     role = serializers.CharField(source='get_role_display')
     status = SerializerMethodField()
 
-    # url = serializers.HyperlinkedRelatedField(read_only=True, view_name='project-detail')
 
     class Meta:
         model = UserProject
         fields = ('name', 'description', 'role', 'status', 'url',)
         # exclude = ('id', 'user',)
         extra_kwargs = {
-            'url': {'lookup_field': 'project__slug'}
+            'url': {'lookup_field':'slug','read_only':'True','view_name':'project-detail','source':'project'}
         }
 
     """Do not display role when category is REQUEST"""
