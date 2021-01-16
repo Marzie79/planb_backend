@@ -49,11 +49,14 @@ class ProjectsAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     fields = ('name', 'description', 'status', 'last_modified_date', 'start_date', 'end_date', 'slug')
     inlines = [UserProjectsInline]
 
+class SkillAdmin(admin.ModelAdmin):
+    readonly_fields = ('id',)
+
 
 admin.site.register(Temp)
 admin.site.register(User, UserAdmin)
 admin.site.register(University)
 admin.site.register(Project, ProjectsAdmin)
 admin.site.register(Province, ProvinceAdmin)
-admin.site.register(Skill)
+admin.site.register(Skill,SkillAdmin)
 admin.site.unregister(Group)
