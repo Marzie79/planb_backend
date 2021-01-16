@@ -201,7 +201,12 @@ class Project(models.Model):
 
     @property
     def creator(self):
-        return self.userproject_set.get(status='CREATOR').user
+        try:
+            return self.userproject_set.get(status='CREATOR').user
+        except:
+            return None
+
+    creator.fget.short_description = _('Project_Owner')
 
     @staticmethod
     def has_update_permission(request):

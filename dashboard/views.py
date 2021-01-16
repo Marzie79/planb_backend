@@ -2,6 +2,7 @@ from django.utils.translation import gettext_lazy as _
 from dry_rest_permissions.generics import DRYPermissions
 
 from rest_framework import viewsets, mixins, generics
+from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -28,8 +29,13 @@ class UserProjectView(generics.ListAPIView):
 class ProjectView(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     permission_classes = (DRYPermissions,)
-    serializer_class = ProjectSerializer
+    serializer_class = ProjectSaveSerializer
     lookup_field = 'slug'
+
+    def get_serializer_class(self):
+        if self.action == 'list' or self.action == 'retrieve':
+            return ProjectSerializer
+        return super(ProjectView, self).get_serializer_class()
 
     def get_permissions(self):
         if self.request.method == 'PATCH' or self.request.method == 'DELETE':
@@ -39,6 +45,13 @@ class ProjectView(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         model = serializer.save()
         UserProject.objects.create(user=self.request.user, project=model, status='CREATOR')
+
+    @action(methods=['get'], detail=True,
+            url_path='status', url_name='get_status')
+    def get_status(self, request, slug=None):
+        instance = self.get_object()
+        serializer = StatusSerializer(instance)
+        return Response(serializer.data)
 
 
 class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, GenericViewSet):
