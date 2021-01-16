@@ -1,4 +1,5 @@
 from django.utils.translation import gettext_lazy as _
+from drf_yasg.utils import swagger_auto_schema
 from dry_rest_permissions.generics import DRYPermissions
 
 from rest_framework import viewsets, mixins, generics
@@ -48,6 +49,14 @@ class ProjectView(viewsets.ModelViewSet):
 
     @action(methods=['get'], detail=True,
             url_path='status', url_name='get_status')
+    @swagger_auto_schema(operation_description="""
+   # Statuses : 
+    ACCEPTED ADMIN CREATOR : for members
+    PENDING
+    DECLINED
+    DELETED
+    """
+    )
     def get_status(self, request, slug=None):
         instance = self.get_object()
         serializer = StatusSerializer(instance)
