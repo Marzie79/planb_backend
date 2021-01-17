@@ -30,10 +30,11 @@ class UserProjectSerializer(serializers.HyperlinkedModelSerializer):
     name = serializers.ReadOnlyField(source='project.name')
     description = serializers.ReadOnlyField(source='project.description')
     role = serializers.CharField(source='get_role_display')
+    status = SerializerMethodField()
 
     class Meta:
         model = UserProject
-        fields = ('name', 'description', 'status', 'url',)
+        fields = ('name', 'description', 'role', 'status', 'url',)
         # exclude = ('id', 'user',)
         extra_kwargs = {
             'url': {'lookup_field':'slug','read_only':'True','view_name':'project-detail','source':'project'}
@@ -47,11 +48,11 @@ class UserProjectSerializer(serializers.HyperlinkedModelSerializer):
             del self.fields['role']
         super().__init__(*args, **kwargs)
 
-    # def get_status(self, instance):
-    #     query_params = self.context['request'].query_params
-    #     if len(query_params) != 0 and query_params['category'] != 'PROJECT':
-    #         return StatusSerializer(instance).data
-    #     return StatusSerializer(instance.project).data
+    def get_status(self, instance):
+        query_params = self.context['request'].query_params
+        if len(query_params) != 0 and query_params['category'] != 'PROJECT':
+            return StatusSerializer(instance).data
+        return StatusSerializer(instance.project).data
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     creator = serializers.ReadOnlyField(source='creator.get_full_name')
