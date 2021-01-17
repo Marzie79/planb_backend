@@ -1,3 +1,5 @@
+import random
+
 from django.utils.translation import gettext_lazy as _
 from drf_yasg.utils import swagger_auto_schema
 from dry_rest_permissions.generics import DRYPermissions
@@ -56,17 +58,18 @@ class ProjectView(viewsets.ModelViewSet):
     DECLINED
     DELETED
     """
-    )
+                         )
     def get_status(self, request, slug=None):
         instance = self.get_object()
         serializer = StatusSerializer(instance)
         return Response(serializer.data)
 
 
-class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, GenericViewSet):
+class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet):
     serializer_class = ProjectTeamSerializer
     filterset_class = TeamProjectFilter
     permission_classes = (DRYPermissions,)
+    lookup_field = 'username'
 
     def get_permissions(self):
         if self.request.method == 'GET':
@@ -74,20 +77,30 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, GenericViewSet
         return []
 
     def get_queryset(self):
-        obj = get_object_or_404(
-            UserProject.objects.filter(Q(user=self.request.user) & Q(project__slug=self.kwargs['slug_slug'])))
-        self.check_object_permissions(self.request, obj)
+        # obj = get_object_or_404(
+        #     UserProject.objects.filter(Q(user=self.request.user) & Q(project__slug=self.kwargs['slug_slug'])))
+        # self.check_object_permissions(self.request, obj)
         return UserProject.objects.filter(project__slug=self.kwargs['slug_slug'])
 
     def partial_update(self, request, *args, **kwargs):
         try:
-            instance = UserProject.objects.get(pk=self.kwargs['pk'])
+            instance = UserProject.objects.get(user__username=self.kwargs['username'],
+                                               project__slug=self.kwargs['slug_slug'])
         except UserProject.DoesNotExist:
             return Response(data={"bad_request": _('ThisUserNotExist')})
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        data = {'status': request.data['status']}
+        serializer = self.get_serializer(instance, data=data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        if not Project.objects.filter(slug=self.kwargs['slug_slug'], pk=request.data['project']).exists():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 # class CreateProjectView(generics.ListAPIView):
 #     queryset = Project.objects.all()

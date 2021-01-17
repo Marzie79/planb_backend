@@ -65,6 +65,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
             'url': {'lookup_field': 'slug',},
         }
 
+
 class ProjectSaveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
@@ -99,17 +100,17 @@ class ProjectSaveSerializer(serializers.ModelSerializer):
 
 
 class ProjectTeamSerializer(serializers.ModelSerializer):
-    avatar = serializers.ImageField(source='user.avatar')
+    avatar = serializers.ImageField(source='user.avatar', required=False, )
     city = serializers.ReadOnlyField(source='user.city.name')
     description = serializers.ReadOnlyField(source='user.description')
     name = serializers.ReadOnlyField(source='user.__str__')
     province = serializers.ReadOnlyField(source='user.city.province.name')
     role = serializers.ReadOnlyField(source='get_role_display')
-    username = serializers.CharField(source='user.username')
+    username = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
         model = UserProject
-        fields = ('id', 'name', 'city', 'role', 'province', 'description', 'avatar', 'status', 'username')
+        fields = ('name', 'city', 'role', 'province', 'description', 'avatar', 'status', 'username', 'user', 'project')
         extra_kwargs = {
             'status': {'write_only': True},
         }
