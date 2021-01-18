@@ -3,17 +3,8 @@ from rest_framework.fields import SerializerMethodField
 from accounts.models import *
 from django.utils.translation import gettext_lazy as _
 
+from core.fields import CustomHyperlinkedRelatedField, CustomHyperlinkedIdentityField
 
-class ProjectBriefSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Project
-        fields = ('id', 'name', 'description',)
-
-#
-# class Status:
-#     def __init__(self, code, label):
-#         self.code = code
-#         self.label = label
 
 class StatusSerializer(serializers.Serializer):
     code = serializers.CharField(source='status')
@@ -26,19 +17,37 @@ class StatusSerializer(serializers.Serializer):
     #         super(StatusSerializer, self).__init__(instance)
 
 
-class UserProjectSerializer(serializers.HyperlinkedModelSerializer):
+class ProjectStatusSerializer(serializers.ModelSerializer):
+    role = SerializerMethodField()
+    status = SerializerMethodField()
+
+    class Meta:
+        model = Project
+        fields = ('name', 'status', 'role')
+
+    def get_status(self, instance):
+        return StatusSerializer(instance).data
+
+    def get_role(self, instance):
+        try:
+            role = UserProject.objects.get(Q(user=self.context['request'].user) & Q(project=instance))
+        except:
+            role = None
+        return StatusSerializer(role).data
+
+
+class UserProjectSerializer(serializers.ModelSerializer):
     name = serializers.ReadOnlyField(source='project.name')
     description = serializers.ReadOnlyField(source='project.description')
     role = serializers.CharField(source='get_role_display')
     status = SerializerMethodField()
+    url = CustomHyperlinkedRelatedField(
+        **{'source': 'project', 'lookup_field': 'slug', 'read_only': 'True', 'view_name': 'project-detail'})
 
     class Meta:
         model = UserProject
         fields = ('name', 'description', 'role', 'status', 'url',)
         # exclude = ('id', 'user',)
-        extra_kwargs = {
-            'url': {'lookup_field':'slug','read_only':'True','view_name':'project-detail','source':'project'}
-        }
 
     """Do not display role when category is REQUEST"""
 
@@ -54,27 +63,27 @@ class UserProjectSerializer(serializers.HyperlinkedModelSerializer):
             return StatusSerializer(instance).data
         return StatusSerializer(instance.project).data
 
-class ProjectSerializer(serializers.HyperlinkedModelSerializer):
+
+class ProjectSerializer(serializers.ModelSerializer):
     creator = serializers.ReadOnlyField(source='creator.get_full_name')
-    category= serializers.ReadOnlyField(source='category.name')
+    category = serializers.ReadOnlyField(source='category.name')
     skills = serializers.StringRelatedField(many=True)
+    url = CustomHyperlinkedIdentityField(**{'lookup_field': 'slug', 'view_name': 'project-detail', })
+
     class Meta:
         model = Project
-        fields = ('amount','name', 'skills', 'description', 'end_date', 'category', 'creator', 'url')
-        extra_kwargs = {
-            'url': {'lookup_field': 'slug',},
-        }
+        fields = ('amount', 'name', 'skills', 'description', 'end_date', 'category', 'creator', 'url')
 
 
 class ProjectSaveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('amount','name', 'skills', 'description', 'end_date', 'category')
+        fields = ('amount', 'name', 'skills', 'description', 'end_date', 'category')
 
     def validate(self, data):
         data = super(ProjectSerializer, self).validate(data)  # calling default validation
         # skills must be child of category skill
-        incorrect_skill=''
+        incorrect_skill = ''
         for skill in data['skills']:
             parent_skill = skill
             while parent_skill.skill:
@@ -83,7 +92,8 @@ class ProjectSaveSerializer(serializers.ModelSerializer):
                 incorrect_skill += skill.name + ','
         if incorrect_skill:
             raise serializers.ValidationError(
-                    {'skills': [_('The {} skill is not in the {} category').format(incorrect_skill[:-1], data['category'].name)]})
+                {'skills': [
+                    _('The {} skill is not in the {} category').format(incorrect_skill[:-1], data['category'].name)]})
         return data
 
     def validate_category(self, value):
