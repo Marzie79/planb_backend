@@ -38,6 +38,8 @@ class ProjectView(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'list' or self.action == 'retrieve':
             return ProjectSerializer
+        elif self.action == 'get_status':
+            return ProjectStatusSerializer
         return super(ProjectView, self).get_serializer_class()
 
     def get_permissions(self):
@@ -52,16 +54,22 @@ class ProjectView(viewsets.ModelViewSet):
     @action(methods=['get'], detail=True,
             url_path='status', url_name='get_status')
     @swagger_auto_schema(operation_description="""
-   # Statuses : 
+   #User Statuses : 
     ACCEPTED ADMIN CREATOR : for members
     PENDING
     DECLINED
     DELETED
+    
+    #Project Statuses :
+     WAITING
+     STARTED
+     ENDED
+     DELETED
     """
                          )
     def get_status(self, request, slug=None):
         instance = self.get_object()
-        serializer = StatusSerializer(instance)
+        serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
 
