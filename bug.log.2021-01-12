@@ -1,0 +1,848 @@
+[18/Jan/2021 17:30:35] django.request - WARNING - Not Found: /
+[18/Jan/2021 17:30:35] django.request - WARNING - Not Found: /favicon.ico
+[18/Jan/2021 17:30:35] django.request - ERROR - Internal Server Error: /admin/accounts/project/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/connections.py", line 259, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.OperationalError: (1054, "Unknown column 'accounts_project.amount' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/contrib/admin/options.py", line 614, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/contrib/admin/sites.py", line 233, in inner
+    return view(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/utils/decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/contrib/admin/options.py", line 1811, in changelist_view
+    'selection_note': _('0 of %(cnt)s selected') % {'cnt': len(cl.result_list)},
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/models/query.py", line 269, in __len__
+    self._fetch_all()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/models/query.py", line 1308, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/models/query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/models/sql/compiler.py", line 1156, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/connections.py", line 259, in query
+    _mysql.connection.query(self, query)
+django.db.utils.OperationalError: (1054, "Unknown column 'accounts_project.amount' in 'field list'")
+[18/Jan/2021 17:30:35] django.request - ERROR - Internal Server Error: /admin/accounts/user/1/change/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/connections.py", line 259, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.OperationalError: (1054, "Unknown column 'accounts_project.amount' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 202, in _get_response
+    response = response.render()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/response.py", line 83, in rendered_content
+    return template.render(context, self._request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 170, in render
+    return self._render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/defaulttags.py", line 211, in render
+    nodelist.append(node.render_annotated(context))
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/loader_tags.py", line 192, in render
+    return template.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 172, in render
+    return self._render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/defaulttags.py", line 211, in render
+    nodelist.append(node.render_annotated(context))
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/defaulttags.py", line 211, in render
+    nodelist.append(node.render_annotated(context))
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/defaulttags.py", line 211, in render
+    nodelist.append(node.render_annotated(context))
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/defaulttags.py", line 211, in render
+    nodelist.append(node.render_annotated(context))
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/defaulttags.py", line 312, in render
+    return nodelist.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/defaulttags.py", line 312, in render
+    return nodelist.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 994, in render
+    return render_value_in_context(output, context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/base.py", line 973, in render_value_in_context
+    value = str(value)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/utils/html.py", line 376, in <lambda>
+    klass.__str__ = lambda self: mark_safe(klass_str(self))
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/forms/boundfield.py", line 34, in __str__
+    return self.as_widget()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/forms/boundfield.py", line 93, in as_widget
+    return widget.render(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/forms/widgets.py", line 241, in render
+    context = self.get_context(name, value, attrs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/contrib/admin/widgets.py", line 283, in get_context
+    'rendered_widget': self.widget.render(name, value, attrs),
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/forms/widgets.py", line 241, in render
+    context = self.get_context(name, value, attrs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/forms/widgets.py", line 678, in get_context
+    context = super().get_context(name, value, attrs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/forms/widgets.py", line 639, in get_context
+    context['widget']['optgroups'] = self.optgroups(name, context['widget']['value'], attrs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/forms/widgets.py", line 587, in optgroups
+    for index, (option_value, option_label) in enumerate(self.choices):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/forms/models.py", line 1156, in __iter__
+    for obj in queryset:
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/models/query.py", line 360, in _iterator
+    yield from self._iterable_class(self, chunked_fetch=use_chunked_fetch, chunk_size=chunk_size)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/models/query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/models/sql/compiler.py", line 1156, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/connections.py", line 259, in query
+    _mysql.connection.query(self, query)
+django.db.utils.OperationalError: (1054, "Unknown column 'accounts_project.amount' in 'field list'")
+[18/Jan/2021 17:30:35] django.request - ERROR - Internal Server Error: /admin/accounts/project/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/connections.py", line 259, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.OperationalError: (1054, "Unknown column 'accounts_project.amount' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/contrib/admin/options.py", line 614, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/contrib/admin/sites.py", line 233, in inner
+    return view(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/utils/decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/contrib/admin/options.py", line 1811, in changelist_view
+    'selection_note': _('0 of %(cnt)s selected') % {'cnt': len(cl.result_list)},
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/models/query.py", line 269, in __len__
+    self._fetch_all()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/models/query.py", line 1308, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/models/query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/models/sql/compiler.py", line 1156, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/connections.py", line 259, in query
+    _mysql.connection.query(self, query)
+django.db.utils.OperationalError: (1054, "Unknown column 'accounts_project.amount' in 'field list'")
+[18/Jan/2021 17:30:35] django.request - ERROR - Internal Server Error: /admin/accounts/project/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/connections.py", line 259, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.OperationalError: (1054, "Unknown column 'accounts_project.amount' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/contrib/admin/options.py", line 614, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/contrib/admin/sites.py", line 233, in inner
+    return view(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/utils/decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/contrib/admin/options.py", line 1811, in changelist_view
+    'selection_note': _('0 of %(cnt)s selected') % {'cnt': len(cl.result_list)},
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/models/query.py", line 269, in __len__
+    self._fetch_all()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/models/query.py", line 1308, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/models/query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/models/sql/compiler.py", line 1156, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/MySQLdb/connections.py", line 259, in query
+    _mysql.connection.query(self, query)
+django.db.utils.OperationalError: (1054, "Unknown column 'accounts_project.amount' in 'field list'")
+[18/Jan/2021 17:50:41] django.request - WARNING - Not Found: /
+[18/Jan/2021 18:50:52] django.request - ERROR - Internal Server Error: /swagger/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 202, in _get_response
+    response = response.render()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/response.py", line 70, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/drf_yasg/renderers.py", line 74, in render
+    self.set_context(renderer_context, swagger)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/drf_yasg/renderers.py", line 123, in set_context
+    super(SwaggerUIRenderer, self).set_context(renderer_context, swagger)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/drf_yasg/renderers.py", line 82, in set_context
+    renderer_context.update(self.get_auth_urls())
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/drf_yasg/renderers.py", line 105, in get_auth_urls
+    'LOGIN_URL': self.resolve_url(swagger_settings.LOGIN_URL),
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/drf_yasg/renderers.py", line 101, in resolve_url
+    return resolve_url(to, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/shortcuts.py", line 131, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/urls/base.py", line 87, in reverse
+    return iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs))
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/urls/resolvers.py", line 618, in _reverse_with_prefix
+    self._populate()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/urls/resolvers.py", line 473, in _populate
+    url_pattern._populate()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/urls/resolvers.py", line 473, in _populate
+    url_pattern._populate()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/urls/resolvers.py", line 462, in _populate
+    bits = normalize(url_pattern.pattern.regex.pattern)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/utils/regex_helper.py", line 157, in normalize
+    count, ch = get_quantifier(ch, pattern_iter)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/utils/regex_helper.py", line 269, in get_quantifier
+    return int(values[0]), ch
+ValueError: invalid literal for int() with base 10: 'username'
+[18/Jan/2021 22:29:33] django.request - WARNING - Not Found: /
+[18/Jan/2021 22:29:33] django.request - WARNING - Not Found: /
+[18/Jan/2021 22:29:33] django.request - WARNING - Not Found: /
+[18/Jan/2021 22:29:33] django.request - WARNING - Not Found: /favicon.ico
+[18/Jan/2021 23:32:17] django.request - ERROR - Internal Server Error: /user/test1/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 202, in _get_response
+    response = response.render()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/response.py", line 70, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/djangorestframework_camel_case/render.py", line 9, in render
+    return super().render(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/renderers.py", line 100, in render
+    ret = json.dumps(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/utils/json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+  File "/usr/lib64/python3.8/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/usr/lib64/python3.8/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib64/python3.8/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/utils/encoders.py", line 67, in default
+    return super().default(obj)
+  File "/usr/lib64/python3.8/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type User is not JSON serializable
+[18/Jan/2021 23:32:45] django.request - ERROR - Internal Server Error: /user/test1/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/viewsets.py", line 114, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 505, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 465, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 476, in raise_uncaught_exception
+    raise exc
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 502, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/mixins.py", line 56, in retrieve
+    return Response(serializer.data)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 562, in data
+    ret = super().data
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 260, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 529, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/fields.py", line 1905, in to_representation
+    return method(value)
+  File "/home/NimG_Unit/var/UniProject/planb_backend/accounts/serializers/serializer_user.py", line 15, in check_phone_number_visiblity
+    return request.data
+AttributeError: 'User' object has no attribute 'data'
+[18/Jan/2021 23:33:56] django.request - ERROR - Internal Server Error: /user/test1/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/viewsets.py", line 114, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 505, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 465, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 476, in raise_uncaught_exception
+    raise exc
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 502, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/mixins.py", line 56, in retrieve
+    return Response(serializer.data)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 562, in data
+    ret = super().data
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 260, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 529, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/fields.py", line 1905, in to_representation
+    return method(value)
+  File "/home/NimG_Unit/var/UniProject/planb_backend/accounts/serializers/serializer_user.py", line 15, in check_phone_number_visiblity
+    return self.username
+AttributeError: 'GetUserInfoSerializer' object has no attribute 'username'
+[18/Jan/2021 23:34:30] django.request - ERROR - Internal Server Error: /user/test1/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/viewsets.py", line 114, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 505, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 465, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 476, in raise_uncaught_exception
+    raise exc
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 502, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/mixins.py", line 56, in retrieve
+    return Response(serializer.data)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 562, in data
+    ret = super().data
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 260, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 529, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/fields.py", line 1905, in to_representation
+    return method(value)
+  File "/home/NimG_Unit/var/UniProject/planb_backend/accounts/serializers/serializer_user.py", line 15, in check_phone_number_visiblity
+    return self.request.username
+AttributeError: 'GetUserInfoSerializer' object has no attribute 'request'
+[18/Jan/2021 23:36:57] django.request - ERROR - Internal Server Error: /user/test1/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 202, in _get_response
+    response = response.render()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/response.py", line 70, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/djangorestframework_camel_case/render.py", line 9, in render
+    return super().render(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/renderers.py", line 100, in render
+    ret = json.dumps(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/utils/json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+  File "/usr/lib64/python3.8/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/usr/lib64/python3.8/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib64/python3.8/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/utils/encoders.py", line 67, in default
+    return super().default(obj)
+  File "/usr/lib64/python3.8/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type User is not JSON serializable
+[18/Jan/2021 23:37:38] django.request - ERROR - Internal Server Error: /user/test1/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/request.py", line 409, in __getattr__
+    return getattr(self._request, attr)
+AttributeError: 'WSGIRequest' object has no attribute 'username'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/viewsets.py", line 114, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 505, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 465, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 476, in raise_uncaught_exception
+    raise exc
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 502, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/mixins.py", line 56, in retrieve
+    return Response(serializer.data)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 562, in data
+    ret = super().data
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 260, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 529, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/fields.py", line 1905, in to_representation
+    return method(value)
+  File "/home/NimG_Unit/var/UniProject/planb_backend/accounts/serializers/serializer_user.py", line 15, in check_phone_number_visiblity
+    return self.context['request'].username
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/request.py", line 411, in __getattr__
+    return self.__getattribute__(attr)
+AttributeError: 'Request' object has no attribute 'username'
+[18/Jan/2021 23:42:23] django.request - ERROR - Internal Server Error: /user/test1/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/viewsets.py", line 114, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 505, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 465, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 476, in raise_uncaught_exception
+    raise exc
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 502, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/mixins.py", line 56, in retrieve
+    return Response(serializer.data)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 562, in data
+    ret = super().data
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 260, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 514, in to_representation
+    for field in fields:
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 375, in _readable_fields
+    for field in self.fields.values():
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/utils/functional.py", line 48, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 363, in fields
+    for key, value in self.get_fields().items():
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 1038, in get_fields
+    field_names = self.get_field_names(declared_fields, info)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 1134, in get_field_names
+    assert field_name in fields, (
+AssertionError: The field 'gender_display' was declared on serializer UserInfoSerializer, but has not been included in the 'fields' option.
+[18/Jan/2021 23:44:31] django.request - ERROR - Internal Server Error: /user/test1/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 202, in _get_response
+    response = response.render()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/response.py", line 70, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/djangorestframework_camel_case/render.py", line 9, in render
+    return super().render(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/renderers.py", line 100, in render
+    ret = json.dumps(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/utils/json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+  File "/usr/lib64/python3.8/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/usr/lib64/python3.8/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib64/python3.8/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/utils/encoders.py", line 67, in default
+    return super().default(obj)
+  File "/usr/lib64/python3.8/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type User is not JSON serializable
+[18/Jan/2021 23:51:13] django.request - ERROR - Internal Server Error: /user/admin/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/viewsets.py", line 114, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 505, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 465, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 476, in raise_uncaught_exception
+    raise exc
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 502, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/mixins.py", line 56, in retrieve
+    return Response(serializer.data)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 562, in data
+    ret = super().data
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 260, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 529, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/fields.py", line 1905, in to_representation
+    return method(value)
+  File "/home/NimG_Unit/var/UniProject/planb_backend/accounts/serializers/serializer_user.py", line 21, in check_phone_number_visiblity
+    return request.user.phone_number
+AttributeError: 'User' object has no attribute 'user'
+[18/Jan/2021 23:51:54] django.request - ERROR - Internal Server Error: /user/admin/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 202, in _get_response
+    response = response.render()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/response.py", line 70, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/djangorestframework_camel_case/render.py", line 9, in render
+    return super().render(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/renderers.py", line 100, in render
+    ret = json.dumps(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/utils/json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+  File "/usr/lib64/python3.8/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/usr/lib64/python3.8/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib64/python3.8/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/utils/encoders.py", line 67, in default
+    return super().default(obj)
+  File "/usr/lib64/python3.8/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type PhoneNumber is not JSON serializable
+[18/Jan/2021 23:54:41] django.request - ERROR - Internal Server Error: /user/admin/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 202, in _get_response
+    response = response.render()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/response.py", line 70, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/djangorestframework_camel_case/render.py", line 9, in render
+    return super().render(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/renderers.py", line 100, in render
+    ret = json.dumps(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/utils/json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+  File "/usr/lib64/python3.8/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/usr/lib64/python3.8/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib64/python3.8/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/utils/encoders.py", line 67, in default
+    return super().default(obj)
+  File "/usr/lib64/python3.8/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type PhoneNumber is not JSON serializable
+[18/Jan/2021 23:55:24] django.request - ERROR - Internal Server Error: /user/admin/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/viewsets.py", line 114, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 505, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 465, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 476, in raise_uncaught_exception
+    raise exc
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/views.py", line 502, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/mixins.py", line 56, in retrieve
+    return Response(serializer.data)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 562, in data
+    ret = super().data
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 260, in data
+    self._data = self.to_representation(self.instance)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/serializers.py", line 529, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/fields.py", line 1905, in to_representation
+    return method(value)
+  File "/home/NimG_Unit/var/UniProject/planb_backend/accounts/serializers/serializer_user.py", line 21, in check_phone_number_visiblity
+    return instance.user.phone_number
+AttributeError: 'User' object has no attribute 'user'
+[18/Jan/2021 23:55:35] django.request - ERROR - Internal Server Error: /user/admin/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 202, in _get_response
+    response = response.render()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/response.py", line 70, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/djangorestframework_camel_case/render.py", line 9, in render
+    return super().render(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/renderers.py", line 100, in render
+    ret = json.dumps(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/utils/json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+  File "/usr/lib64/python3.8/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/usr/lib64/python3.8/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib64/python3.8/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/utils/encoders.py", line 67, in default
+    return super().default(obj)
+  File "/usr/lib64/python3.8/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type PhoneNumber is not JSON serializable
+[18/Jan/2021 23:58:50] django.request - ERROR - Internal Server Error: /user/admin/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 202, in _get_response
+    response = response.render()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/response.py", line 70, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/djangorestframework_camel_case/render.py", line 9, in render
+    return super().render(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/renderers.py", line 100, in render
+    ret = json.dumps(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/utils/json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+  File "/usr/lib64/python3.8/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/usr/lib64/python3.8/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib64/python3.8/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/utils/encoders.py", line 67, in default
+    return super().default(obj)
+  File "/usr/lib64/python3.8/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type User is not JSON serializable
+[18/Jan/2021 23:59:19] django.request - ERROR - Internal Server Error: /user/admin/
+Traceback (most recent call last):
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/core/handlers/base.py", line 202, in _get_response
+    response = response.render()
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/response.py", line 70, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/djangorestframework_camel_case/render.py", line 9, in render
+    return super().render(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/renderers.py", line 100, in render
+    ret = json.dumps(
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/utils/json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+  File "/usr/lib64/python3.8/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/usr/lib64/python3.8/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib64/python3.8/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/home/NimG_Unit/var/UniProject/penv/lib64/python3.8/site-packages/rest_framework/utils/encoders.py", line 67, in default
+    return super().default(obj)
+  File "/usr/lib64/python3.8/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type User is not JSON serializable

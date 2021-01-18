@@ -1,5 +1,10 @@
 from django.urls import path, include
+from rest_framework_nested import routers
 from .views import *
+from .views.view_user import *
+
+router = routers.SimpleRouter()
+router.register('user', UserInfoView,)
 
 urlpatterns = [
     path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -11,7 +16,7 @@ urlpatterns = [
         path('signup/', SignUp.as_view(), name='signup'),
         path('signin/', MyTokenObtainPairView.as_view()),
         path('reset-password/', ResetPassword.as_view({'patch': 'partial_update', 'post': 'create'}),
-             name='reset_password'),
+             name='reset_password'),     
         path('profile/', include([
             path('', ProfileUser.as_view({'get': 'retrieve', 'patch': 'partial_update'}), name='profile'),
             path('avatar/',
@@ -20,9 +25,8 @@ urlpatterns = [
                  ProfileResume.as_view({'get': 'retrieve', 'post': 'partial_update', 'delete': 'destroy', }, name='profile_resome')),
             path('skills/', UserSkill.as_view({'get': 'retrieve', 'patch': 'partial_update'}), name="skills"),
         ])),
-
     ])),
-
+    path('', include(router.urls)),
     path('list/', include([
         path('cities/', SearchCity.as_view()),
         path('provinces/', SearchProvince.as_view()),
