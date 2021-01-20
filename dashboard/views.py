@@ -4,9 +4,10 @@ from django.utils.translation import gettext_lazy as _
 from drf_yasg.utils import swagger_auto_schema
 from dry_rest_permissions.generics import DRYPermissions
 
-from rest_framework import viewsets, mixins, generics
+from rest_framework import viewsets, mixins, generics, filters
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
@@ -33,6 +34,9 @@ class ProjectView(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     permission_classes = (DRYPermissions,)
     serializer_class = ProjectSaveSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'category__name', 'skills__name']
+    pagination_class = PageNumberPagination
     lookup_field = 'slug'
 
     def get_serializer_class(self):
@@ -85,9 +89,12 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
         return []
 
     def get_queryset(self):
-        # obj = get_object_or_404(
-        #     UserProject.objects.filter(Q(user=self.request.user) & Q(project__slug=self.kwargs['slug_slug'])))
-        # self.check_object_permissions(self.request, obj)
+        obj = UserProject.objects.filter(Q(user=self.request.user) & Q(project__slug=self.kwargs['slug_slug']))
+        if obj.exists():
+            obj = get_object_or_404(obj)
+        else:
+            obj = get_object_or_404(UserProject.objects.filter(project__slug=self.kwargs['slug_slug'])[:1])
+        self.check_object_permissions(self.request, obj)
         return UserProject.objects.filter(project__slug=self.kwargs['slug_slug'])
 
     def partial_update(self, request, *args, **kwargs):
@@ -109,6 +116,23 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
             return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class UsersList(generics.ListAPIView):
+    queryset = User.objects.exclude(userproject__status='CREATOR').distinct()
+    serializer_class = PersonSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['username', 'skills__name']
+    pagination_class = PageNumberPagination
+
+
+class CreatorsList(generics.ListAPIView):
+    queryset = User.objects.filter(userproject__status='CREATOR').distinct()
+    serializer_class = PersonSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['username', 'skills__name']
+    pagination_class = PageNumberPagination
+
 
 # class CreateProjectView(generics.ListAPIView):
 #     queryset = Project.objects.all()
