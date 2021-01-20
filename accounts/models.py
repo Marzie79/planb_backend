@@ -261,9 +261,11 @@ class UserProject(models.Model):
     def has_object_read_permission(self, request):
         query_params = request.query_params
         if ('status' in query_params) and query_params['status'] == 'PENDING':
-            is_admin = self.status == 'ADMIN'
-            is_creator = self.status == 'CREATOR'
-            return is_admin or is_creator
+            if self.user == request.user:
+                is_admin = self.status == 'ADMIN'
+                is_creator = self.status == 'CREATOR'
+                return is_admin or is_creator
+            return False
         return True
 
     # class Meta:

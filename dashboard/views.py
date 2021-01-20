@@ -89,11 +89,7 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
         return []
 
     def get_queryset(self):
-        obj = UserProject.objects.filter(Q(user=self.request.user) & Q(project__slug=self.kwargs['slug_slug']))
-        if obj.exists():
-            obj = get_object_or_404(obj)
-        else:
-            obj = get_object_or_404(UserProject.objects.filter(project__slug=self.kwargs['slug_slug'])[:1])
+        obj = get_object_or_404(UserProject.objects.filter(project__slug=self.kwargs['slug_slug'])[:1])
         self.check_object_permissions(self.request, obj)
         return UserProject.objects.filter(project__slug=self.kwargs['slug_slug'])
 
