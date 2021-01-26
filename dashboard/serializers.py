@@ -124,3 +124,17 @@ class ProjectTeamSerializer(serializers.ModelSerializer):
         # extra_kwargs = {
         #     'status': {'write_only': True},
         # }
+
+
+class PersonSerializer(serializers.ModelSerializer):
+    city = serializers.ReadOnlyField(source='city.name')
+    name = serializers.ReadOnlyField(source='__str__')
+    province = serializers.ReadOnlyField(source='city.province.name')
+    role = serializers.ReadOnlyField(source='get_role_display')
+
+    class Meta:
+        model = User
+        fields = ('name', 'city', 'role', 'province', 'description', 'avatar', 'username')
+        extra_kwargs = {
+            'status': {'write_only': True},
+        }

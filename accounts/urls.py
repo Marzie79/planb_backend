@@ -1,5 +1,10 @@
 from django.urls import path, include
+from rest_framework_nested import routers
 from .views import *
+from .views.view_user import *
+
+router = routers.SimpleRouter()
+router.register('user', UserInfoView,)
 
 urlpatterns = [
     path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -23,7 +28,7 @@ urlpatterns = [
         ])),
 
     ])),
-
+    path('', include(router.urls)),
     path('list/', include([
         path('cities/', SearchCity.as_view()),
         path('provinces/', SearchProvince.as_view()),
