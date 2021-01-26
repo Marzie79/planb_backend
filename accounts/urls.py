@@ -12,6 +12,7 @@ urlpatterns = [
         path('signin/', MyTokenObtainPairView.as_view()),
         path('reset-password/', ResetPassword.as_view({'patch': 'partial_update', 'post': 'create'}),
              name='reset_password'),
+        path('brief-profile/', BriefProfileUser.as_view({'get': 'retrieve'}), name='brief_profile'),
         path('profile/', include([
             path('', ProfileUser.as_view({'get': 'retrieve', 'patch': 'partial_update'}), name='profile'),
             path('avatar/',

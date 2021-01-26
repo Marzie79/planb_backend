@@ -1,5 +1,5 @@
 from rest_framework.relations import HyperlinkedIdentityField,HyperlinkedRelatedField
-
+from planB_backend.urls import Apps
 
 class CustomHyperlinkedRelatedField(HyperlinkedRelatedField):
 
@@ -8,7 +8,7 @@ class CustomHyperlinkedRelatedField(HyperlinkedRelatedField):
             return None
         lookup_value = getattr(obj, self.lookup_field)
         kwargs = {self.lookup_url_kwarg: lookup_value}
-        return self.reverse(view_name, kwargs=kwargs,format=format)
+        return self.reverse(view_name, kwargs=kwargs,format=format).replace(Apps.DASHBORAD.value,'')
 
 class CustomHyperlinkedIdentityField(HyperlinkedIdentityField):
 
@@ -17,4 +17,4 @@ class CustomHyperlinkedIdentityField(HyperlinkedIdentityField):
             return None
         lookup_value = getattr(obj, self.lookup_field)
         kwargs = {self.lookup_url_kwarg: lookup_value}
-        return self.reverse(view_name, kwargs=kwargs,format=format)
+        return self.reverse(view_name, kwargs=kwargs,format=format).replace(Apps.DASHBORAD.value,'')

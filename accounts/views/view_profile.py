@@ -12,6 +12,9 @@ class ProfileBaseUser(viewsets.ModelViewSet):
     def get_object(self):
         return self.request.user
 
+class BriefProfileUser(ProfileBaseUser):
+        serializer_class = BriefProfileSerializer
+
 class ProfileUser(ProfileBaseUser):
     serializer_class = ProfileSerializer
     def get_serializer_class(self):
@@ -39,7 +42,6 @@ class ProfileResume(ProfileBaseUser):
 
 
 class UserSkill(ProfileBaseUser):
-
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return UserSkillSerializer

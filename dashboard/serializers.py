@@ -121,6 +121,6 @@ class ProjectTeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProject
         fields = ('name', 'city', 'role', 'province', 'description', 'avatar', 'status', 'username', 'user', 'project')
-        extra_kwargs = {
-            'status': {'write_only': True},
-        }
+        # extra_kwargs = {
+        #     'status': {'write_only': True},
+        # }
