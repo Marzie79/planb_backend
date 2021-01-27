@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import serializers, status
 from rest_framework.fields import SerializerMethodField
 from accounts.models import *
@@ -81,7 +82,7 @@ class ProjectSaveSerializer(serializers.ModelSerializer):
         fields = ('amount', 'name', 'skills', 'description', 'end_date', 'category')
 
     def validate(self, data):
-        data = super(ProjectSerializer, self).validate(data)  # calling default validation
+        data = super(ProjectSaveSerializer, self).validate(data)  # calling default validation
         # skills must be child of category skill
         incorrect_skill = ''
         for skill in data['skills']:
@@ -106,6 +107,12 @@ class ProjectSaveSerializer(serializers.ModelSerializer):
         # number of skills must be between 3 to 10
         if not (len(value) >= 3 and len(value) <= 10):
             raise serializers.ValidationError(_('The number of skills must be between {} and {}').format(3, 10))
+        return value
+
+    def validate_end_date(self, value):
+        # category must be a parent skill
+        if not value or value< timezone.now():
+            raise serializers.ValidationError(_('The {} must be bigger than today').format(_("End_Date")))
         return value
 
 
