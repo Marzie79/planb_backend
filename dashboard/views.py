@@ -8,6 +8,7 @@ from rest_framework import viewsets, mixins, generics, filters
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
@@ -25,6 +26,7 @@ class UserProjectView(generics.ListAPIView):
     queryset = UserProject.objects.all()
     serializer_class = UserProjectSerializer
     filterset_class = UserProjectFilter
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
