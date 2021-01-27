@@ -1,4 +1,5 @@
 from django.utils import timezone
+from phonenumber_field.phonenumber import to_python
 from rest_framework import serializers, status
 from rest_framework.fields import SerializerMethodField
 from accounts.models import *
@@ -111,7 +112,7 @@ class ProjectSaveSerializer(serializers.ModelSerializer):
 
     def validate_end_date(self, value):
         # category must be a parent skill
-        if not value or value< timezone.now():
+        if not value or value < timezone.now():
             raise serializers.ValidationError(_('The {} must be bigger than today').format(_("End_Date")))
         return value
 
@@ -133,15 +134,35 @@ class ProjectTeamSerializer(serializers.ModelSerializer):
         # }
 
 
-class PersonSerializer(serializers.ModelSerializer):
+# class PersonSerializer(serializers.ModelSerializer):
+#     city = serializers.ReadOnlyField(source='city.name')
+#     name = serializers.ReadOnlyField(source='__str__')
+#     province = serializers.ReadOnlyField(source='city.province.name')
+#     role = serializers.ReadOnlyField(source='get_role_display')
+#
+#     class Meta:
+#         model = User
+#         fields = ('name', 'city', 'role', 'province', 'description', 'avatar', 'username')
+
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    phone_number = serializers.SerializerMethodField('check_phone_number_visiblity')
+    gender_display = serializers.CharField(source='get_gender_display', read_only=True)
     city = serializers.ReadOnlyField(source='city.name')
-    name = serializers.ReadOnlyField(source='__str__')
     province = serializers.ReadOnlyField(source='city.province.name')
-    role = serializers.ReadOnlyField(source='get_role_display')
+    url = CustomHyperlinkedIdentityField(
+        **{'lookup_field': 'username', 'read_only': 'True', 'view_name': 'user-detail'})
 
     class Meta:
         model = User
-        fields = ('name', 'city', 'role', 'province', 'description', 'avatar', 'username')
-        extra_kwargs = {
-            'status': {'write_only': True},
-        }
+        fields = (
+            'username', 'first_name', 'last_name', 'university', 'gender_display', 'phone_number', 'city', 'resume','province','description',
+            'avatar','url')
+
+    def check_phone_number_visiblity(self, instance):
+        request_user = self.context['request'].user
+        if  instance.phone_number and request_user.is_authenticated:
+            if instance.username == request_user.username or Project.objects.filter(userproject__user__in=(request_user.id,instance.id)).exists():
+                return to_python(instance.phone_number).as_e164
+        else:
+            return None

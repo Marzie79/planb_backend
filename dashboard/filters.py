@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from accounts.models import UserProject, Project
+from accounts.models import UserProject, Project, User
 from django.db.models import Q
 
 
@@ -55,3 +55,22 @@ class TeamProjectFilter(filters.FilterSet):
             return queryset.filter(Q(status='ACCEPTED') | Q(status='ADMIN') | Q(status='CREATOR'))
         elif value == 'PENDING':
             return queryset.filter(Q(status='Pending'))
+
+
+class UserInfoFilter(filters.FilterSet):
+    USER_CATEGORY_CHOICES = (
+        ('CREATOR', 'creator'),
+        ('OTHER', 'other'),
+    )
+    status = filters.ChoiceFilter(choices=USER_CATEGORY_CHOICES,method='get_status')
+
+    class Meta:
+        model: User
+        fields = ['status', ]
+
+    def get_status(self, queryset, name, value):
+        if value:
+            if value == "CREATOR":
+                return queryset.filter(userproject__status='CREATOR')
+            return queryset.exclude(userproject__status='CREATOR')
+        return queryset

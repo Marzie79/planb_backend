@@ -12,8 +12,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from core.pagination import Pagination
 from .serializers import *
-from .filters import UserProjectFilter, TeamProjectFilter
+from .filters import UserProjectFilter, TeamProjectFilter, UserInfoFilter
 
 
 class UserProjectView(generics.ListAPIView):
@@ -36,9 +37,8 @@ class ProjectView(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     permission_classes = (DRYPermissions,)
     serializer_class = ProjectSaveSerializer
-    filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'category__name', 'skills__name']
-    pagination_class = PageNumberPagination
+    pagination_class = Pagination
     lookup_field = 'slug'
 
     def get_serializer_class(self):
@@ -115,21 +115,32 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-
-class UsersList(generics.ListAPIView):
-    queryset = User.objects.exclude(userproject__status='CREATOR').distinct()
-    serializer_class = PersonSerializer
-    filter_backends = [filters.SearchFilter]
+class UserInfoView(viewsets.ReadOnlyModelViewSet):
+    """
+       #User Statuses :
+        CREATOR OTHER
+        """
+    filterset_class = UserInfoFilter
     search_fields = ['username', 'skills__name']
-    pagination_class = PageNumberPagination
 
+    queryset = User.objects.all()
+    serializer_class = UserInfoSerializer
+    lookup_field = 'username'
 
-class CreatorsList(generics.ListAPIView):
-    queryset = User.objects.filter(userproject__status='CREATOR').distinct()
-    serializer_class = PersonSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['username', 'skills__name']
-    pagination_class = PageNumberPagination
+# class UsersList(generics.ListAPIView):
+#     queryset = User.objects.exclude(userproject__status='CREATOR').distinct()
+#     serializer_class = PersonSerializer
+#     filter_backends = [filters.SearchFilter]
+#     search_fields = ['username', 'skills__name']
+#     pagination_class = Pagination
+#
+#
+# class CreatorsList(generics.ListAPIView):
+#     queryset = User.objects.filter(userproject__status='CREATOR').distinct()
+#     serializer_class = PersonSerializer
+#     filter_backends = [filters.SearchFilter]
+#     search_fields = ['username', 'skills__name']
+#     pagination_class = Pagination
 
 
 # class CreateProjectView(generics.ListAPIView):
