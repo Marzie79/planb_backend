@@ -224,6 +224,12 @@ class Project(models.Model):
         return False
 
     @staticmethod
+    def has_create_permission(request):
+        if request.user.is_authenticated:
+            return True
+        return False
+
+    @staticmethod
     def has_destroy_permission(request):
         return True
 

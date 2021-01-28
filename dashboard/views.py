@@ -49,7 +49,8 @@ class ProjectView(viewsets.ModelViewSet):
         return super(ProjectView, self).get_serializer_class()
 
     def get_permissions(self):
-        if self.request.method == 'PATCH' or self.request.method == 'DELETE':
+        method = self.request.method
+        if method == 'PATCH' or method == 'DELETE' or method == 'PUT' or method == 'POST':
             return [DRYPermissions(), ]
         return []
 
