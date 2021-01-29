@@ -125,10 +125,13 @@ class ProjectTeamSerializer(serializers.ModelSerializer):
     province = serializers.ReadOnlyField(source='user.city.province.name')
     role = serializers.ReadOnlyField(source='get_role_display')
     username = serializers.ReadOnlyField(source='user.username')
+    url = CustomHyperlinkedRelatedField(
+        **{'source': 'user', 'lookup_field': 'username', 'read_only': 'True', 'view_name': 'user-detail'})
 
     class Meta:
         model = UserProject
-        fields = ('name', 'city', 'role', 'province', 'description', 'avatar', 'status', 'username', 'user', 'project')
+        fields = (
+            'name', 'city', 'role', 'province', 'description', 'avatar', 'status', 'username', 'user', 'project', 'url')
         # extra_kwargs = {
         #     'status': {'write_only': True},
         # }
@@ -146,7 +149,7 @@ class ProjectTeamSerializer(serializers.ModelSerializer):
 
 
 class UserInfoSerializer(serializers.ModelSerializer):
-    phone_number = serializers.SerializerMethodField('check_phone_number_visiblity')
+    phone_number = serializers.SerializerMethodField('check_phone_number_visibility')
     gender_display = serializers.CharField(source='get_gender_display', read_only=True)
     city = serializers.ReadOnlyField(source='city.name')
     province = serializers.ReadOnlyField(source='city.province.name')
