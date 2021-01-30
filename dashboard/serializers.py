@@ -148,6 +148,12 @@ class ProjectTeamSerializer(serializers.ModelSerializer):
 #         fields = ('name', 'city', 'role', 'province', 'description', 'avatar', 'username')
 
 
+class BriefSkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skill
+        fields = ('code', 'name')
+
+
 class UserInfoSerializer(serializers.ModelSerializer):
     phone_number = serializers.SerializerMethodField('check_phone_number_visibility')
     gender_display = serializers.CharField(source='get_gender_display', read_only=True)
@@ -155,12 +161,13 @@ class UserInfoSerializer(serializers.ModelSerializer):
     province = serializers.ReadOnlyField(source='city.province.name')
     url = CustomHyperlinkedIdentityField(
         **{'lookup_field': 'username', 'read_only': 'True', 'view_name': 'user-detail'})
+    skills = BriefSkillSerializer(read_only=True, many=True)
 
     class Meta:
         model = User
         fields = (
-            'username', 'first_name', 'last_name', 'university', 'gender_display', 'phone_number', 'city', 'resume','province','description',
-            'avatar','url')
+            'username', 'first_name', 'last_name', 'university', 'gender_display', 'phone_number', 'city', 'resume', 'province','description',
+            'avatar', 'url', 'skills')
 
     def check_phone_number_visibility(self, instance):
         request_user = self.context['request'].user
