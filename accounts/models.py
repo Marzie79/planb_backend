@@ -274,6 +274,28 @@ class UserProject(models.Model):
             return False
         return True
 
+    @staticmethod
+    def has_update_permission(request):
+        return True
+
+    def has_object_update_permission(self, request):
+        if self.user == request.user and self.project.status != 'ENDED':
+            is_admin = self.status == 'ADMIN'
+            is_creator = self.status == 'CREATOR'
+            return is_admin or is_creator
+        return False
+
+    @staticmethod
+    def has_create_permission(request):
+        return True
+
+    def has_object_create_permission(self, request):
+        if self.user == request.user and self.project.status != 'ENDED':
+            is_admin = self.status == 'ADMIN'
+            is_creator = self.status == 'CREATOR'
+            return is_admin or is_creator
+        return False
+
     # class Meta:
     #     unique_together = ('project', 'user',)
 

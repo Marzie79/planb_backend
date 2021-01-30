@@ -87,20 +87,17 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
     lookup_field = 'username'
 
     def get_permissions(self):
-        if self.request.method == 'GET':
+        method = self.request.method
+        if method == 'GET' or method == 'PUT' or method == 'PATCH' or method == 'POST':
             return [DRYPermissions(), ]
         return []
 
     def get_queryset(self):
-        obj = UserProject.objects.filter(Q(user=self.request.user) & Q(project__slug=self.kwargs['slug_slug']))
-        if obj.exists():
-            obj = get_object_or_404(obj)
-        else:
-            obj = get_object_or_404(UserProject.objects.filter(project__slug=self.kwargs['slug_slug'])[:1])
-        self.check_object_permissions(self.request, obj)
+        self.custom_check_permission()
         return UserProject.objects.filter(project__slug=self.kwargs['slug_slug'])
 
     def partial_update(self, request, *args, **kwargs):
+        self.custom_check_permission()
         try:
             instance = UserProject.objects.get(user__username=self.kwargs['username'],
                                                project__slug=self.kwargs['slug_slug'])
@@ -113,12 +110,21 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
+        self.custom_check_permission()
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         if not Project.objects.filter(slug=self.kwargs['slug_slug'], pk=request.data['project']).exists():
             return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def custom_check_permission(self):
+        try:
+            obj = UserProject.objects.get(Q(user=self.request.user) & Q(project__slug=self.kwargs['slug_slug']))
+        except:
+            obj = get_object_or_404(UserProject.objects.filter(project__slug=self.kwargs['slug_slug'])[:1])
+        self.check_object_permissions(self.request, obj)
+
 
 class UserInfoView(viewsets.ReadOnlyModelViewSet):
     """

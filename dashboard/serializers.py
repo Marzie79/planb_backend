@@ -162,7 +162,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
             'username', 'first_name', 'last_name', 'university', 'gender_display', 'phone_number', 'city', 'resume','province','description',
             'avatar','url')
 
-    def check_phone_number_visiblity(self, instance):
+    def check_phone_number_visibility(self, instance):
         request_user = self.context['request'].user
         if  instance.phone_number and request_user.is_authenticated:
             if instance.username == request_user.username or Project.objects.filter(userproject__user__in=(request_user.id,instance.id)).exists():
