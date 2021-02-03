@@ -166,12 +166,13 @@ class UserInfoSerializer(serializers.ModelSerializer):
     url = CustomHyperlinkedIdentityField(
         **{'lookup_field': 'username', 'read_only': 'True', 'view_name': 'user-detail'})
     skills = BriefSkillSerializer(read_only=True, many=True)
+    university = serializers.ReadOnlyField(source='university.name')
 
     class Meta:
         model = User
         fields = (
             'username', 'first_name', 'last_name', 'university', 'gender_display', 'phone_number', 'city', 'resume', 'province','description',
-            'avatar', 'url', 'skills')
+            'avatar', 'url', 'email', 'skills')
 
     def check_phone_number_visibility(self, instance):
         request_user = self.context['request'].user
