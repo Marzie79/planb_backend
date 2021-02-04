@@ -61,7 +61,7 @@ class UserProjectSerializer(serializers.ModelSerializer):
 
     def get_status(self, instance):
         query_params = self.context['request'].query_params
-        if len(query_params) != 0 and query_params['category'] != 'PROJECT':
+        if ('category' in query_params) and query_params['category'] != 'PROJECT':
             return StatusSerializer(instance).data
         return StatusSerializer(instance.project).data
 
@@ -84,7 +84,13 @@ class ProjectSerializer(serializers.ModelSerializer):
 class ProjectSaveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('amount', 'name', 'skills', 'description', 'end_date', 'category')
+        fields = ('amount', 'name', 'skills', 'description', 'end_date', 'category', 'status')
+
+    def get_fields(self, *args, **kwargs):
+        fields = super().get_fields(*args, **kwargs)
+        if self.context['view'].action == 'create':
+            fields['status'].read_only = True
+        return fields
 
     def validate(self, data):
         data = super(ProjectSaveSerializer, self).validate(data)  # calling default validation
@@ -119,6 +125,17 @@ class ProjectSaveSerializer(serializers.ModelSerializer):
         if not value or value < timezone.now():
             raise serializers.ValidationError(_('The {} must be bigger than today').format(_("End_Date")))
         return value
+
+    def validate_status(self, value):
+        STATUS = {'WAITING': 0,
+                  'STARTED': 1,
+                  'ENDED': 2,
+                  'DELETED': 3}
+        previous_status = self.instance.status
+        if STATUS[value] >= STATUS[previous_status]:
+            return value
+        raise serializers.ValidationError(
+            _('You have not been allowed to change the project into {} status.').format(_(value.title())))
 
 
 class ProjectTeamSerializer(serializers.ModelSerializer):
@@ -171,13 +188,15 @@ class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'username', 'first_name', 'last_name', 'university', 'gender_display', 'phone_number', 'city', 'resume', 'province','description',
+            'username', 'first_name', 'last_name', 'university', 'gender_display', 'phone_number', 'city', 'resume',
+            'province', 'description',
             'avatar', 'url', 'email', 'skills')
 
     def check_phone_number_visibility(self, instance):
         request_user = self.context['request'].user
-        if  instance.phone_number and request_user.is_authenticated:
-            if instance.username == request_user.username or Project.objects.filter(userproject__user__in=(request_user.id,instance.id)).exists():
+        if instance.phone_number and request_user.is_authenticated:
+            if instance.username == request_user.username or Project.objects.filter(
+                    userproject__user__in=(request_user.id, instance.id)).exists():
                 return to_python(instance.phone_number).as_e164
         else:
             return None

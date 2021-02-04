@@ -182,6 +182,10 @@ class Project(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug or self.slug == '':
             self.slug = slugify(self.name, allow_unicode=True)
+        if self.status and self.status == 'STARTED':
+            self.start_date = datetime.now()
+        if self.status and self.status == 'ENDED':
+            self.end_date = datetime.now()
         super(Project, self).save()
 
     def last_modified_date_decorated(self, obj):
@@ -282,6 +286,8 @@ class UserProject(models.Model):
         if self.user == request.user and self.project.status != 'ENDED':
             is_admin = self.status == 'ADMIN'
             is_creator = self.status == 'CREATOR'
+            if not (is_admin and is_creator) and request.data['status'] == 'DELETED':
+                return True
             return is_admin or is_creator
         return False
 
@@ -290,6 +296,8 @@ class UserProject(models.Model):
         return True
 
     def has_object_create_permission(self, request):
+        if request.data['status'] == 'PENDING':
+            return True
         if self.user == request.user and self.project.status != 'ENDED':
             is_admin = self.status == 'ADMIN'
             is_creator = self.status == 'CREATOR'
