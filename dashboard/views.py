@@ -112,6 +112,7 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
     def create(self, request, *args, **kwargs):
         self.custom_check_permission()
         request.data['user'] = User.objects.get(username=request.data['user']).pk
+        request.data['project'] = Project.objects.get(slug=self.kwargs['slug_slug']).pk
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         if not Project.objects.filter(slug=self.kwargs['slug_slug'], pk=request.data['project']).exists():
