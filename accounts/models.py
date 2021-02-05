@@ -259,6 +259,9 @@ class UserProject(models.Model):
     user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
     status = models.CharField(_("Status"), max_length=9, choices=STATUS_CHOICES, default='PENDING')
 
+    # class Meta:
+    #     unique_together = ('project', 'user',)
+
     def get_role_display(self):
         if self.status == 'ACCEPTED':
             return _("Team_Member")
