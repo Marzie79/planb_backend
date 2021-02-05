@@ -180,8 +180,8 @@ class Project(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        if not self.slug or self.slug == '':
-            self.slug = slugify(self.name, allow_unicode=True)
+        # if not self.slug or self.slug == '':
+        self.slug = slugify(self.name, allow_unicode=True)
         if self.status and self.status == 'STARTED':
             self.start_date = datetime.now()
         if self.status and self.status == 'ENDED':
