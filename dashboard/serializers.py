@@ -61,7 +61,7 @@ class UserProjectSerializer(serializers.ModelSerializer):
 
     def get_status(self, instance):
         query_params = self.context['request'].query_params
-        if len(query_params) != 0 and query_params['category'] != 'PROJECT':
+        if ('category' in query_params) and query_params['category'] != 'PROJECT':
             return StatusSerializer(instance).data
         return StatusSerializer(instance.project).data
 
@@ -71,16 +71,26 @@ class ProjectSerializer(serializers.ModelSerializer):
     category = serializers.ReadOnlyField(source='category.name')
     skills = serializers.StringRelatedField(many=True)
     url = CustomHyperlinkedIdentityField(**{'lookup_field': 'slug', 'view_name': 'project-detail', })
+    status = SerializerMethodField()
 
     class Meta:
         model = Project
-        fields = ('amount', 'name', 'skills', 'description', 'end_date', 'category', 'creator', 'url')
+        fields = ('amount', 'name', 'skills', 'description', 'end_date', 'category', 'creator', 'url', 'status')
+
+    def get_status(self, instance):
+        return StatusSerializer(instance).data
 
 
 class ProjectSaveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('amount', 'name', 'skills', 'description', 'end_date', 'category')
+        fields = ('amount', 'name', 'skills', 'description', 'end_date', 'category', 'status')
+
+    def get_fields(self, *args, **kwargs):
+        fields = super().get_fields(*args, **kwargs)
+        if self.context['view'].action == 'create':
+            fields['status'].read_only = True
+        return fields
 
     def validate(self, data):
         data = super(ProjectSaveSerializer, self).validate(data)  # calling default validation
@@ -116,6 +126,17 @@ class ProjectSaveSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(_('The {} must be bigger than today').format(_("End_Date")))
         return value
 
+    def validate_status(self, value):
+        STATUS = {'WAITING': 0,
+                  'STARTED': 1,
+                  'ENDED': 2,
+                  'DELETED': 3}
+        previous_status = self.instance.status
+        if STATUS[value] >= STATUS[previous_status]:
+            return value
+        raise serializers.ValidationError(
+            _('You have not been allowed to change the project into {} status.').format(_(value.title())))
+
 
 class ProjectTeamSerializer(serializers.ModelSerializer):
     avatar = serializers.ImageField(source='user.avatar', required=False, )
@@ -125,10 +146,13 @@ class ProjectTeamSerializer(serializers.ModelSerializer):
     province = serializers.ReadOnlyField(source='user.city.province.name')
     role = serializers.ReadOnlyField(source='get_role_display')
     username = serializers.ReadOnlyField(source='user.username')
+    url = CustomHyperlinkedRelatedField(
+        **{'source': 'user', 'lookup_field': 'username', 'read_only': 'True', 'view_name': 'user-detail'})
 
     class Meta:
         model = UserProject
-        fields = ('name', 'city', 'role', 'province', 'description', 'avatar', 'status', 'username', 'user', 'project')
+        fields = (
+            'name', 'city', 'role', 'province', 'description', 'avatar', 'status', 'username', 'user', 'project', 'url')
         # extra_kwargs = {
         #     'status': {'write_only': True},
         # }
@@ -145,24 +169,34 @@ class ProjectTeamSerializer(serializers.ModelSerializer):
 #         fields = ('name', 'city', 'role', 'province', 'description', 'avatar', 'username')
 
 
+class BriefSkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skill
+        fields = ('code', 'name')
+
+
 class UserInfoSerializer(serializers.ModelSerializer):
-    phone_number = serializers.SerializerMethodField('check_phone_number_visiblity')
+    phone_number = serializers.SerializerMethodField('check_phone_number_visibility')
     gender_display = serializers.CharField(source='get_gender_display', read_only=True)
     city = serializers.ReadOnlyField(source='city.name')
     province = serializers.ReadOnlyField(source='city.province.name')
     url = CustomHyperlinkedIdentityField(
         **{'lookup_field': 'username', 'read_only': 'True', 'view_name': 'user-detail'})
+    skills = BriefSkillSerializer(read_only=True, many=True)
+    university = serializers.ReadOnlyField(source='university.name')
 
     class Meta:
         model = User
         fields = (
-            'username', 'first_name', 'last_name', 'university', 'gender_display', 'phone_number', 'city', 'resume','province','description',
-            'avatar','url')
+            'username', 'first_name', 'last_name', 'university', 'gender_display', 'phone_number', 'city', 'resume',
+            'province', 'description',
+            'avatar', 'url', 'email', 'skills')
 
-    def check_phone_number_visiblity(self, instance):
+    def check_phone_number_visibility(self, instance):
         request_user = self.context['request'].user
-        if  instance.phone_number and request_user.is_authenticated:
-            if instance.username == request_user.username or Project.objects.filter(userproject__user__in=(request_user.id,instance.id)).exists():
+        if instance.phone_number and request_user.is_authenticated:
+            if instance.username == request_user.username or Project.objects.filter(
+                    userproject__user__in=(request_user.id, instance.id)).exists():
                 return to_python(instance.phone_number).as_e164
         else:
             return None

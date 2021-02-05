@@ -182,6 +182,10 @@ class Project(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug or self.slug == '':
             self.slug = slugify(self.name, allow_unicode=True)
+        if self.status and self.status == 'STARTED':
+            self.start_date = datetime.now()
+        if self.status and self.status == 'ENDED':
+            self.end_date = datetime.now()
         super(Project, self).save()
 
     def last_modified_date_decorated(self, obj):
@@ -221,6 +225,12 @@ class Project(models.Model):
             is_admin = user_project.status == 'ADMIN'
             is_creator = user_project.status == 'CREATOR'
             return is_admin or is_creator
+        return False
+
+    @staticmethod
+    def has_create_permission(request):
+        if request.user.is_authenticated:
+            return True
         return False
 
     @staticmethod
@@ -267,6 +277,32 @@ class UserProject(models.Model):
                 return is_admin or is_creator
             return False
         return True
+
+    @staticmethod
+    def has_update_permission(request):
+        return True
+
+    def has_object_update_permission(self, request):
+        if self.user == request.user and self.project.status != 'ENDED':
+            is_admin = self.status == 'ADMIN'
+            is_creator = self.status == 'CREATOR'
+            if not (is_admin and is_creator) and request.data['status'] == 'DELETED':
+                return True
+            return is_admin or is_creator
+        return False
+
+    @staticmethod
+    def has_create_permission(request):
+        return True
+
+    def has_object_create_permission(self, request):
+        if request.data['status'] == 'PENDING':
+            return True
+        if self.user == request.user and self.project.status != 'ENDED':
+            is_admin = self.status == 'ADMIN'
+            is_creator = self.status == 'CREATOR'
+            return is_admin or is_creator
+        return False
 
     # class Meta:
     #     unique_together = ('project', 'user',)
