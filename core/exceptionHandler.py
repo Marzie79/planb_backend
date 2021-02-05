@@ -5,17 +5,20 @@ from core.exceptions import FormValidationError
 
 
 def api_exception_handler(exc, context):
-    if exc.default_code == 'invalid' and exc.status_code == 400:
-        detail_list = []
-        for name in exc.detail:
-            detail_list.append(exc.detail[name][0])
-        new_exec = FormValidationError(detail_list)
-        response = set_form_error_response(new_exec)
-        response.data['code'] = FormValidationError.default_code
+    if not isinstance(exc, Http404):
+        if exc.default_code == 'invalid' and exc.status_code == 400:
+            detail_list = []
+            for name in exc.detail:
+                detail_list.append(exc.detail[name][0])
+            new_exec = FormValidationError(detail_list)
+            response = set_form_error_response(new_exec)
+            response.data['code'] = FormValidationError.default_code
+        else:
+            response = exception_handler(exc, context)
+            if response is not None and 'detail' in response.data and 'code' not in response.data:
+                response.data['code'] = exc.get_codes()
     else:
         response = exception_handler(exc, context)
-        if not isinstance(exc, Http404) and response is not None and 'detail' in response.data and 'code' not in response.data:
-                response.data['code'] = exc.get_codes()
     return response
 
 
