@@ -71,11 +71,13 @@ class ProjectSerializer(serializers.ModelSerializer):
     category = serializers.ReadOnlyField(source='category.name')
     skills = serializers.StringRelatedField(many=True)
     url = CustomHyperlinkedIdentityField(**{'lookup_field': 'slug', 'view_name': 'project-detail', })
+    creator_url = CustomHyperlinkedRelatedField(
+        **{'source': 'creator', 'lookup_field': 'username', 'read_only': 'True', 'view_name': 'user-detail'})
     status = SerializerMethodField()
 
     class Meta:
         model = Project
-        fields = ('amount', 'name', 'skills', 'description', 'end_date', 'category', 'creator', 'url', 'status')
+        fields = ('amount', 'name', 'skills', 'description', 'end_date', 'category', 'creator', 'creator_url', 'url', 'status')
 
     def get_status(self, instance):
         return StatusSerializer(instance).data

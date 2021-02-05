@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
@@ -9,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-28 18:52+0330\n"
+"POT-Creation-Date: 2021-02-05 12:26+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -184,318 +183,11 @@ msgstr ""
 msgid "Category"
 msgstr "زمینه فعالیت"
 
+#, fuzzy
+#| msgid "accounts"
 msgid "amount"
-msgstr "مبلغ"
-
-msgid "Projects"
-msgstr "پروژه ها"
-
-msgid "Project"
-msgstr "پروژه"
-
-msgid "Last_Date_Modified_Decorated"
-msgstr "تاریخ آخرین تغییر"
-
-msgid "Start_Date_Decorated"
-msgstr "تاریخ شروع"
-
-msgid "End_Date_Decorated"
-msgstr "تاریخ پایان"
-
-msgid "Project_Owner"
-msgstr "سازنده"
-
-msgid "Accepted"
-msgstr "پذیرفته شده"
-
-msgid "Pending"
-msgstr "درخواست داده شده"
-
-msgid "Declined"
-msgstr "رد شده"
-
-msgid "Admin"
-msgstr "ادمین"
-
-msgid "Status"
-msgstr "وضعیت"
-
-msgid "Team_Member"
-msgstr "عضو تیم"
-
-msgid "Date"
-msgstr "تاریخ"
-
-msgid "Code"
-msgstr "کد"
-
-msgid "Temp"
-msgstr "میانی"
-
-msgid "Temps"
-msgstr "میانی ها"
-
-msgid "example"
-msgstr "نمونه"
-
-msgid "User_Email_Error"
-msgstr "کاربری با این ایمیل موجود نمی‌باشد."
-
-msgid "EmailDoesExist"
-msgstr "حسابی با این ایمیل موجود می باشد."
-
-msgid "EmailTimeError"
-msgstr ""
-"در دو دقیقه اخیر ایمیلی به این حساب کاربری ارسال شده است لطفا مجددا تلاش "
-"فرمایید.'"
-
-msgid "ServerError"
-msgstr "خطایی رخ داده است لطفا دوباره امتحان کنید."
-
-msgid "Byte"
-msgstr ""
-
-msgid "Kilobyte"
-msgstr ""
-
-msgid "Megabyte"
-msgstr "مگابایت"
-
-msgid "File type must be {}"
-msgstr "نوع فایل باید {} باشد."
-
-msgid "Must only contain English letters and numbers."
-msgstr "تنها باید شامل حروف و اعداد انگلیسی باشد."
-
-msgid "It should only contain English letters and numbers and special letters."
-msgstr "تنها باید شامل حروف و اعداد انگلیسی و حروف خاص باشد."
-
-msgid "It should only contain Persian letters."
-msgstr "تنها باید شامل حروف فارسی باشد."
-
-msgid "The phone number entered is not valid."
-msgstr "شماره تلفن وارد شده معتبر نمی باشد."
-
-msgid "No active account found with the given credentials"
-msgstr "رمز عبور یا نام کاربری نامعتبر است."
-
-msgid "The photo size should be more than {} {}"
-msgstr "حجم عکس نباید بیشتر از {} {} باشد."
-
-msgid "The {} skill is not in the {} category"
-msgstr "مهارت {} در دسته {} نیست."
-
-msgid "The category should be a father skill."
-msgstr "دسته بندی باید یک مهارت پدر باشد."
-
-msgid "The number of skills must be between {} and {}"
-msgstr "تعداد مهارت ها باید بین {} تا {} باشد."
-
-msgid "The {} must be bigger than today"
-msgstr "{} باید بزرگتر از امروز باشد."
-
-msgid "ThisUserNotExist"
-msgstr "کاربری با این اطلاعات موجود نمی باشد."
-
-#~ msgid "TheValueIsNotCorrect"
-#~ msgstr "مقدار وارد شده معتبر نمی باشد."
-
-#, fuzzy
-#~| msgid "The category should be a father skill."
-#~ msgid "The background should be a father skill."
-#~ msgstr "دسته بندی باید یک مهارت پدر باشد."
-
-#~ msgid "Requested"
-#~ msgstr "درخواست داده شده"
-=======
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
-msgid ""
-msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-04 20:49+0330\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-msgid "Admin_page"
-msgstr "صفحه ادمین"
-
-msgid "Manage_Model"
-msgstr "مدیریت مدل ها"
-
-msgid "accounts"
 msgstr "اکانت ها"
 
-msgid "Password"
-msgstr "رمز"
-
-msgid "Confirm Password"
-msgstr "تکرار رمز"
-
-msgid "The passwords must be match"
-msgstr "رمز های وارد شده باید با یکدیگر مطابقت داشته باشند."
-
-msgid "Password is required"
-msgstr "رمز عبور اجباری است."
-
-msgid "male"
-msgstr "مرد"
-
-msgid "female"
-msgstr "زن"
-
-msgid "Username"
-msgstr "نام کاربری"
-
-msgid "Email"
-msgstr "ایمیل"
-
-msgid "Phone_Number"
-msgstr "شماره تلفن"
-
-msgid "First_Name"
-msgstr "نام"
-
-msgid "Last_Name"
-msgstr "نام خانوادگی"
-
-msgid "Gender"
-msgstr "جنسیت"
-
-msgid "Is_Active"
-msgstr "فعال"
-
-msgid "Is_Superuser"
-msgstr "کاربر ناظر"
-
-msgid "Joined_Date"
-msgstr "تاریخ عضویت"
-
-msgid "Description"
-msgstr "توضیحات"
-
-msgid "University_Name"
-msgstr "نام دانشگاه"
-
-msgid "City"
-msgstr "شهر"
-
-msgid "Skill"
-msgstr "مهارت"
-
-msgid "resume"
-msgstr "رزومه"
-
-msgid "Users"
-msgstr "کاربران"
-
-msgid "User"
-msgstr "کاربر"
-
-msgid "Joined_Date_Decorated"
-msgstr "تاریخ پایان"
-
-msgid "Province_name"
-msgstr "نام استان"
-
-msgid "Province_code"
-msgstr "کد استان"
-
-msgid "Provinces"
-msgstr "استان ها"
-
-msgid "Province"
-msgstr "استان"
-
-msgid "City_name"
-msgstr "نام شهر"
-
-msgid "City_Code"
-msgstr "کد شهر"
-
-msgid "Cities"
-msgstr "شهرها"
-
-msgid "University_name"
-msgstr "نام دانشگاه"
-
-msgid "University_code"
-msgstr "کد دانشگاه"
-
-msgid "Universities"
-msgstr "دانشگاه ها"
-
-msgid "University"
-msgstr "دانشگاه"
-
-msgid "Skill_name"
-msgstr "نام مهارت"
-
-msgid "Skill_code"
-msgstr "کد مهارت"
-
-msgid "Skill's_Father"
-msgstr "نام پدر مهارت"
-
-msgid "image"
-msgstr ""
-
-msgid "Skills"
-msgstr "مهارت ها"
-
-msgid "Waiting"
-msgstr "در حال انتظار"
-
-msgid "Started"
-msgstr "شروع شده"
-
-msgid "Ended"
-msgstr "پایان یافته"
-
-msgid "Deleted"
-msgstr "حذف شده"
-
-msgid "Project_Name"
-msgstr "نام پروژه"
-
-msgid "UserProject"
-msgstr "نام پروژه"
-
-msgid "End_Date"
-msgstr "تاریخ پایان"
-
-msgid "Start_Date"
-msgstr "شروع شده"
-
-msgid "Last_Modify_Date"
-msgstr "تاریخ آخرین تغییر"
-
-msgid "Advertisement"
-msgstr "تبلیغات"
-
-msgid "Project_Status"
-msgstr "وضعیت پروژه"
-
-msgid "Url"
-msgstr ""
-
-msgid "Category"
-msgstr "زمینه فعالیت"
-
-msgid "amount"
-msgstr "مبلغ"
-
 msgid "Projects"
 msgstr "پروژه ها"
 
@@ -601,10 +293,10 @@ msgid "The number of skills must be between {} and {}"
 msgstr "تعداد مهارت ها باید بین {} تا {} باشد."
 
 msgid "The {} must be bigger than today"
-msgstr "{} باید بزرگتر از امروز باشد."
+msgstr ""
 
 msgid "You have not been allowed to change the project into {} status."
-msgstr "شما مجاز به تغییر پروژه به وضعیت {} نمی باشید."
+msgstr ""
 
 msgid "ThisUserNotExist"
 msgstr "کاربری با این اطلاعات موجود نمی باشد."
@@ -619,4 +311,3 @@ msgstr "کاربری با این اطلاعات موجود نمی باشد."
 
 #~ msgid "Requested"
 #~ msgstr "درخواست داده شده"
->>>>>>> dff487c0605799917a8266f479d40674844cfff2

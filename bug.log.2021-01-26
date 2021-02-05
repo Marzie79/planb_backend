@@ -1,0 +1,12 @@
+[28/Jan/2021 18:52:47] django.request - WARNING - Not Found: /
+[28/Jan/2021 18:52:47] django.request - WARNING - Not Found: /favicon.ico
+[28/Jan/2021 18:52:47] django.request - WARNING - Bad Request: /user/profile/avatar/
+[28/Jan/2021 18:52:47] django.request - WARNING - Bad Request: /user/profile/resume/
+[28/Jan/2021 18:52:47] django.request - WARNING - Bad Request: /user/profile/
+[28/Jan/2021 18:52:47] django.request - WARNING - Bad Request: /user/profile/
+[28/Jan/2021 18:52:47] django.request - WARNING - Bad Request: /user/profile/
+[28/Jan/2021 18:52:47] django.request - WARNING - Bad Request: /user/profile/
+[28/Jan/2021 18:52:47] django.request - WARNING - Bad Request: /user/profile/
+[28/Jan/2021 18:52:47] django.request - WARNING - Bad Request: /user/profile/
+[28/Jan/2021 18:52:47] django.request - WARNING - Bad Request: /user/profile/
+[28/Jan/2021 18:52:47] django.request - WARNING - Bad Request: /user/profile/
