@@ -109,8 +109,8 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
-        request.data["project"] = Project.objects.get(slug=self.kwargs['slug_slug']).pk
-        request.data['user'] = User.objects.get(username=request.data['user']).pk
+        request.data['project'] = Project.objects.get(slug=self.kwargs['slug_slug']).pk
+        request.data['user'] = request.user.id
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
