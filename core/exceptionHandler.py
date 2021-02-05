@@ -6,7 +6,7 @@ from core.exceptions import FormValidationError
 
 def api_exception_handler(exc, context):
     if not isinstance(exc, Http404):
-        if exc.default_code == 'invalid' and exc.status_code == 400:
+        if hasattr(exc,'default_code') and exc.default_code == 'invalid' and exc.status_code == 400:
             detail_list = []
             for name in exc.detail:
                 detail_list.append(exc.detail[name][0])
