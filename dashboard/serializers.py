@@ -55,7 +55,7 @@ class UserProjectSerializer(serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         query_params = kwargs['context']['request'].query_params
-        if (len(query_params) != 0) and query_params['category'] == 'REQUEST':
+        if ('category' in query_params) and query_params['category'] == 'REQUEST':
             del self.fields['role']
         super().__init__(*args, **kwargs)
 
@@ -196,9 +196,10 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
     def check_phone_number_visibility(self, instance):
         request_user = self.context['request'].user
+        projects = Project.objects.filter(Q(userproject__user=request_user) & (Q(userproject__status='CREATOR') | Q(userproject__status='ADMIN')))
+        is_member = projects.filter(Q(userproject__user__username=instance.username) & ~Q(userproject__status='DELETED'))
         if instance.phone_number and request_user.is_authenticated:
-            if instance.username == request_user.username or Project.objects.filter(
-                    userproject__user__in=(request_user.id, instance.id)).exists():
+            if instance.username == request_user.username or is_member.exists():
                 return to_python(instance.phone_number).as_e164
         else:
             return None

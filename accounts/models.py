@@ -286,11 +286,16 @@ class UserProject(models.Model):
         return True
 
     def has_object_update_permission(self, request):
-        if self.user == request.user and self.project.status != 'ENDED':
+        status = self.project.status
+        closed_project = status == 'ENDED' or status == 'DELETED'
+        validated_username = request.user.username == request.data['user']
+        if closed_project:
+            return False
+        elif request.data['status'] == 'DELETED' and validated_username:
+            return True
+        elif self.user == request.user:
             is_admin = self.status == 'ADMIN'
             is_creator = self.status == 'CREATOR'
-            if not (is_admin and is_creator) and request.data['status'] == 'DELETED':
-                return True
             return is_admin or is_creator
         return False
 
@@ -299,9 +304,14 @@ class UserProject(models.Model):
         return True
 
     def has_object_create_permission(self, request):
-        if request.data['status'] == 'PENDING':
+        status = self.project.status
+        closed_project = status == 'ENDED' or status == 'DELETED'
+        validated_username = request.user.username == request.data['user']
+        if closed_project:
+            return False
+        elif request.data['status'] == 'PENDING' and validated_username:
             return True
-        if self.user == request.user and self.project.status != 'ENDED':
+        elif self.user == request.user:
             is_admin = self.status == 'ADMIN'
             is_creator = self.status == 'CREATOR'
             return is_admin or is_creator
