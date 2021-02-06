@@ -78,7 +78,8 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = (
-        'amount', 'name', 'skills', 'description', 'end_date', 'category', 'creator', 'creator_url', 'url', 'status')
+            'amount', 'name', 'skills', 'description', 'end_date', 'category', 'creator', 'creator_url', 'url',
+            'status')
 
     def get_status(self, instance):
         return StatusSerializer(instance).data
@@ -100,17 +101,19 @@ class ProjectSaveSerializer(serializers.ModelSerializer):
     def validate(self, data):
         data = super(ProjectSaveSerializer, self).validate(data)  # calling default validation
         # skills must be child of category skill
-        incorrect_skill = ''
-        for skill in data['skills']:
-            parent_skill = skill
-            while parent_skill.skill:
-                parent_skill = parent_skill.skill
-            if parent_skill != data['category']:
-                incorrect_skill += skill.name + ','
-        if incorrect_skill:
-            raise serializers.ValidationError(
-                {'skills': [
-                    _('The {} skill is not in the {} category').format(incorrect_skill[:-1], data['category'].name)]})
+        if 'skills' in data and 'category' in data:
+            incorrect_skill = ''
+            for skill in data['skills']:
+                parent_skill = skill
+                while parent_skill.skill:
+                    parent_skill = parent_skill.skill
+                if parent_skill != data['category']:
+                    incorrect_skill += skill.name + ','
+            if incorrect_skill:
+                raise serializers.ValidationError(
+                    {'skills': [
+                        _('The {} skill is not in the {} category').format(incorrect_skill[:-1],
+                                                                           data['category'].name)]})
         return data
 
     def validate_category(self, value):

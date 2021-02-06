@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-06 21:23+0330\n"
+"POT-Creation-Date: 2021-02-06 22:08+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -279,6 +279,9 @@ msgstr "شماره تلفن وارد شده معتبر نمی باشد."
 
 msgid "No active account found with the given credentials"
 msgstr "رمز عبور یا نام کاربری نامعتبر است."
+
+msgid "You do not have permission to perform this action."
+msgstr "شما اجازه انجام این کار را ندارید."
 
 msgid "The photo size should be more than {} {}"
 msgstr "حجم عکس نباید بیشتر از {} {} باشد."
