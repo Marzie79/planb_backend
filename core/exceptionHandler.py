@@ -9,7 +9,11 @@ def api_exception_handler(exc, context):
         if hasattr(exc,'default_code') and exc.default_code == 'invalid' and exc.status_code == 400:
             detail_list = []
             for name in exc.detail:
-                detail_list.append(exc.detail[name][0])
+                try:
+                    detail_list.append(exc.detail[name][0])
+                except:
+                    for second_name in exc.detail[name]:
+                        detail_list.append(exc.detail[name][second_name][0])
             new_exec = FormValidationError(detail_list)
             response = set_form_error_response(new_exec)
             response.data['code'] = FormValidationError.default_code
