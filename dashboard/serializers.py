@@ -77,16 +77,19 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ('amount', 'name', 'skills', 'description', 'end_date', 'category', 'creator', 'creator_url', 'url', 'status')
+        fields = (
+        'amount', 'name', 'skills', 'description', 'end_date', 'category', 'creator', 'creator_url', 'url', 'status')
 
     def get_status(self, instance):
         return StatusSerializer(instance).data
 
 
 class ProjectSaveSerializer(serializers.ModelSerializer):
+    url = CustomHyperlinkedIdentityField(**{'lookup_field': 'slug', 'view_name': 'project-detail', })
+
     class Meta:
         model = Project
-        fields = ('amount', 'name', 'skills', 'description', 'end_date', 'category', 'status')
+        fields = ('amount', 'name', 'skills', 'description', 'end_date', 'category', 'status', 'url')
 
     def get_fields(self, *args, **kwargs):
         fields = super().get_fields(*args, **kwargs)
@@ -196,8 +199,10 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
     def check_phone_number_visibility(self, instance):
         request_user = self.context['request'].user
-        projects = Project.objects.filter(Q(userproject__user=request_user) & (Q(userproject__status='CREATOR') | Q(userproject__status='ADMIN')))
-        is_member = projects.filter(Q(userproject__user__username=instance.username) & ~Q(userproject__status='DELETED'))
+        projects = Project.objects.filter(
+            Q(userproject__user=request_user) & (Q(userproject__status='CREATOR') | Q(userproject__status='ADMIN')))
+        is_member = projects.filter(
+            Q(userproject__user__username=instance.username) & ~Q(userproject__status='DELETED'))
         if instance.phone_number and request_user.is_authenticated:
             if instance.username == request_user.username or is_member.exists():
                 return to_python(instance.phone_number).as_e164
