@@ -151,6 +151,7 @@ class Skill(models.Model):
 def one_year_after():
     return datetime.now() + timedelta(days=365)
 
+
 class Project(models.Model):
     STATUS_CHOICES = (
         ('WAITING', _("Waiting")),
@@ -219,7 +220,7 @@ class Project(models.Model):
         return True
 
     def has_object_update_permission(self, request):
-        if self.status != 'ENDED':
+        if self.status != 'ENDED' and self.status != 'DELETED':
             try:
                 user_project = UserProject.objects.get(Q(user=request.user) & Q(project=self))
             except:
