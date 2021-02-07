@@ -5,6 +5,7 @@ from rest_framework.fields import SerializerMethodField
 from accounts.models import *
 from django.utils.translation import gettext_lazy as _
 
+from accounts.serializers import SkillBriefSerializer
 from core.fields import CustomHyperlinkedRelatedField, CustomHyperlinkedIdentityField
 
 
@@ -69,7 +70,7 @@ class UserProjectSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     creator = serializers.ReadOnlyField(source='creator.get_full_name')
     category = serializers.ReadOnlyField(source='category.name')
-    skills = serializers.StringRelatedField(many=True)
+    skills = SkillBriefSerializer(many=True)
     url = CustomHyperlinkedIdentityField(**{'lookup_field': 'slug', 'view_name': 'project-detail', })
     creator_url = CustomHyperlinkedRelatedField(
         **{'source': 'creator', 'lookup_field': 'username', 'read_only': 'True', 'view_name': 'user-detail'})

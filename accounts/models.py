@@ -1,5 +1,5 @@
 import jdatetime
-from datetime import datetime
+from datetime import datetime,timedelta
 from imagekit.models import ProcessedImageField
 from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import validate_email, MinValueValidator
@@ -148,6 +148,8 @@ class Skill(models.Model):
         verbose_name_plural = _("Skills")
         verbose_name = _("Skill")
 
+def one_year_after():
+    return datetime.now() + timedelta(days=365)
 
 class Project(models.Model):
     STATUS_CHOICES = (
@@ -161,7 +163,7 @@ class Project(models.Model):
     description = models.TextField(_("Description"), null=True, blank=True, max_length=200)
     users = models.ManyToManyField(User, through='UserProject', verbose_name=_("UserProject"), blank=True,
                                    related_name='users_projects')
-    end_date = models.DateTimeField(_("End_Date"), default=datetime.now)
+    end_date = models.DateTimeField(_("End_Date"), default=one_year_after)
     start_date = models.DateTimeField(_("Start_Date"), default=datetime.now)
     last_modified_date = models.DateTimeField(_("Last_Modify_Date"), default=datetime.now)
     advertisement = models.BooleanField(_("Advertisement"), default=True)
