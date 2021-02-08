@@ -70,7 +70,8 @@ class UserProjectSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     creator = serializers.ReadOnlyField(source='creator.get_full_name')
     category = serializers.ReadOnlyField(source='category.name')
-    skills = SkillBriefSerializer(many=True)
+    category_id = serializers.ReadOnlyField(source='category.id')
+    skills = serializers.StringRelatedField(many=True)
     url = CustomHyperlinkedIdentityField(**{'lookup_field': 'slug', 'view_name': 'project-detail', })
     creator_url = CustomHyperlinkedRelatedField(
         **{'source': 'creator', 'lookup_field': 'username', 'read_only': 'True', 'view_name': 'user-detail'})
@@ -80,7 +81,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         fields = (
             'amount', 'name', 'skills', 'description', 'end_date', 'category', 'creator', 'creator_url', 'url',
-            'status')
+            'status','category_id')
 
     def get_status(self, instance):
         return StatusSerializer(instance).data
