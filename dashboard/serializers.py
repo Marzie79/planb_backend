@@ -126,7 +126,7 @@ class ProjectSaveSerializer(serializers.ModelSerializer):
 
     def validate_skills(self, value):
         # number of skills must be between 3 to 10
-        if not (len(value) >= 3 and len(value) <= 10):
+        if not len(value) <= 10:
             raise serializers.ValidationError(_('The number of skills must be between {} and {}').format(3, 10))
         return value
 
@@ -204,12 +204,12 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
     def check_phone_number_visibility(self, instance):
         request_user = self.context['request'].user
-        projects = Project.objects.filter(
-            Q(userproject__user=request_user) & (Q(userproject__status='CREATOR') | Q(userproject__status='ADMIN')))
-        is_member = projects.filter(
-            Q(userproject__user__username=instance.username) & ~Q(userproject__status='DELETED'))
-        if instance.phone_number and request_user.is_authenticated:
-            if instance.username == request_user.username or is_member.exists():
-                return to_python(instance.phone_number).as_e164
-        else:
-            return None
+        if request_user.is_authenticated:
+            projects = Project.objects.filter(
+                Q(userproject__user=request_user) & (Q(userproject__status='CREATOR') | Q(userproject__status='ADMIN')))
+            is_member = projects.filter(
+                Q(userproject__user__username=instance.username) & ~Q(userproject__status='DELETED'))
+            if instance.phone_number:
+                if instance.username == request_user.username or is_member.exists():
+                    return to_python(instance.phone_number).as_e164
+        return None
