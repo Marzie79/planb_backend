@@ -71,7 +71,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     creator = serializers.ReadOnlyField(source='creator.get_full_name')
     category = serializers.ReadOnlyField(source='category.name')
     category_id = serializers.ReadOnlyField(source='category.id')
-    skills = serializers.StringRelatedField(many=True)
+    skills = SkillBriefSerializer(many=True)
     url = CustomHyperlinkedIdentityField(**{'lookup_field': 'slug', 'view_name': 'project-detail', })
     creator_url = CustomHyperlinkedRelatedField(
         **{'source': 'creator', 'lookup_field': 'username', 'read_only': 'True', 'view_name': 'user-detail'})
