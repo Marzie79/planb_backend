@@ -87,6 +87,7 @@ REST_FRAMEWORK = {
                                 'rest_framework.filters.OrderingFilter'),
     'EXCEPTION_HANDLER': 'core.exceptionHandler.api_exception_handler',  # custom exception handler
     'PAGE_SIZE': 6,
+    'DATETIME_INPUT_FORMATS': ['%Y-%m-%d','iso-8601'],
 }
 
 TEMPLATES = [
