@@ -33,7 +33,7 @@ class UserProjectView(generics.ListAPIView):
 
 
 class ProjectView(viewsets.ModelViewSet):
-    queryset = Project.objects.all()
+    queryset = Project.objects.all().order_by('?')
     permission_classes = (DRYPermissions,)
     serializer_class = ProjectSaveSerializer
     search_fields = ['name', 'category__name', 'skills__name']
