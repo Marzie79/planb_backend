@@ -40,6 +40,11 @@ class ProjectView(viewsets.ModelViewSet):
     pagination_class = Pagination
     lookup_field = 'slug'
 
+    def get_queryset(self):
+        if self.action == 'list':
+            return super(ProjectView, self).get_queryset().exclude(status="DELETED")
+        return super(ProjectView, self).get_queryset()
+
     def get_serializer_class(self):
         if self.action == 'list' or self.action == 'retrieve':
             return ProjectSerializer
