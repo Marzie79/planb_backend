@@ -21,7 +21,7 @@ class UserProjectsInline(admin.TabularInline):
 
 
 class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'is_active')
+    list_display = ('first_name', 'last_name', 'email', 'username')
     readonly_fields = ('joined_date_decorated',)
     list_filter = ('is_active',)
     form = UserForm
