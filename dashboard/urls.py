@@ -1,14 +1,17 @@
-from django.urls import path
-from rest_framework.routers import DefaultRouter
+from django.urls import path, include
+from rest_framework_nested import routers
+
 from .views import *
 
-router = DefaultRouter()
-router.register('user-projects', UserProjectView)
-# router.register(r'user-project/filter', StatusUserProjectView)
+router = routers.SimpleRouter()
 router.register('projects', ProjectView)
+router.register('users', UserInfoView)
+
+domains_router = routers.NestedSimpleRouter(router, 'projects', lookup='slug')
+domains_router.register('members', ProjectTeam, basename='domain')
 
 urlpatterns = [
-    path('project/<str:slug>/memmbers/', ProjectTeam.as_view({'get': 'list', 'patch': 'update'})),
+    path('user-projects/', UserProjectView.as_view()),
+    path('', include(router.urls)),
+    path('', include(domains_router.urls)),
 ]
-
-urlpatterns += router.urls

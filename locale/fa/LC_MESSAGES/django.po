@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-02 00:02+0330\n"
+"POT-Creation-Date: 2021-02-10 14:22+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -183,6 +183,11 @@ msgstr ""
 msgid "Category"
 msgstr "زمینه فعالیت"
 
+#, fuzzy
+#| msgid "accounts"
+msgid "amount"
+msgstr "اکانت ها"
+
 msgid "Projects"
 msgstr "پروژه ها"
 
@@ -198,6 +203,9 @@ msgstr "تاریخ شروع"
 msgid "End_Date_Decorated"
 msgstr "تاریخ پایان"
 
+msgid "Project_Owner"
+msgstr "سازنده"
+
 msgid "Accepted"
 msgstr "پذیرفته شده"
 
@@ -209,9 +217,6 @@ msgstr "رد شده"
 
 msgid "Admin"
 msgstr "ادمین"
-
-msgid "Project_Owner"
-msgstr "سازنده"
 
 msgid "Status"
 msgstr "وضعیت"
@@ -275,6 +280,9 @@ msgstr "شماره تلفن وارد شده معتبر نمی باشد."
 msgid "No active account found with the given credentials"
 msgstr "رمز عبور یا نام کاربری نامعتبر است."
 
+msgid "You do not have permission to perform this action."
+msgstr "شما اجازه انجام این کار را ندارید."
+
 msgid "The photo size should be more than {} {}"
 msgstr "حجم عکس نباید بیشتر از {} {} باشد."
 
@@ -286,6 +294,12 @@ msgstr "دسته بندی باید یک مهارت پدر باشد."
 
 msgid "The number of skills must be between {} and {}"
 msgstr "تعداد مهارت ها باید بین {} تا {} باشد."
+
+msgid "The {} must be bigger than today"
+msgstr "{} باید از تاریخ امروز بزرگتر باشد."
+
+msgid "You have not been allowed to change the project into {} status."
+msgstr "شما مجاز به تغییر پروژه به وضعیت {} نمی باشید."
 
 msgid "ThisUserNotExist"
 msgstr "کاربری با این اطلاعات موجود نمی باشد."

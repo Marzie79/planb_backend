@@ -47,7 +47,7 @@ SVG_TYPE_VALIDATOR = FileTypeValidator('svg')
 ##translated message
 PHONE_NUMBER_REGEX_VALIDATOR_MESSAGE = _("The phone number entered is not valid.")
 JWT_NOT_FOUND_MESSAGE = _("No active account found with the given credentials")
-
+PERMISSION_DENY = _("You do not have permission to perform this action.")
 
 ##serializer validators
 

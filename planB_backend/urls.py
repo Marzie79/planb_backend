@@ -17,11 +17,13 @@ schema_view = get_schema_view(
     ),
     public=True,
 )
-
+class Apps(Enum):
+    USERS = ''
+    DASHBORAD = 'dashboard/'
 urlpatterns = [
                   path('admin/', admin.site.urls),
-                  path('', include('accounts.urls')),
-                  path('dashboard/', include('dashboard.urls')),
+                  path(Apps.USERS.value, include('accounts.urls')),
+                  path(Apps.DASHBORAD.value, include('dashboard.urls')),
                   # comment versioning
                   # comment versioning
                   #      path('api/v1/', include((v1, 'v1'), namespace='v1')),

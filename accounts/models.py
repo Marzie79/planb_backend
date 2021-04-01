@@ -1,8 +1,8 @@
 import jdatetime
-from datetime import datetime
+from datetime import datetime,timedelta
 from imagekit.models import ProcessedImageField
 from phonenumber_field.modelfields import PhoneNumberField
-from django.core.validators import validate_email
+from django.core.validators import validate_email, MinValueValidator
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
@@ -11,6 +11,7 @@ from core import validators
 from core.models import AbstractImageModel
 from .managers import UserManager
 from core.validators import PDF_TYPE_VALIDATOR, SVG_TYPE_VALIDATOR
+from django.db.models import Q
 
 
 class User(AbstractBaseUser, PermissionsMixin, AbstractImageModel):
@@ -147,6 +148,9 @@ class Skill(models.Model):
         verbose_name_plural = _("Skills")
         verbose_name = _("Skill")
 
+def one_year_after():
+    return datetime.now() + timedelta(days=365)
+
 
 class Project(models.Model):
     STATUS_CHOICES = (
@@ -160,7 +164,7 @@ class Project(models.Model):
     description = models.TextField(_("Description"), null=True, blank=True, max_length=200)
     users = models.ManyToManyField(User, through='UserProject', verbose_name=_("UserProject"), blank=True,
                                    related_name='users_projects')
-    end_date = models.DateTimeField(_("End_Date"), default=datetime.now)
+    end_date = models.DateTimeField(_("End_Date"), default=one_year_after)
     start_date = models.DateTimeField(_("Start_Date"), default=datetime.now)
     last_modified_date = models.DateTimeField(_("Last_Modify_Date"), default=datetime.now)
     advertisement = models.BooleanField(_("Advertisement"), default=True)
@@ -168,6 +172,7 @@ class Project(models.Model):
     slug = models.SlugField(_("Url"), allow_unicode=True, unique=True, blank=True, )
     category = models.ForeignKey(Skill, verbose_name=_('Category'), on_delete=models.PROTECT,
                                  related_name='Category', blank=True, null=True)
+    amount = models.FloatField(_("amount"), default=float(0), validators=[MinValueValidator(0)])
 
     class Meta:
         ordering = ['name']
@@ -178,8 +183,12 @@ class Project(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        if not self.slug or self.slug == '':
-            self.slug = slugify(self.name, allow_unicode=True)
+        # if not self.slug or self.slug == '':
+        self.slug = slugify(self.name, allow_unicode=True)
+        if self.status and self.status == 'STARTED':
+            self.start_date = datetime.now()
+        if self.status and self.status == 'ENDED':
+            self.end_date = datetime.now()
         super(Project, self).save()
 
     def last_modified_date_decorated(self, obj):
@@ -199,7 +208,44 @@ class Project(models.Model):
 
     @property
     def creator(self):
-        return self.userproject_set.get(status='CREATOR').user
+        try:
+            return self.userproject_set.get(status='CREATOR').user
+        except:
+            return None
+
+    creator.fget.short_description = _('Project_Owner')
+
+    @staticmethod
+    def has_update_permission(request):
+        return True
+
+    def has_object_update_permission(self, request):
+        if self.status != 'ENDED' and self.status != 'DELETED':
+            try:
+                user_project = UserProject.objects.get(Q(user=request.user) & Q(project=self))
+            except:
+                return False
+            is_admin = user_project.status == 'ADMIN'
+            is_creator = user_project.status == 'CREATOR'
+            return is_admin or is_creator
+        return False
+
+    @staticmethod
+    def has_create_permission(request):
+        if request.user.is_authenticated:
+            return True
+        return False
+
+    @staticmethod
+    def has_destroy_permission(request):
+        return True
+
+    def has_object_destroy_permission(self, request):
+        try:
+            user_project = UserProject.objects.get(Q(user=request.user) & Q(project=self))
+        except:
+            return False
+        return user_project.status == 'CREATOR'
 
 
 class UserProject(models.Model):
@@ -216,10 +262,63 @@ class UserProject(models.Model):
     user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
     status = models.CharField(_("Status"), max_length=9, choices=STATUS_CHOICES, default='PENDING')
 
+    # class Meta:
+    #     unique_together = ('project', 'user',)
+
     def get_role_display(self):
         if self.status == 'ACCEPTED':
             return _("Team_Member")
         return self.get_status_display()
+
+    @staticmethod
+    def has_read_permission(request):
+        return True
+
+    def has_object_read_permission(self, request):
+        query_params = request.query_params
+        if ('status' in query_params) and query_params['status'] == 'PENDING':
+            if self.user == request.user:
+                is_admin = self.status == 'ADMIN'
+                is_creator = self.status == 'CREATOR'
+                return is_admin or is_creator
+            return False
+        return True
+
+    @staticmethod
+    def has_update_permission(request):
+        return True
+
+    def has_object_update_permission(self, request):
+        status = self.project.status
+        closed_project = status == 'ENDED' or status == 'DELETED'
+        validated_username = request.user.username == request.data['user']
+        if closed_project:
+            return False
+        elif request.data['status'] == 'DELETED' and validated_username:
+            return True
+        elif self.user == request.user:
+            is_admin = self.status == 'ADMIN'
+            is_creator = self.status == 'CREATOR'
+            return is_admin or is_creator
+        return False
+
+    @staticmethod
+    def has_create_permission(request):
+        return True
+
+    def has_object_create_permission(self, request):
+        status = self.project.status
+        closed_project = status == 'ENDED' or status == 'DELETED'
+        validated_username = request.user.username == request.data['user']
+        if closed_project:
+            return False
+        elif request.data['status'] == 'PENDING' and validated_username:
+            return True
+        elif self.user == request.user:
+            is_admin = self.status == 'ADMIN'
+            is_creator = self.status == 'CREATOR'
+            return is_admin or is_creator
+        return False
 
     # class Meta:
     #     unique_together = ('project', 'user',)

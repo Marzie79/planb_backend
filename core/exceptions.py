@@ -10,3 +10,8 @@ class BadRequestError(APIException):
 class ServerError(APIException):
     status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
     default_code = 'server_error'
+
+
+class FormValidationError(APIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_code = 'form_validation'

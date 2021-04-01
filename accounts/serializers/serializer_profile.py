@@ -5,6 +5,13 @@ from core.validators import FileSizeValidator, MAX_IMAGE_SIZE, MAX_FILE_SIZE
 from .serializer_list import CitySerializer
 
 
+class BriefProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+        'first_name', 'last_name', 'username','avatar')
+
+
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
