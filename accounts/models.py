@@ -93,7 +93,7 @@ class Province(models.Model):
     code = models.CharField(_("Province_code"), max_length=10, unique=True)
 
     class Meta:
-        ordering = ['code']
+        ordering = ['name']
         verbose_name_plural = _("Provinces")
         verbose_name = _("Province")
 
@@ -110,7 +110,7 @@ class City(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['code']
+        ordering = ['name']
         verbose_name_plural = _("Cities")
         verbose_name = _("City")
         unique_together = ('name', 'province',)
@@ -125,7 +125,7 @@ class University(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['code']
+        ordering = ['name']
         verbose_name_plural = _("Universities")
         verbose_name = _("University")
         unique_together = ('name', 'city',)
@@ -144,7 +144,7 @@ class Skill(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['code']
+        ordering = ['name']
         verbose_name_plural = _("Skills")
         verbose_name = _("Skill")
 
@@ -175,7 +175,7 @@ class Project(models.Model):
     amount = models.FloatField(_("amount"), default=float(0), validators=[MinValueValidator(0)])
 
     class Meta:
-        ordering = ['name']
+        ordering = ['-last_modified_date']
         verbose_name_plural = _("Projects")
         verbose_name = _("Project")
 
@@ -185,10 +185,12 @@ class Project(models.Model):
     def save(self, *args, **kwargs):
         # if not self.slug or self.slug == '':
         self.slug = slugify(self.name, allow_unicode=True)
-        if self.status and self.status == 'STARTED':
+        if self.status == 'STARTED':
             self.start_date = datetime.now()
-        if self.status and self.status == 'ENDED':
+        if self.status == 'ENDED':
             self.end_date = datetime.now()
+        if self.status == 'ENDED' or self.status == 'DELETED' :
+            self.userproject_set.filter(status='PENDING').delete()
         super(Project, self).save()
 
     def last_modified_date_decorated(self, obj):

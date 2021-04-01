@@ -27,6 +27,7 @@ class UserProjectView(generics.ListAPIView):
     serializer_class = UserProjectSerializer
     filterset_class = UserProjectFilter
     permission_classes = (IsAuthenticated,)
+    pagination_class = None
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
@@ -37,7 +38,6 @@ class ProjectView(viewsets.ModelViewSet):
     permission_classes = (DRYPermissions,)
     serializer_class = ProjectSaveSerializer
     search_fields = ['name', 'category__name', 'skills__name']
-    pagination_class = Pagination
     lookup_field = 'slug'
 
     def get_queryset(self):
@@ -61,6 +61,12 @@ class ProjectView(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         model = serializer.save()
         UserProject.objects.create(user=self.request.user, project=model, status='CREATOR')
+
+    def perform_update(self, serializer):
+        if self.get_object().status =='WAITING' and serializer.validated_data.get('status',None) and serializer.validated_data['status']=='DELETED':
+            self.get_object().delete()
+        else:
+            serializer.save()
 
     @action(methods=['get'], detail=True,
             url_path='status', url_name='get_status')
@@ -88,6 +94,7 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
     serializer_class = ProjectTeamSerializer
     filterset_class = TeamProjectFilter
     permission_classes = (DRYPermissions,)
+    pagination_class = None
     lookup_field = 'username'
 
     def get_permissions(self):
