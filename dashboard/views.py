@@ -23,7 +23,7 @@ class UserProjectView(generics.ListAPIView):
         for PROJECT --> WAITING, STARTED, ENDED, DELETED
         for REQUEST --> PENDING, DECLINED
     """
-    queryset = UserProject.objects.all()
+    queryset = UserProject.objects.all().order_by('-project__last_modified_date')
     serializer_class = UserProjectSerializer
     filterset_class = UserProjectFilter
     permission_classes = (IsAuthenticated,)
@@ -105,7 +105,7 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
 
     def get_queryset(self):
         self.custom_check_permission()
-        return UserProject.objects.filter(project__slug=self.kwargs['slug_slug'])
+        return UserProject.objects.filter(project__slug=self.kwargs['slug_slug']).order_by('status')
 
     def partial_update(self, request, *args, **kwargs):
         self.custom_check_permission()
