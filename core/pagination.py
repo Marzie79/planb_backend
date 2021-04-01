@@ -7,3 +7,8 @@ class Pagination(PageNumberPagination):
     def get_paginated_response(self, data):
         # add pages count to response header
         return Response(data, headers={"Last-Page": self.page.paginator.num_pages})
+
+class MessagesSetPagination(PageNumberPagination):
+    page_size = 5
+    max_page_size = 1000
+

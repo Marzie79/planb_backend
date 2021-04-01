@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from accounts.serializers import SkillBriefSerializer
 from core.fields import CustomHyperlinkedRelatedField, CustomHyperlinkedIdentityField
+from core.helpers.make_message import make_message
 
 
 class StatusSerializer(serializers.Serializer):
@@ -143,6 +144,17 @@ class ProjectSaveSerializer(serializers.ModelSerializer):
                   'DELETED': 3}
         previous_status = self.instance.status
         if STATUS[value] >= STATUS[previous_status]:
+            
+            if STATUS[value] > STATUS[previous_status]:
+                status = "شروع شده"
+                if value == "ENDED":
+                    status = "پایان یافته"
+                elif value == "DELETED":
+                    status == "حذف شده"
+                text = "وضعیت پروژه %s به %s تغییر پیدا کرد."%(self.instance.name, status)
+                recievers = UserProject.objects.filter(project=self.instance).filter(status__in=["PENDING", "ACCEPTED", "ADMIN"])
+                make_message(text=text, receiver= recievers, project= self.instance)
+            
             return value
         raise serializers.ValidationError(
             _('You have not been allowed to change the project into {} status.').format(_(value.title())))
@@ -213,3 +225,14 @@ class UserInfoSerializer(serializers.ModelSerializer):
                 if instance.username == request_user.username or is_member.exists():
                     return to_python(instance.phone_number).as_e164
         return None
+
+class MessageSerializer(serializers.ModelSerializer):
+    is_visited = serializers.SerializerMethodField('is_visited_value')
+    
+    class Meta:
+        model = Message
+        fields = ["is_visited", "text", "id", "created_date"]
+
+    def is_visited_value(self, instance):
+        user = self.context['request'].user
+        return Reciever.objects.get(user=user, message=instance).is_visited

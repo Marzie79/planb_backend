@@ -18,6 +18,13 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = (
         'first_name', 'last_name', 'username', 'email', 'university', 'city', 'phone_number', 'description', 'gender')
 
+    # def __init__(self, *args, **kwargs):
+    #     super(ProfileSerializer, self).__init__(*args, **kwargs)
+    #     request = self.context.get('request')
+    #     if request and request.method=='patch':
+    #         self.Meta.depth = 0
+    #     else:
+    #         self.Meta.depth = 1
 
 class CityProfileSerializer(CitySerializer):
     from .serializer_list import ProvinceSerializer

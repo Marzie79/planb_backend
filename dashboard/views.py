@@ -11,10 +11,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from core.pagination import Pagination
+from core.pagination import Pagination, MessagesSetPagination
 from .serializers import *
 from .filters import UserProjectFilter, TeamProjectFilter, UserInfoFilter
-
+from core.helpers.make_message import make_message
 
 class UserProjectView(generics.ListAPIView):
     """
@@ -87,6 +87,9 @@ class ProjectView(viewsets.ModelViewSet):
     def get_status(self, request, slug=None):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
+        text = "اطلاعات پروژه %s به روز رسانی شد."%(instance.name)
+        receiver = UserProject.objects.filter(project=instance).filter(status__in=["ADMIN", "CREATOR", "ACCEPTED"])
+        make_message(text=text, receiver= receiver, project= instance)
         return Response(serializer.data)
 
 
@@ -110,23 +113,43 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
     def partial_update(self, request, *args, **kwargs):
         self.custom_check_permission()
         try:
-            instance = UserProject.objects.get(user__username=self.kwargs['username'],
+            instance = UserProject.objects.select_related("project").get(user__username=self.kwargs['username'],
                                                project__slug=self.kwargs['slug_slug'])
         except UserProject.DoesNotExist:
             return Response(data={"bad_request": _('ThisUserNotExist')})
         data = {'status': request.data['status']}
+        previous_status = instance.status
         serializer = self.get_serializer(instance, data=data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
+        if request.data["status"] in ["DECLINED", "ACCEPTED", "DELETED", "ADMIN"]:
+            if not (previous_status == "ADMIN" and request.data["status"] in ["ACCEPTED", "DELETED"]):
+                message_status = "قبول"
+                text = "درخواست شما برای پیوستن به پروژه %s %s شده است."%(instance.project.name, message_status)
+                if request.data["status"] == "DECLINED":
+                    message_status = "رد"
+                    text = "درخواست شما برای پیوستن به پروژه %s %s شده است."%(instance.project.name, message_status)
+                elif request.data["status"] == "DELETED":
+                    text = "شما از پروژه %s حذف شدید."%instance.project.name
+                elif request.data["status"] == "ADMIN":
+                    text = "شما ادمین پروژه %s شدید."%instance.project.name
+                make_message(text=text, receiver= [instance], project= instance.project)
+        
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
         self.custom_check_permission()
-        request.data['project'] = Project.objects.get(slug=self.kwargs['slug_slug']).pk
+        project = Project.objects.get(slug=self.kwargs['slug_slug'])
+        request.data['project'] = project.pk
         request.data['user'] = request.user.id
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+        
+        text = "%s درخواست پیوستن به پروژه %s را دارد."%(self.request.user.__str__(),project.name)
+        receiver = UserProject.objects.filter(project=project).filter(status__in=["ADMIN", "CREATOR"])
+        make_message(text=text, receiver= receiver, project= project)
+        
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def custom_check_permission(self):
@@ -149,6 +172,30 @@ class UserInfoView(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserInfoSerializer
     lookup_field = 'username'
 
+
+class MessageView(mixins.ListModelMixin, GenericViewSet):
+    pagination_class = MessagesSetPagination
+    serializer_class = MessageSerializer
+    queryset = Message.objects.all()
+
+    def get_queryset(self):
+        return Message.objects.filter(reciever__user=self.request.user)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        recievers = Reciever.objects.filter(message__in=page).filter(user=request.user)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            result = self.get_paginated_response(serializer.data)
+            recievers.update(is_visited=True)
+            return result
+        serializer = self.get_serializer(queryset, many=True)
+        recievers.update(is_visited=True)
+        return Response(serializer.data)
+
+
+    
 # class UsersList(generics.ListAPIView):
 #     queryset = User.objects.exclude(userproject__status='CREATOR').distinct()
 #     serializer_class = PersonSerializer
