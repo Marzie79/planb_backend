@@ -15,6 +15,7 @@ from core.pagination import Pagination, MessagesSetPagination
 from .serializers import *
 from .filters import UserProjectFilter, TeamProjectFilter, UserInfoFilter
 from core.helpers.make_message import make_message
+from core.helpers.make_notification import make_notification
 
 class UserProjectView(generics.ListAPIView):
     """
@@ -89,7 +90,9 @@ class ProjectView(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         text = "اطلاعات پروژه %s به روز رسانی شد."%(instance.name)
         receiver = UserProject.objects.filter(project=instance).filter(status__in=["ADMIN", "CREATOR", "ACCEPTED"])
+        recievers_token = NotificationToken.objects.filter(user__in=receiver).values_list('token', flat=True)
         make_message(text=text, receiver= receiver, project= instance)
+        make_notification(recievers_token, instance.name, text)
         return Response(serializer.data)
 
 
@@ -133,7 +136,9 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
                     text = "شما از پروژه %s حذف شدید."%instance.project.name
                 elif request.data["status"] == "ADMIN":
                     text = "شما ادمین پروژه %s شدید."%instance.project.name
+                recievers_token = NotificationToken.objects.filter(user__in=[instance.user]).values_list('token', flat=True)
                 make_message(text=text, receiver= [instance], project= instance.project)
+                make_notification(recievers_token, instance.project.name, text)
         
         return Response(serializer.data)
 
@@ -148,7 +153,9 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
         
         text = "%s درخواست پیوستن به پروژه %s را دارد."%(self.request.user.__str__(),project.name)
         receiver = UserProject.objects.filter(project=project).filter(status__in=["ADMIN", "CREATOR"])
+        recievers_token = NotificationToken.objects.filter(user__in=receiver).values_list('token', flat=True)
         make_message(text=text, receiver= receiver, project= project)
+        make_notification(recievers_token, project.name, text)
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -193,6 +200,15 @@ class MessageView(mixins.ListModelMixin, GenericViewSet):
         serializer = self.get_serializer(queryset, many=True)
         recievers.update(is_visited=True)
         return Response(serializer.data)
+
+
+class NotificationView(GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin):
+    queryset = NotificationToken.objects.all()
+    serializer_class = NotificationSerializer
+    pagination_class = MessagesSetPagination
+
+    def get_queryset(self):
+        return NotificationToken.objects.filter(user=self.request.user)
 
 
     

@@ -7,6 +7,7 @@ router = routers.SimpleRouter()
 router.register("projects", ProjectView)
 router.register("sers", UserInfoView)
 router.register("messages", MessageView)
+router.register("notifications", NotificationView)
 
 domains_router = routers.NestedSimpleRouter(router, "projects", lookup="slug")
 domains_router.register("members", ProjectTeam, basename="domain")

@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from accounts.serializers import SkillBriefSerializer
 from core.fields import CustomHyperlinkedRelatedField, CustomHyperlinkedIdentityField
 from core.helpers.make_message import make_message
+from core.helpers.make_notification import make_notification
 
 
 class StatusSerializer(serializers.Serializer):
@@ -153,7 +154,9 @@ class ProjectSaveSerializer(serializers.ModelSerializer):
                     status == "حذف شده"
                 text = "وضعیت پروژه %s به %s تغییر پیدا کرد."%(self.instance.name, status)
                 recievers = UserProject.objects.filter(project=self.instance).filter(status__in=["PENDING", "ACCEPTED", "ADMIN"])
+                recievers_token = NotificationToken.objects.filter(user__in=recievers).values_list('token', flat=True)
                 make_message(text=text, receiver= recievers, project= self.instance)
+                make_notification(recievers_token, self.instance.name, text)
             
             return value
         raise serializers.ValidationError(
@@ -236,3 +239,10 @@ class MessageSerializer(serializers.ModelSerializer):
     def is_visited_value(self, instance):
         user = self.context['request'].user
         return Reciever.objects.get(user=user, message=instance).is_visited
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = NotificationToken
+        fields = ('token', 'device', 'browser', 'user')
