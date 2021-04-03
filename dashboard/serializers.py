@@ -81,7 +81,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         fields = (
             'amount', 'name', 'skills', 'description', 'end_date', 'category', 'creator', 'creator_url', 'url',
-            'status','category_id')
+            'status', 'category_id')
 
     def get_status(self, instance):
         return StatusSerializer(instance).data
@@ -212,4 +212,4 @@ class UserInfoSerializer(serializers.ModelSerializer):
             if instance.phone_number:
                 if instance.username == request_user.username or is_member.exists():
                     return to_python(instance.phone_number).as_e164
-        return None
+        return _('You have not been allowed to see {}').format(_('Phone_Number'))

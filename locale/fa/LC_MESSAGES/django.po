@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-01 14:33+0430\n"
+"POT-Creation-Date: 2021-04-03 17:50+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -300,6 +300,9 @@ msgstr "{} باید از تاریخ امروز بزرگتر باشد."
 
 msgid "You have not been allowed to change the project into {} status."
 msgstr "شما مجاز به تغییر پروژه به وضعیت {} نمی باشید."
+
+msgid "You have not been allowed to see {}"
+msgstr "امکان مشاهده {} نمی‌باشد"
 
 msgid "ThisUserNotExist"
 msgstr "کاربری با این اطلاعات موجود نمی باشد."
