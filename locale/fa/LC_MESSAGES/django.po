@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-03 17:50+0430\n"
+"POT-Creation-Date: 2021-04-02 23:49+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -139,7 +139,7 @@ msgid "Skill's_Father"
 msgstr "نام پدر مهارت"
 
 msgid "image"
-msgstr ""
+msgstr "عکس"
 
 msgid "Skills"
 msgstr "مهارت ها"
@@ -178,7 +178,7 @@ msgid "Project_Status"
 msgstr "وضعیت پروژه"
 
 msgid "Url"
-msgstr ""
+msgstr "لینک"
 
 msgid "Category"
 msgstr "زمینه فعالیت"
@@ -236,6 +236,39 @@ msgstr "میانی"
 msgid "Temps"
 msgstr "میانی ها"
 
+msgid "Text"
+msgstr "متن"
+
+msgid "Created Date"
+msgstr "تاریخ ساخت"
+
+msgid "Message"
+msgstr "پیغام"
+
+msgid "Messages"
+msgstr "پیغام ها"
+
+msgid "Created_Date_Decorated"
+msgstr "تاریخ ایجاد"
+
+msgid "Reciever"
+msgstr "دریافت کننده"
+
+msgid "Recievers"
+msgstr "دریافت کنندگان"
+
+msgid "Token"
+msgstr ""
+
+msgid "Device"
+msgstr "دستگاه"
+
+msgid "Browser"
+msgstr "مرورگر"
+
+msgid "Notification"
+msgstr "نوتیفیکیشن"
+
 msgid "example"
 msgstr "نمونه"
 
@@ -254,10 +287,10 @@ msgid "ServerError"
 msgstr "خطایی رخ داده است لطفا دوباره امتحان کنید."
 
 msgid "Byte"
-msgstr ""
+msgstr "بایت"
 
 msgid "Kilobyte"
-msgstr ""
+msgstr "کیلوبایت"
 
 msgid "Megabyte"
 msgstr "مگابایت"
