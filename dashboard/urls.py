@@ -5,7 +5,7 @@ from .views import *
 
 router = routers.SimpleRouter()
 router.register("projects", ProjectView)
-router.register("sers", UserInfoView)
+router.register("users", UserInfoView)
 router.register("messages", MessageView)
 router.register("notifications", NotificationView)
 
