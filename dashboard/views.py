@@ -179,6 +179,15 @@ class UserInfoView(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserInfoSerializer
     lookup_field = 'username'
 
+class UserInfoProjectView(mixins.ListModelMixin,GenericViewSet):
+    serializer_class = ProjectTeamSerializer
+    pagination_class = None
+    queryset = UserProject.objects.filter(project__status__in=['STARTED','ENDED']).order_by('-project__last_modified_date')
+
+    def get_queryset(self):
+        return self.queryset.filter(user__username=self.kwargs['slug_username'])
+
+
 
 class MessageView(mixins.ListModelMixin, GenericViewSet):
     pagination_class = MessagesSetPagination
