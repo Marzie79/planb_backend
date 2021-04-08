@@ -180,7 +180,7 @@ class UserInfoView(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'username'
 
 class UserInfoProjectView(mixins.ListModelMixin,GenericViewSet):
-    serializer_class = ProjectTeamSerializer
+    serializer_class = UserProjectSerializer
     pagination_class = None
     queryset = UserProject.objects.filter(project__status__in=['STARTED','ENDED']).order_by('-project__last_modified_date')
 
