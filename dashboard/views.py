@@ -90,7 +90,10 @@ class ProjectView(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         text = "اطلاعات پروژه %s به روز رسانی شد."%(instance.name)
         receiver = UserProject.objects.filter(project=instance).filter(status__in=["ADMIN", "CREATOR", "ACCEPTED"])
-        recievers_token = NotificationToken.objects.filter(user__in=receiver).values_list('token', flat=True)
+        receivers_user = []
+        for item in receiver:
+            receivers_user.append(item.user)
+        recievers_token = list(NotificationToken.objects.filter(user__in=receivers_user).values_list('token', flat=True))
         make_message(text=text, receiver= receiver, project= instance)
         make_notification(recievers_token, instance.name, text)
         return Response(serializer.data)
@@ -136,7 +139,10 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
                     text = "شما از پروژه %s حذف شدید."%instance.project.name
                 elif request.data["status"] == "ADMIN":
                     text = "شما ادمین پروژه %s شدید."%instance.project.name
-                recievers_token = NotificationToken.objects.filter(user__in=[instance.user]).values_list('token', flat=True)
+                receivers_user = []
+                for item in [instance]:
+                    receivers_user.append(item.user)
+                recievers_token = list(NotificationToken.objects.filter(user__in=receivers_user).values_list('token'))
                 make_message(text=text, receiver= [instance], project= instance.project)
                 make_notification(recievers_token, instance.project.name, text)
         
@@ -153,7 +159,10 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
         
         text = "%s درخواست پیوستن به پروژه %s را دارد."%(self.request.user.__str__(),project.name)
         receiver = UserProject.objects.filter(project=project).filter(status__in=["ADMIN", "CREATOR"])
-        recievers_token = NotificationToken.objects.filter(user__in=receiver).values_list('token', flat=True)
+        recievers_user = []
+        for item in receiver:
+            recievers_user.append(item.user)
+        recievers_token = list(NotificationToken.objects.filter(user__in=recievers_user).values_list('token', flat=True))
         make_message(text=text, receiver= receiver, project= project)
         make_notification(recievers_token, project.name, text)
         
