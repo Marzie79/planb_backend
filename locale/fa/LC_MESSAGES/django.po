@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-08 21:22+0430\n"
+"POT-Creation-Date: 2021-04-11 13:04+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,72 +39,6 @@ msgstr "رمز های وارد شده باید با یکدیگر مطابقت د
 msgid "Password is required"
 msgstr "رمز عبور اجباری است."
 
-msgid "male"
-msgstr "مرد"
-
-msgid "female"
-msgstr "زن"
-
-msgid "Username"
-msgstr "نام کاربری"
-
-msgid "Email"
-msgstr "ایمیل"
-
-msgid "Phone_Number"
-msgstr "شماره تلفن"
-
-msgid "First_Name"
-msgstr "نام"
-
-msgid "Last_Name"
-msgstr "نام خانوادگی"
-
-msgid "Gender"
-msgstr "جنسیت"
-
-msgid "Is_Active"
-msgstr "فعال"
-
-msgid "Is_Superuser"
-msgstr "کاربر ناظر"
-
-msgid "Joined_Date"
-msgstr "تاریخ عضویت"
-
-msgid "Description"
-msgstr "توضیحات"
-
-msgid "University_Name"
-msgstr "نام دانشگاه"
-
-msgid "City"
-msgstr "شهر"
-
-msgid "Skill"
-msgstr "مهارت"
-
-msgid "resume"
-msgstr "رزومه"
-
-msgid "Users"
-msgstr "کاربران"
-
-msgid "User"
-msgstr "کاربر"
-
-msgid "Joined_Date_Decorated"
-msgstr "تاریخ پایان"
-
-msgid "Province_name"
-msgstr "نام استان"
-
-msgid "Province_code"
-msgstr "کد استان"
-
-msgid "Provinces"
-msgstr "استان ها"
-
 msgid "Province"
 msgstr "استان"
 
@@ -117,32 +51,38 @@ msgstr "کد شهر"
 msgid "Cities"
 msgstr "شهرها"
 
-msgid "University_name"
-msgstr "نام دانشگاه"
+msgid "City"
+msgstr "شهر"
 
-msgid "University_code"
-msgstr "کد دانشگاه"
+msgid "Text"
+msgstr "متن"
 
-msgid "Universities"
-msgstr "دانشگاه ها"
+msgid "Created Date"
+msgstr "تاریخ ساخت"
 
-msgid "University"
-msgstr "دانشگاه"
+msgid "Message"
+msgstr "پیغام"
 
-msgid "Skill_name"
-msgstr "نام مهارت"
+msgid "Messages"
+msgstr "پیغام ها"
 
-msgid "Skill_code"
-msgstr "کد مهارت"
+msgid "Created_Date_Decorated"
+msgstr "تاریخ ایجاد"
 
-msgid "Skill's_Father"
-msgstr "نام پدر مهارت"
+msgid "User"
+msgstr "کاربر"
 
-msgid "image"
-msgstr "عکس"
+msgid "Browser"
+msgstr "مرورگر"
 
-msgid "Skills"
-msgstr "مهارت ها"
+msgid "Device"
+msgstr "دستگاه"
+
+msgid "Token"
+msgstr ""
+
+msgid "Notification"
+msgstr "نوتیفیکیشن"
 
 msgid "Waiting"
 msgstr "در حال انتظار"
@@ -158,6 +98,12 @@ msgstr "حذف شده"
 
 msgid "Project_Name"
 msgstr "نام پروژه"
+
+msgid "Skills"
+msgstr "مهارت ها"
+
+msgid "Description"
+msgstr "توضیحات"
 
 msgid "UserProject"
 msgstr "نام پروژه"
@@ -206,6 +152,105 @@ msgstr "تاریخ پایان"
 msgid "Project_Owner"
 msgstr "سازنده"
 
+msgid "Province_name"
+msgstr "نام استان"
+
+msgid "Province_code"
+msgstr "کد استان"
+
+msgid "Provinces"
+msgstr "استان ها"
+
+msgid "Reciever"
+msgstr "دریافت کننده"
+
+msgid "Recievers"
+msgstr "دریافت کنندگان"
+
+msgid "Skill_name"
+msgstr "نام مهارت"
+
+msgid "Skill_code"
+msgstr "کد مهارت"
+
+msgid "Skill's_Father"
+msgstr "نام پدر مهارت"
+
+msgid "image"
+msgstr "عکس"
+
+msgid "Skill"
+msgstr "مهارت"
+
+msgid "Email"
+msgstr "ایمیل"
+
+msgid "Date"
+msgstr "تاریخ"
+
+msgid "Code"
+msgstr "کد"
+
+msgid "Temp"
+msgstr "میانی"
+
+msgid "Temps"
+msgstr "میانی ها"
+
+msgid "University_name"
+msgstr "نام دانشگاه"
+
+msgid "University_code"
+msgstr "کد دانشگاه"
+
+msgid "Universities"
+msgstr "دانشگاه ها"
+
+msgid "University"
+msgstr "دانشگاه"
+
+msgid "male"
+msgstr "مرد"
+
+msgid "female"
+msgstr "زن"
+
+msgid "Username"
+msgstr "نام کاربری"
+
+msgid "Phone_Number"
+msgstr "شماره تلفن"
+
+msgid "First_Name"
+msgstr "نام"
+
+msgid "Last_Name"
+msgstr "نام خانوادگی"
+
+msgid "Gender"
+msgstr "جنسیت"
+
+msgid "Is_Active"
+msgstr "فعال"
+
+msgid "Is_Superuser"
+msgstr "کاربر ناظر"
+
+msgid "Joined_Date"
+msgstr "تاریخ عضویت"
+
+msgid "University_Name"
+msgstr "نام دانشگاه"
+
+msgid "resume"
+msgstr "رزومه"
+
+msgid "Users"
+msgstr "کاربران"
+
+msgid "Joined_Date_Decorated"
+msgstr "تاریخ پایان"
+
 msgid "Accepted"
 msgstr "پذیرفته شده"
 
@@ -223,51 +268,6 @@ msgstr "وضعیت"
 
 msgid "Team_Member"
 msgstr "عضو تیم"
-
-msgid "Date"
-msgstr "تاریخ"
-
-msgid "Code"
-msgstr "کد"
-
-msgid "Temp"
-msgstr "میانی"
-
-msgid "Temps"
-msgstr "میانی ها"
-
-msgid "Text"
-msgstr "متن"
-
-msgid "Created Date"
-msgstr "تاریخ ساخت"
-
-msgid "Message"
-msgstr "پیغام"
-
-msgid "Messages"
-msgstr "پیغام ها"
-
-msgid "Created_Date_Decorated"
-msgstr "تاریخ ایجاد"
-
-msgid "Reciever"
-msgstr "دریافت کننده"
-
-msgid "Recievers"
-msgstr "دریافت کنندگان"
-
-msgid "Browser"
-msgstr "مرورگر"
-
-msgid "Device"
-msgstr "دستگاه"
-
-msgid "Token"
-msgstr ""
-
-msgid "Notification"
-msgstr "نوتیفیکیشن"
 
 msgid "example"
 msgstr "نمونه"
