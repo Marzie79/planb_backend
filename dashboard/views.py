@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from core.pagination import Pagination, MessagesSetPagination
+from core.pagination import Pagination
 from .serializers import *
 from .filters import UserProjectFilter, TeamProjectFilter, UserInfoFilter, ProjectFilter
 from core.helpers.make_message import make_message
@@ -28,7 +28,6 @@ class UserProjectView(generics.ListAPIView):
     serializer_class = UserProjectSerializer
     filterset_class = UserProjectFilter
     permission_classes = (IsAuthenticated,)
-    pagination_class = None
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
@@ -41,6 +40,7 @@ class ProjectView(viewsets.ModelViewSet):
     filterset_class = ProjectFilter
     search_fields = ['name', 'category__name', 'skills__name']
     lookup_field = 'slug'
+    pagination_class = Pagination
 
     def get_queryset(self):
         if self.action == 'list':
@@ -91,7 +91,10 @@ class ProjectView(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         text = "اطلاعات پروژه %s به روز رسانی شد."%(instance.name)
         receiver = UserProject.objects.filter(project=instance).filter(status__in=["ADMIN", "CREATOR", "ACCEPTED"])
-        recievers_token = NotificationToken.objects.filter(user__in=receiver).values_list('token', flat=True)
+        receivers_user = []
+        for item in receiver:
+            receivers_user.append(item.user)
+        recievers_token = list(NotificationToken.objects.filter(user__in=receivers_user).values_list('token', flat=True))
         make_message(text=text, receiver= receiver, project= instance)
         make_notification(recievers_token, instance.name, text)
         return Response(serializer.data)
@@ -101,7 +104,6 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
     serializer_class = ProjectTeamSerializer
     filterset_class = TeamProjectFilter
     permission_classes = (DRYPermissions,)
-    pagination_class = None
     lookup_field = 'username'
 
     def get_permissions(self):
@@ -137,7 +139,10 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
                     text = "شما از پروژه %s حذف شدید."%instance.project.name
                 elif request.data["status"] == "ADMIN":
                     text = "شما ادمین پروژه %s شدید."%instance.project.name
-                recievers_token = NotificationToken.objects.filter(user__in=[instance.user]).values_list('token', flat=True)
+                receivers_user = []
+                for item in [instance]:
+                    receivers_user.append(item.user)
+                recievers_token = list(NotificationToken.objects.filter(user__in=receivers_user).values_list('token'))
                 make_message(text=text, receiver= [instance], project= instance.project)
                 make_notification(recievers_token, instance.project.name, text)
         
@@ -154,7 +159,10 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
         
         text = "%s درخواست پیوستن به پروژه %s را دارد."%(self.request.user.__str__(),project.name)
         receiver = UserProject.objects.filter(project=project).filter(status__in=["ADMIN", "CREATOR"])
-        recievers_token = NotificationToken.objects.filter(user__in=receiver).values_list('token', flat=True)
+        recievers_user = []
+        for item in receiver:
+            recievers_user.append(item.user)
+        recievers_token = list(NotificationToken.objects.filter(user__in=recievers_user).values_list('token', flat=True))
         make_message(text=text, receiver= receiver, project= project)
         make_notification(recievers_token, project.name, text)
         
@@ -179,12 +187,21 @@ class UserInfoView(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all().distinct()
     serializer_class = UserInfoSerializer
     lookup_field = 'username'
+    pagination_class = Pagination
+
+class UserInfoProjectView(mixins.ListModelMixin,GenericViewSet):
+    serializer_class = UserProjectSerializer
+    queryset = UserProject.objects.filter(project__status__in=['STARTED','ENDED']).order_by('-project__last_modified_date')
+
+    def get_queryset(self):
+        return self.queryset.filter(user__username=self.kwargs['slug_username'])
+
 
 
 class MessageView(mixins.ListModelMixin, GenericViewSet):
-    pagination_class = MessagesSetPagination
     serializer_class = MessageSerializer
     queryset = Message.objects.all()
+    pagination_class = Pagination
 
     def get_queryset(self):
         return Message.objects.filter(reciever__user=self.request.user)
@@ -206,7 +223,6 @@ class MessageView(mixins.ListModelMixin, GenericViewSet):
 class NotificationView(GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin):
     queryset = NotificationToken.objects.all()
     serializer_class = NotificationSerializer
-    pagination_class = MessagesSetPagination
 
     def get_queryset(self):
         return NotificationToken.objects.filter(user=self.request.user)

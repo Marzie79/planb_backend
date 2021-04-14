@@ -154,7 +154,10 @@ class ProjectSaveSerializer(serializers.ModelSerializer):
                     status == "حذف شده"
                 text = "وضعیت پروژه %s به %s تغییر پیدا کرد."%(self.instance.name, status)
                 recievers = UserProject.objects.filter(project=self.instance).filter(status__in=["PENDING", "ACCEPTED", "ADMIN"])
-                recievers_token = NotificationToken.objects.filter(user__in=recievers).values_list('token', flat=True)
+                recievers_user = []
+                for item in recievers:
+                    recievers_user.append(item.user)
+                recievers_token = list(NotificationToken.objects.filter(user__in=recievers_user).values_list('token', flat=True))
                 make_message(text=text, receiver= recievers, project= self.instance)
                 make_notification(recievers_token, self.instance.name, text)
 
