@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from core.pagination import Pagination, MessagesSetPagination
+from core.pagination import Pagination
 from .serializers import *
 from .filters import UserProjectFilter, TeamProjectFilter, UserInfoFilter
 from core.helpers.make_message import make_message
@@ -28,7 +28,6 @@ class UserProjectView(generics.ListAPIView):
     serializer_class = UserProjectSerializer
     filterset_class = UserProjectFilter
     permission_classes = (IsAuthenticated,)
-    pagination_class = None
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
@@ -40,6 +39,7 @@ class ProjectView(viewsets.ModelViewSet):
     serializer_class = ProjectSaveSerializer
     search_fields = ['name', 'category__name', 'skills__name']
     lookup_field = 'slug'
+    pagination_class = Pagination
 
     def get_queryset(self):
         if self.action == 'list':
@@ -103,7 +103,6 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
     serializer_class = ProjectTeamSerializer
     filterset_class = TeamProjectFilter
     permission_classes = (DRYPermissions,)
-    pagination_class = None
     lookup_field = 'username'
 
     def get_permissions(self):
@@ -187,10 +186,10 @@ class UserInfoView(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all().distinct()
     serializer_class = UserInfoSerializer
     lookup_field = 'username'
+    pagination_class = Pagination
 
 class UserInfoProjectView(mixins.ListModelMixin,GenericViewSet):
     serializer_class = UserProjectSerializer
-    pagination_class = None
     queryset = UserProject.objects.filter(project__status__in=['STARTED','ENDED']).order_by('-project__last_modified_date')
 
     def get_queryset(self):
@@ -199,9 +198,9 @@ class UserInfoProjectView(mixins.ListModelMixin,GenericViewSet):
 
 
 class MessageView(mixins.ListModelMixin, GenericViewSet):
-    pagination_class = MessagesSetPagination
     serializer_class = MessageSerializer
     queryset = Message.objects.all()
+    pagination_class = Pagination
 
     def get_queryset(self):
         return Message.objects.filter(reciever__user=self.request.user)
@@ -223,7 +222,6 @@ class MessageView(mixins.ListModelMixin, GenericViewSet):
 class NotificationView(GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin):
     queryset = NotificationToken.objects.all()
     serializer_class = NotificationSerializer
-    pagination_class = MessagesSetPagination
 
     def get_queryset(self):
         return NotificationToken.objects.filter(user=self.request.user)

@@ -86,8 +86,8 @@ REST_FRAMEWORK = {
                                 'rest_framework.filters.SearchFilter',
                                 'rest_framework.filters.OrderingFilter'),
     'EXCEPTION_HANDLER': 'core.exceptionHandler.api_exception_handler',  # custom exception handler
-    'PAGE_SIZE': 6,
-    'DEFAULT_PAGINATION_CLASS': 'core.pagination.Pagination',  # custom pagination
+    # 'PAGE_SIZE': 6,
+    # 'DEFAULT_PAGINATION_CLASS': 'core.pagination.Pagination',  # custom pagination
     'DATETIME_INPUT_FORMATS': ['%Y-%m-%d','iso-8601'],
 }
 
