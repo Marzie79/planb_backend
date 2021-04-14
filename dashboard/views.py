@@ -13,7 +13,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from core.pagination import Pagination, MessagesSetPagination
 from .serializers import *
-from .filters import UserProjectFilter, TeamProjectFilter, UserInfoFilter
+from .filters import UserProjectFilter, TeamProjectFilter, UserInfoFilter, ProjectFilter
 from core.helpers.make_message import make_message
 from core.helpers.make_notification import make_notification
 
@@ -38,6 +38,7 @@ class ProjectView(viewsets.ModelViewSet):
     queryset = Project.objects.all().order_by('?')
     permission_classes = (DRYPermissions,)
     serializer_class = ProjectSaveSerializer
+    filterset_class = ProjectFilter
     search_fields = ['name', 'category__name', 'skills__name']
     lookup_field = 'slug'
 
