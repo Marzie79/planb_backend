@@ -9,6 +9,6 @@ from rest_framework.response import Response
 #         return Response(data, headers={"Last-Page": self.page.paginator.num_pages})
 
 class Pagination(PageNumberPagination):
-    page_size = 5
+    page_size = 6
     max_page_size = 1000
 
