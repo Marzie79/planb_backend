@@ -11,13 +11,22 @@ class BriefSkillSerializer(serializers.ModelSerializer):
         model = Skill
         fields = ('code', 'name')
 
-class UserInfoSerializer(serializers.ModelSerializer):
+
+class UserBriefInfoSerializer(serializers.ModelSerializer):
+    url = CustomHyperlinkedIdentityField(
+        **{'lookup_field': 'username', 'read_only': 'True', 'view_name': 'user-detail'})
+
+    class Meta:
+        model = User
+        fields = (
+            'username', 'first_name', 'last_name', 'description','avatar', 'url')
+
+
+class UserInfoSerializer(UserBriefInfoSerializer):
     phone_number = serializers.SerializerMethodField('check_phone_number_visibility')
     gender_display = serializers.CharField(source='get_gender_display', read_only=True)
     city = serializers.ReadOnlyField(source='city.name')
     province = serializers.ReadOnlyField(source='city.province.name')
-    url = CustomHyperlinkedIdentityField(
-        **{'lookup_field': 'username', 'read_only': 'True', 'view_name': 'user-detail'})
     skills = BriefSkillSerializer(read_only=True, many=True)
     university = serializers.ReadOnlyField(source='university.name')
 
