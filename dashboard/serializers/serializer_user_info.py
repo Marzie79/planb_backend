@@ -4,6 +4,7 @@ from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 from accounts.models import User, Project, Skill
 from core.fields import CustomHyperlinkedIdentityField
+from dashboard.utils.user_project_utils import ProjectTeamUtils
 
 
 class BriefSkillSerializer(serializers.ModelSerializer):
@@ -39,12 +40,6 @@ class UserInfoSerializer(UserBriefInfoSerializer):
 
     def check_phone_number_visibility(self, instance):
         request_user = self.context['request'].user
-        if request_user.is_authenticated:
-            projects = Project.objects.filter(
-                Q(userproject__user=request_user) & (Q(userproject__status='CREATOR') | Q(userproject__status='ADMIN')))
-            is_member = projects.filter(
-                Q(userproject__user__username=instance.username) & ~Q(userproject__status='DELETED'))
-            if instance.phone_number:
-                if instance.username == request_user.username or is_member.exists():
-                    return to_python(instance.phone_number).as_e164
+        if request_user.is_authenticated and ProjectTeamUtils.is_higher_level_or_self(request_user,instance):
+            return to_python(instance.phone_number).as_e164
         return _('You have not been allowed to see {}').format(_('Phone_Number'))
