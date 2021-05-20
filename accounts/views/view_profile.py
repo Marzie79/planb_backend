@@ -31,6 +31,15 @@ class ProfilePicture(ProfileBaseUser):
     serializer_class = ProfilePictureSerializer
     parser_classes = [CamelCaseMultiPartParser, ]
 
+    def destroy(self, request):
+        try:
+            self.request.user.avatar.delete(save=False)
+            self.request.user.avatar= User.IMAGE_PROCESS.get('default')
+            self.request.user.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 class ProfileResume(ProfileBaseUser):
     serializer_class = ProfileResumeSerializer
