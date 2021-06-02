@@ -1,12 +1,15 @@
 import json
+
+from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase , APIClient, RequestsClient
 from model_bakery import baker
 from accounts.models import *
+from core.tests.openapi_tester import BaseAPITestCase
 
 
-class UserProjectViewTest(APITestCase):
-    
+class UserProjectViewTest(BaseAPITestCase):
+
     def setUp(self):
         self.user = baker.make(User)
         self.user_project_pending = baker.make(UserProject,status="PENDING", user=self.user)
@@ -16,7 +19,7 @@ class UserProjectViewTest(APITestCase):
         self.user_project_creator = baker.make(UserProject,status="CREATOR", user=self.user)
         self.client = APIClient()
         self.client1 = RequestsClient()
-        self.url = "/dashboard/user-projects/"
+        self.url = reverse('user_projects')
     
     def test_category_project(self):
         data = {"category":"PROJECT"}
@@ -107,3 +110,8 @@ class UserProjectViewTest(APITestCase):
             if item["role"] not in ["ادمین", "سازنده", "عضو تیم"]:
                 assert(status.HTTP_400_BAD_REQUEST_)
         assert response.status_code == status.HTTP_200_OK
+
+
+    def test_user_project_endpoints(self):
+        self.assertResponse(self.client.get(self.url))
+

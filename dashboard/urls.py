@@ -22,7 +22,7 @@ user_router = routers.NestedSimpleRouter(router, "users", lookup="slug")
 user_router.register("projects", UserInfoProjectView, basename="domain")
 
 urlpatterns = [
-    path('user-projects/', UserProjectView.as_view()),
+    path('user-projects/', UserProjectView.as_view(),name='user_projects'),
     path('', include(router.urls)),
     path('', include(user_router.urls)),
     path('', include(project_router.urls)),
