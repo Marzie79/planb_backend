@@ -83,4 +83,4 @@ class UserInfoFilter(filters.FilterSet):
 class ProjectFilter(filters.FilterSet):
     status = filters.ChoiceFilter(choices=(Project.STATUS_CHOICES))
     category = filters.CharFilter(field_name="category__name")
-    skill = filters.NumberFilter(field_name="skills")
+    skill = filters.CharFilter(field_name="skills__name")
