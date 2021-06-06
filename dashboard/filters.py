@@ -60,8 +60,8 @@ class TeamProjectFilter(filters.FilterSet):
 class UserInfoFilter(filters.FilterSet):
     university = filters.NumberFilter(field_name="university")
     skill = filters.NumberFilter(field_name="skills")
-    city = filters.NumberFilter(field_name="city")
-    province = filters.NumberFilter(field_name="city__province")
+    city = filters.CharFilter(field_name="city__name")
+    province = filters.CharFilter(field_name="city__province__name")
     USER_CATEGORY_CHOICES = (
         ('CREATOR', 'creator'),
         ('OTHER', 'other'),
