@@ -10,6 +10,7 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = '__all__'
+        exclude = ('password',)
 
     def clean_password2(self):
         # Check that the two password entries match
