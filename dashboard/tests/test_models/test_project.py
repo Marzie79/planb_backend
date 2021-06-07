@@ -1,6 +1,7 @@
+from os import stat_result
 from django.test import TestCase
 from model_bakery import baker
-from accounts.models import Project, UserProject, User
+from accounts.models import Project, UserProject, User, user_project
 from datetime import datetime,timedelta
 
 
@@ -81,3 +82,16 @@ class TestDestroyPermissionProject(TestCase):
         other_user = baker.make(User)
         baker.make(UserProject, user=self.user, project=self.project, status='ADMIN')
         self.assertFalse(self.project.object_update_permission(other_user))
+
+
+class TestTeamProject(TestCase):
+    def setUp(self):
+        self.project = baker.make(Project)
+        self.user = baker.make(User)
+        self.user_project = baker.make(UserProject, user=self.user, project=self.project)
+
+    def test_has_object_read_permission(self):
+        self.user_project.status = 'CREATOR'
+        self.assertTrue(self.user_project.object_read_permission({'status' : 'PENDING'},self.user))
+
+

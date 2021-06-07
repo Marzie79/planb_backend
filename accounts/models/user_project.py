@@ -32,7 +32,7 @@ class UserProject(models.Model):
         return True
 
     def has_object_read_permission(self, request):
-        return self.has_object_read_permission(request.query_params, request.user)
+        return self.object_read_permission(request.query_params, request.user)
 
     def object_read_permission(self, query_params, user):
         if ('status' in query_params) and query_params['status'] == 'PENDING':
