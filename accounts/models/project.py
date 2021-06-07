@@ -80,10 +80,13 @@ class Project(models.Model):
         return True
 
     def has_object_update_permission(self, request):
+        return self.object_update_permission(request.user)
+
+    def object_update_permission(self, user):
         from accounts.models import UserProject
         if self.status != 'ENDED' and self.status != 'DELETED':
             try:
-                user_project = UserProject.objects.get(Q(user=request.user) & Q(project=self))
+                user_project = UserProject.objects.get(Q(user=user) & Q(project=self))
             except:
                 return False
             is_admin = user_project.status == 'ADMIN'
@@ -102,9 +105,12 @@ class Project(models.Model):
         return True
 
     def has_object_destroy_permission(self, request):
+       return self.object_destroy_permission(request.user)
+
+    def object_destroy_permission(self, user):
         from accounts.models import UserProject
         try:
-            user_project = UserProject.objects.get(Q(user=request.user) & Q(project=self))
+            user_project = UserProject.objects.get(Q(user=user) & Q(project=self))
         except:
             return False
         return user_project.status == 'CREATOR'

@@ -1,3 +1,5 @@
+import sys
+
 import requests
 
 
@@ -13,5 +15,7 @@ def make_notification(subscriber_tokens, title, body, content=None, icon=None, i
                "priority": "high",
                }
     headers = {'Authorization': 'Token 786d331d512a993df4cdafe24bc6c6d3d0139a0c'}
+    if 'test' in sys.argv:
+        return ''
     response = requests.request("POST", site_url, data=payload, headers=headers)
     return response.text

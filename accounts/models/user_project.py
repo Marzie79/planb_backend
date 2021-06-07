@@ -32,9 +32,9 @@ class UserProject(models.Model):
         return True
 
     def has_object_read_permission(self, request):
-         return self.has_object_read_permission(request.query_params,request.user)
+        return self.has_object_read_permission(request.query_params, request.user)
 
-    def object_read_permission(self, query_params, user ):
+    def object_read_permission(self, query_params, user):
         if ('status' in query_params) and query_params['status'] == 'PENDING':
             if self.user == user:
                 is_admin = self.status == 'ADMIN'
@@ -48,9 +48,9 @@ class UserProject(models.Model):
         return True
 
     def has_object_update_permission(self, request):
-        return self.object_update_permission(request.user,request.data['user'],request.data['status'])
+        return self.object_update_permission(request.user, request.data['user'], request.data['status'])
 
-    def object_update_permission(self, user,request_data_user,request_data_status):
+    def object_update_permission(self, user, request_data_user, request_data_status):
         status = self.project.status
         closed_project = status == 'ENDED' or status == 'DELETED'
         validated_username = user.username == request_data_user
@@ -64,7 +64,6 @@ class UserProject(models.Model):
             return is_admin or is_creator
         return False
 
-
     @staticmethod
     def has_create_permission(request):
         return True
@@ -72,7 +71,7 @@ class UserProject(models.Model):
     def has_object_create_permission(self, request):
         return self.object_create_permission(request.user, request.data['user'], request.data['status'])
 
-    def object_create_permission(self, user,request_data_user,request_data_status):
+    def object_create_permission(self, user, request_data_user, request_data_status):
         status = self.project.status
         closed_project = status == 'ENDED' or status == 'DELETED'
         validated_username = user.username == request_data_user
