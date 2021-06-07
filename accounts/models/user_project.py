@@ -32,9 +32,11 @@ class UserProject(models.Model):
         return True
 
     def has_object_read_permission(self, request):
-        query_params = request.query_params
+         return self.has_object_read_permission(request.query_params,request.user)
+
+    def object_read_permission(self, query_params, user ):
         if ('status' in query_params) and query_params['status'] == 'PENDING':
-            if self.user == request.user:
+            if self.user == user:
                 is_admin = self.status == 'ADMIN'
                 is_creator = self.status == 'CREATOR'
                 return is_admin or is_creator
@@ -46,32 +48,39 @@ class UserProject(models.Model):
         return True
 
     def has_object_update_permission(self, request):
+        return self.object_update_permission(request.user,request.data['user'],request.data['status'])
+
+    def object_update_permission(self, user,request_data_user,request_data_status):
         status = self.project.status
         closed_project = status == 'ENDED' or status == 'DELETED'
-        validated_username = request.user.username == request.data['user']
+        validated_username = user.username == request_data_user
         if closed_project:
             return False
-        elif request.data['status'] == 'DELETED' and validated_username:
+        elif request_data_status == 'DELETED' and validated_username:
             return True
-        elif self.user == request.user:
+        elif self.user == user:
             is_admin = self.status == 'ADMIN'
             is_creator = self.status == 'CREATOR'
             return is_admin or is_creator
         return False
+
 
     @staticmethod
     def has_create_permission(request):
         return True
 
     def has_object_create_permission(self, request):
+        return self.object_create_permission(request.user, request.data['user'], request.data['status'])
+
+    def object_create_permission(self, user,request_data_user,request_data_status):
         status = self.project.status
         closed_project = status == 'ENDED' or status == 'DELETED'
-        validated_username = request.user.username == request.data['user']
+        validated_username = user.username == request_data_user
         if closed_project:
             return False
-        elif request.data['status'] == 'PENDING' and validated_username:
+        elif request_data_status == 'PENDING' and validated_username:
             return True
-        elif self.user == request.user:
+        elif self.user == user:
             is_admin = self.status == 'ADMIN'
             is_creator = self.status == 'CREATOR'
             return is_admin or is_creator
