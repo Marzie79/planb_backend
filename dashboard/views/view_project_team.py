@@ -43,15 +43,15 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
         self.perform_update(serializer)
         if request.data["status"] in ["DECLINED", "ACCEPTED", "DELETED", "ADMIN"]:
             if not (previous_status == "ADMIN" and request.data["status"] in ["ACCEPTED", "DELETED"]):
-                message_status = "قبول"
-                text = "درخواست شما برای پیوستن به پروژه %s %s شده است."%(instance.project.name, message_status)
+                message_status = _("accepted")
+                text = _("Your requested joining to the {} project has been {}.").format(instance.project.name, message_status)
                 if request.data["status"] == "DECLINED":
-                    message_status = "رد"
-                    text = "درخواست شما برای پیوستن به پروژه %s %s شده است."%(instance.project.name, message_status)
+                    message_status = _("declined")
+                    text = _("Your requested joining to the {} project has been {}.").format(instance.project.name, message_status)
                 elif request.data["status"] == "DELETED":
-                    text = "شما از پروژه %s حذف شدید."%instance.project.name
+                    text = _("You have been removed from the {} project.").format(instance.project.name)
                 elif request.data["status"] == "ADMIN":
-                    text = "شما ادمین پروژه %s شدید."%instance.project.name
+                    text = _("You have become an admin for the {} project.").format(instance.project.name)
                 receivers_user = []
                 for item in [instance]:
                     receivers_user.append(item.user)
@@ -69,8 +69,8 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        
-        text = "%s درخواست پیوستن به پروژه %s را دارد."%(self.request.user.__str__(),project.name)
+
+        text = _("{} has requested to join the {} project.").format(self.request.user.__str__(),project.name)
         receiver = UserProject.objects.filter(project=project).filter(status__in=["ADMIN", "CREATOR"])
         recievers_user = []
         for item in receiver:

@@ -254,11 +254,17 @@ msgstr "تاریخ پایان"
 msgid "Accepted"
 msgstr "پذیرفته شده"
 
+msgid "accepted"
+msgstr "قبول"
+
 msgid "Pending"
 msgstr "درخواست داده شده"
 
 msgid "Declined"
 msgstr "رد شده"
+
+msgid "declined"
+msgstr "رد"
 
 msgid "Admin"
 msgstr "ادمین"
@@ -271,6 +277,18 @@ msgstr "عضو تیم"
 
 msgid "example"
 msgstr "نمونه"
+
+msgid "Your requested joining to the {} project has been {}."
+msgstr "درخواست شما برای پیوستن به پروژه %s %s شده است."
+
+msgid "You have been removed from the {} project."
+msgstr "شما از پروژه %s حذف شدید."
+
+msgid "You have become an admin for the {} project."
+msgstr "شما ادمین پروژه %s شدید."
+
+msgid "{} has requested to join the {} project."
+msgstr "%s درخواست پیوستن به پروژه ی %s را دارد."
 
 msgid "User_Email_Error"
 msgstr "کاربری با این ایمیل موجود نمی‌باشد."
