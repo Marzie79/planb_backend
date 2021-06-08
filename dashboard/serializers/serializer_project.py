@@ -89,12 +89,12 @@ class ProjectSaveSerializer(serializers.ModelSerializer):
         if STATUS[value] >= STATUS[previous_status]:
 
             if STATUS[value] > STATUS[previous_status]:
-                status = "شروع شده"
+                status = _('Started')
                 if value == "ENDED":
-                    status = "پایان یافته"
+                    status = _("Ended")
                 elif value == "DELETED":
-                    status == "حذف شده"
-                text = "وضعیت پروژه %s به %s تغییر پیدا کرد."%(self.instance.name, status)
+                    status = _('Deleted')
+                text = _('The project {} status changed to {}').format(self.instance.name, status)
                 recievers = UserProject.objects.filter(project=self.instance).filter(status__in=["PENDING", "ACCEPTED", "ADMIN"])
                 recievers_user = []
                 for item in recievers:

@@ -1,7 +1,6 @@
-from os import stat_result
 from django.test import TestCase
 from model_bakery import baker
-from accounts.models import Project, UserProject, User, user_project
+from accounts.models import Project, UserProject, User
 from datetime import datetime,timedelta
 
 
@@ -95,6 +94,7 @@ class TestTeamProject(TestCase):
         self.assertEqual(self.user_project.object_read_permission({'status' : 'PENDING'},self.user), False)
         self.assertEqual(self.user_project.object_read_permission({'status' : 'PENDING'},other_user), False)
         self.assertEqual(self.user_project.object_read_permission({'status' : 'DECLINED'},self.user), True)
+
 
     def test_object_update_permission(self):
         project = baker.make(Project, status = "ENDED")
