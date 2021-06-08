@@ -3,6 +3,7 @@ from dry_rest_permissions.generics import DRYPermissions
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.utils.translation import gettext_lazy as _
 
 from accounts.models import Project, UserProject, NotificationToken
 from core.helpers.make_message import make_message
@@ -45,6 +46,17 @@ class ProjectView(viewsets.ModelViewSet):
         UserProject.objects.create(user=self.request.user, project=model, status='CREATOR')
 
     def perform_update(self, serializer):
+        instance=self.get_object()
+        text = _("{} project information updated.").format(instance.name)
+        receiver = UserProject.objects.filter(project=instance).filter(status__in=["ADMIN", "CREATOR", "ACCEPTED"])
+        receivers_user = []
+        for item in receiver:
+            receivers_user.append(item.user)
+        recievers_token = list(
+            NotificationToken.objects.filter(user__in=receivers_user).values_list('token', flat=True))
+        make_message(text=text, receiver=receiver, project=instance)
+        make_notification(recievers_token, instance.name, text)
+
         if self.get_object().status == 'WAITING' and serializer.validated_data.get('status', None) and \
                 serializer.validated_data['status'] == 'DELETED':
             self.get_object().delete()
@@ -70,13 +82,4 @@ class ProjectView(viewsets.ModelViewSet):
     def get_status(self, request, slug=None):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        text = "اطلاعات پروژه %s به روز رسانی شد." % (instance.name)
-        receiver = UserProject.objects.filter(project=instance).filter(status__in=["ADMIN", "CREATOR", "ACCEPTED"])
-        receivers_user = []
-        for item in receiver:
-            receivers_user.append(item.user)
-        recievers_token = list(
-            NotificationToken.objects.filter(user__in=receivers_user).values_list('token', flat=True))
-        make_message(text=text, receiver=receiver, project=instance)
-        make_notification(recievers_token, instance.name, text)
         return Response(serializer.data)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-07 23:55+0430\n"
+"POT-Creation-Date: 2021-06-02 14:54+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -331,9 +331,6 @@ msgstr "تعداد مهارت ها باید بین {} تا {} باشد."
 msgid "The {} must be bigger than today"
 msgstr "{} باید از تاریخ امروز بزرگتر باشد."
 
-msgid "The project {} status changed to {}"
-msgstr "وضعیت پروژه {} به {} تغییر پیدا کرد."
-
 msgid "You have not been allowed to change the project into {} status."
 msgstr "شما مجاز به تغییر پروژه به وضعیت {} نمی باشید."
 
@@ -342,6 +339,13 @@ msgstr "امکان مشاهده {} نمی‌باشد"
 
 msgid "ThisUserNotExist"
 msgstr "کاربری با این اطلاعات موجود نمی باشد."
+
+msgid "The project {} status changed to {}"
+msgstr "وضعیت پروژه {} به {} تغییر پیدا کرد."
+
+
+msgid "{} project information updated."
+msgstr "اطلاعات پروژه ی {} بروزرسانی شد."
 
 #~ msgid "TheValueIsNotCorrect"
 #~ msgstr "مقدار وارد شده معتبر نمی باشد."
