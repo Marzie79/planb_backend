@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 from accounts.serializers import SkillBriefSerializer
 from core.fields import CustomHyperlinkedRelatedField, CustomHyperlinkedIdentityField
+from core.helpers.main_helper import make_notification_and_message
 from core.helpers.make_message import make_message
 from core.helpers.make_notification import make_notification
 from dashboard.serializers.serializer_user_project import StatusSerializer
@@ -87,7 +88,6 @@ class ProjectSaveSerializer(serializers.ModelSerializer):
                   'DELETED': 3}
         previous_status = self.instance.status
         if STATUS[value] >= STATUS[previous_status]:
-
             if STATUS[value] > STATUS[previous_status]:
                 status = _('Started')
                 if value == "ENDED":
@@ -95,13 +95,14 @@ class ProjectSaveSerializer(serializers.ModelSerializer):
                 elif value == "DELETED":
                     status = _('Deleted')
                 text = _('The project {} status changed to {}').format(self.instance.name, status)
-                recievers = UserProject.objects.filter(project=self.instance).filter(status__in=["PENDING", "ACCEPTED", "ADMIN"])
-                recievers_user = []
-                for item in recievers:
-                    recievers_user.append(item.user)
-                recievers_token = list(NotificationToken.objects.filter(user__in=recievers_user).values_list('token', flat=True))
-                make_message(text=text, receiver= recievers, project= self.instance)
-                make_notification(recievers_token, self.instance.name, text)
+                make_notification_and_message(text, self.instance, statuses=["PENDING", "ACCEPTED", "ADMIN"])
+                # recievers = UserProject.objects.filter(project=self.instance).filter(status__in=["PENDING", "ACCEPTED", "ADMIN"])
+                # recievers_user = []
+                # for item in recievers:
+                #     recievers_user.append(item.user)
+                # recievers_token = list(NotificationToken.objects.filter(user__in=recievers_user).values_list('token', flat=True))
+                # make_message(text=text, receiver= recievers, project= self.instance)
+                # make_notification(recievers_token, self.instance.name, text)
 
             return value
         raise serializers.ValidationError(

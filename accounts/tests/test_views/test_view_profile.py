@@ -15,7 +15,7 @@ class ProfileViewTest(BaseAPITestCase):
 
     def test_destroy_resume_not_exist(self):
         response = self.client.delete(self.url, format='json')
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_profile_endpoints(self):
         self.assertResponse(self.client.get(reverse('profile_brief')))

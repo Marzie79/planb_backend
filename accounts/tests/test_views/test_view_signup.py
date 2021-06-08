@@ -97,9 +97,7 @@ class VerifyAccountTest(APITestCase):
     def test_user_is_created_post(self):
         user_temp = Temp.objects.create(code='12345', email="example@gmail.com")
         self.post_data['temp'] = {"code": user_temp.code, }
-        print(self.post_data)
         response = self.client.post(self.url, json.dumps(self.post_data), content_type="application/json")
-        print(response.status_code)
         user = User.objects.get(username='example')
         self.assertIsNotNone(user)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

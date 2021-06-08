@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from django.utils.translation import gettext_lazy as _
 
 from accounts.models import Project, UserProject, NotificationToken
+from core.helpers.main_helper import make_notification_and_message
 from core.helpers.make_message import make_message
 from core.helpers.make_notification import make_notification
 from core.pagination import Pagination
@@ -48,14 +49,15 @@ class ProjectView(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         instance=self.get_object()
         text = _("{} project information updated.").format(instance.name)
-        receiver = UserProject.objects.filter(project=instance).filter(status__in=["ADMIN", "CREATOR", "ACCEPTED"])
-        receivers_user = []
-        for item in receiver:
-            receivers_user.append(item.user)
-        recievers_token = list(
-            NotificationToken.objects.filter(user__in=receivers_user).values_list('token', flat=True))
-        make_message(text=text, receiver=receiver, project=instance)
-        make_notification(recievers_token, instance.name, text)
+        make_notification_and_message(text, instance, statuses=["ADMIN", "CREATOR", "ACCEPTED"])
+        # receiver = UserProject.objects.filter(project=instance).filter(status__in=["ADMIN", "CREATOR", "ACCEPTED"])
+        # receivers_user = []
+        # for item in receiver:
+        #     receivers_user.append(item.user)
+        # recievers_token = list(
+        #     NotificationToken.objects.filter(user__in=receivers_user).values_list('token', flat=True))
+        # make_message(text=text, receiver=receiver, project=instance)
+        # make_notification(recievers_token, instance.name, text)
 
         if self.get_object().status == 'WAITING' and serializer.validated_data.get('status', None) and \
                 serializer.validated_data['status'] == 'DELETED':

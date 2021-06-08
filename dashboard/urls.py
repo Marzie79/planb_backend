@@ -16,10 +16,10 @@ router.register("messages", MessageView)
 router.register("notifications", NotificationView)
 
 project_router = routers.NestedSimpleRouter(router, "projects", lookup="slug")
-project_router.register("members", ProjectTeam, basename="domain")
+project_router.register("members", ProjectTeam, basename="project_members")
 
 user_router = routers.NestedSimpleRouter(router, "users", lookup="slug")
-user_router.register("projects", UserInfoProjectView, basename="domain")
+user_router.register("projects", UserInfoProjectView, basename="user_info_projects")
 
 urlpatterns = [
     path('user-projects/', UserProjectView.as_view(),name='user_projects'),

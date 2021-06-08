@@ -74,7 +74,7 @@ class UserProject(models.Model):
     def object_create_permission(self, user, request_data_user, request_data_status):
         status = self.project.status
         closed_project = status == 'ENDED' or status == 'DELETED'
-        validated_username = user == request_data_user
+        validated_username = (str(user.id) == request_data_user)
         if closed_project:
             return False
         elif request_data_status == 'PENDING' and validated_username:
