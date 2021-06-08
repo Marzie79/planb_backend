@@ -58,10 +58,6 @@ class ResetPasswordTest(APITestCase):
         response = client.patch(self.url, jsondata, content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_user_is_not_authenticated(self):
-        response = self.client.patch(self.url, self.jsondata, content_type="application/json")
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
 
 class VerifyAccountTest(APITestCase):
     def setUp(self):
@@ -79,13 +75,12 @@ class VerifyAccountTest(APITestCase):
         temp.email = 'paryfardnim@gmail.com'
         temp.code = '1234'
         temp.save()
-        self.post_data = {'user.email': 'example@gmail.com',
-                          'user.username': 'example',
-                          'user.password': '1234',
-                          'user.first_name': _('example'),
-                          'user.last_name': _('example'),
-                          'username': 'example',
-                          'password': '1234'}
+        self.post_data = {'user': {'email': 'example@gmail.com',
+                                   'username': 'example',
+                                   'password': '1234',
+                                   'first_name': 'نمونه',
+                                   'last_name': 'نمونه', }
+                          }
 
     def test_temp_is_existed_get(self):
         data = {'code': '1234'}
@@ -101,8 +96,10 @@ class VerifyAccountTest(APITestCase):
 
     def test_user_is_created_post(self):
         user_temp = Temp.objects.create(code='12345', email="example@gmail.com")
-        self.post_data['temp.code'] = user_temp.code
-        response = self.client.post(self.url, self.post_data)
+        self.post_data['temp'] = {"code": user_temp.code, }
+        print(self.post_data)
+        response = self.client.post(self.url, json.dumps(self.post_data), content_type="application/json")
+        print(response.status_code)
         user = User.objects.get(username='example')
         self.assertIsNotNone(user)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -110,56 +107,51 @@ class VerifyAccountTest(APITestCase):
         self.assertIsNotNone(self.client.cookies['token'])
 
     def test_temp_is_not_existed_post(self):
-        self.post_data['temp.code'] = '41324'
-        response = self.client.post(self.url, self.post_data)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.post_data['temp'] = {"code": '41324'}
+        response = self.client.post(self.url, self.post_data, content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+class TestSignUpView(APITestCase):
+    def setUp(self):
+        self.data = {'email': 'paryfardnim@gmail.com'}
+        self.url = SIGNUP_URL
+        for i in range(1, 10):
+            user = baker.make(User)
+            Temp.objects.create(email=user.email, date=timezone.now(),
+                                code=get_random_string(length=16))
 
-# class TestSignUpView(APITestCase):
-#     def setUp(self):
-#         self.data = {'email': 'paryfardnim@gmail.com'}
-#         self.url = SIGNUP_URL
-#         for i in range(1, 10):
-#             user = baker.make(User)
-#             Temp.objects.create(email=user.email, date=timezone.now(),
-#                                 code=get_random_string(length=16))
-#
-#     def test_valid_sent_response_if_temp_is_not_existed(self):
-#         obj_user = User.objects.filter(**self.data).first()
-#         temp = Temp.objects.filter(**self.data).first()
-#         response = self.client.post(self.url, self.data)
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
-#         self.assertIsNone(obj_user)
-#         self.assertIsNone(temp)
-#
-#     def test_valid_sent_response_if_temp_is_existed(self):
-#         initial_datetime = datetime.datetime.now()
-#         exam_data = {'email': 'example@gmail.com'}
-#         obj_user = User.objects.filter(**self.data).first()
-#         temp_example = baker.make(Temp, **exam_data)
-#         with freeze_time(initial_datetime) as frozen_datetime:
-#             frozen_datetime.tick()
-#             initial_datetime += datetime.timedelta(minutes=3)
-#             temp = Temp.objects.filter(**self.data).first()
-#             response = self.client.post(self.url, exam_data)
-#             self.assertIsNone(obj_user)
-#             self.assertIsNotNone(temp)
-#             self.assertEqual(response.status_code, status.HTTP_200_OK)
-#
-#     def test_User_is_existed(self):
-#         user = baker.make(User, **self.data)
-#         obj_user = User.objects.filter(**self.data).first()
-#         response = self.client.post(self.url, self.data)
-#         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
-#         self.assertIsNotNone(response.data['error'])
-#         self.assertIsNotNone(obj_user)
-#
-#     def test_time_expired_Temp(self):
-#         temp = baker.make(Temp, **self.data)
-#         response = self.client.post(self.url, self.data)
-#         temp_search = Temp.objects.filter(**self.data).first()
-#         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-#         self.assertEqual(response.data['error'], 'EmailTimeError')
-#         self.assertIsNotNone(temp_search)
-#         self.assertEqual(timezone.now() < temp.date + datetime.timedelta(minutes=2), True)
+    def test_valid_sent_response_if_temp_is_not_existed(self):
+        obj_user = User.objects.filter(email=self.data['email']).first()
+        temp = Temp.objects.filter(email=self.data['email']).first()
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsNone(obj_user)
+        self.assertIsNone(temp)
 
+    def test_valid_sent_response_if_temp_is_existed(self):
+        initial_datetime = datetime.datetime.now()
+        exam_data = {'email': 'example@gmail.com'}
+        obj_user = User.objects.filter(**self.data).first()
+        temp_example = Temp.objects.create(email= 'example@gmail.com')
+        with freeze_time(initial_datetime) as frozen_datetime:
+            frozen_datetime.tick()
+            initial_datetime += datetime.timedelta(minutes=3)
+            temp = Temp.objects.filter(**self.data).first()
+            response = self.client.post(self.url, exam_data)
+            self.assertIsNone(obj_user)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_User_is_existed(self):
+        user = baker.make(User, **self.data)
+        obj_user = User.objects.filter(**self.data).first()
+        response = self.client.post(self.url, self.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIsNotNone(obj_user)
+
+    def test_time_expired_Temp(self):
+        temp = baker.make(Temp, **self.data)
+        response = self.client.post(self.url, self.data)
+        temp_search = Temp.objects.filter(**self.data).first()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIsNotNone(temp_search)
+        self.assertEqual(timezone.now() < temp.date + datetime.timedelta(minutes=2), True)
