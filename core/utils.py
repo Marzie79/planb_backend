@@ -1,5 +1,6 @@
 import smtplib
 import ssl
+from datetime import datetime, timedelta
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from accounts.enums import *
@@ -63,6 +64,7 @@ class ImageUtils:
         # return the whole path to the file
         return os.path.join(instance.getUploadTo(), filename)
 
+
 class FileUtils:
 
     def convert_to_byte(size, size_name):
@@ -73,3 +75,9 @@ class FileUtils:
             if var.name == size_name:
                 return i
             i *= 1024
+
+
+class TimeUtils:
+    @staticmethod
+    def one_year_after():
+        return datetime.now() + timedelta(days=365)

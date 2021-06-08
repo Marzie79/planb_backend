@@ -20,6 +20,7 @@ schema_view = get_schema_view(
 class Apps(Enum):
     USERS = ''
     DASHBORAD = 'dashboard/'
+
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path(Apps.USERS.value, include('accounts.urls')),

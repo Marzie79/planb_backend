@@ -29,5 +29,5 @@ class SearchSkill(generics.ListAPIView):
 
     def get_queryset(self):
         if self.request.META['QUERY_STRING']:
-            return  super(SearchSkill, self).get_queryset()
+            return super(SearchSkill, self).get_queryset()
         return Skill.objects.filter(skill__isnull=True)

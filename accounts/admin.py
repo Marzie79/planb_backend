@@ -21,7 +21,7 @@ class UserProjectsInline(admin.TabularInline):
 
 
 class UserAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'is_active')
+    list_display = ('first_name', 'last_name', 'email', 'username')
     readonly_fields = ('joined_date_decorated',)
     list_filter = ('is_active',)
     form = UserForm
@@ -59,6 +59,12 @@ class ProjectsAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
 class SkillAdmin(admin.ModelAdmin):
     readonly_fields = ('id',)
 
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('text', 'project', 'created_date_decorated')
+    readonly_fields = ('created_date_decorated',)
+class RecieverAdmin(admin.ModelAdmin):
+    list_display = ('user', 'message', 'is_visited')
+
 
 admin.site.register(Temp)
 admin.site.register(User, UserAdmin)
@@ -66,4 +72,6 @@ admin.site.register(University)
 admin.site.register(Project, ProjectsAdmin)
 admin.site.register(Province, ProvinceAdmin)
 admin.site.register(Skill, SkillAdmin)
+admin.site.register(Message, MessageAdmin)
+admin.site.register(Reciever, RecieverAdmin)
 admin.site.unregister(Group)

@@ -1,5 +1,5 @@
 #coverage test config
 [run]
 source = .
-omit = */venv/*,*/migrations/*
+omit = */venv/*,*/migrations/*,*/settings/*,planB_backend/*,manage.py,*/__init__.py,*/tests/*
 

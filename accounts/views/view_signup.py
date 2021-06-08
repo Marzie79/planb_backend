@@ -1,3 +1,5 @@
+import sys
+
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from django.shortcuts import get_object_or_404
@@ -136,8 +138,9 @@ def send_email(request, is_obj_user):
         else:
             url = FrontURL.ROOT.value + FrontURL.SIGNUP.value + obj.code
 
-    message = EmailUtils.sending_email(validation=url, receiver=obj.email)
-    if message is not None:
-        obj.delete()
-        raise ServerError(_("ServerError"))
+    if not 'test' in sys.argv:
+        message = EmailUtils.sending_email(validation=url, receiver=obj.email)
+        if message is not None:
+            obj.delete()
+            raise ServerError(_("ServerError"))
     return Response(status=status.HTTP_200_OK)

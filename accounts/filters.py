@@ -34,7 +34,13 @@ class SkillFilter(filters.FilterSet):
     name = filters.CharFilter(field_name="name")
     code = filters.CharFilter(field_name="code")
     skill = filters.NumberFilter(field_name="skill__id")
+    all = filters.BooleanFilter(method='get_all')
 
     class Meta:
         model: University
         fields = ['code', 'name', 'skill']
+
+    def get_all(self, queryset, name, value):
+        if not value:
+             return queryset.filter(skill__isnull=True)
+        return queryset

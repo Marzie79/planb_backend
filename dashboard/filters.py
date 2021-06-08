@@ -58,6 +58,10 @@ class TeamProjectFilter(filters.FilterSet):
 
 
 class UserInfoFilter(filters.FilterSet):
+    university = filters.NumberFilter(field_name="university")
+    skill = filters.NumberFilter(field_name="skills")
+    city = filters.CharFilter(field_name="city__name")
+    province = filters.CharFilter(field_name="city__province__name")
     USER_CATEGORY_CHOICES = (
         ('CREATOR', 'creator'),
         ('OTHER', 'other'),
@@ -74,3 +78,9 @@ class UserInfoFilter(filters.FilterSet):
                 return queryset.filter(userproject__status='CREATOR')
             return queryset.exclude(userproject__status='CREATOR')
         return queryset
+
+
+class ProjectFilter(filters.FilterSet):
+    status = filters.ChoiceFilter(choices=(Project.STATUS_CHOICES))
+    category = filters.CharFilter(field_name="category__name")
+    skill = filters.CharFilter(field_name="skills__name")
