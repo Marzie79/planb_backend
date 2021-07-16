@@ -46,4 +46,5 @@ use `pip freeze > requirements.txt` to add your libraries to site
         if need recreate database : python manage.py resetdb
         
         copy .sql text into mysqlworckbench and then click on lightning icon !
-        
+
+use `locust --config=locust.conf` to run locust
