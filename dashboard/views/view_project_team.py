@@ -70,10 +70,10 @@ class ProjectTeam(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.CreateM
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
-        self.custom_check_permission()
         project = Project.objects.get(slug=self.kwargs['slug_slug'])
         request.data['project'] = project.pk
         request.data['user'] = request.user.id
+        self.custom_check_permission()
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()

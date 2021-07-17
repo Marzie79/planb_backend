@@ -54,7 +54,7 @@ class TeamProjectFilter(filters.FilterSet):
         if value == 'ACCEPTED':
             return queryset.filter(Q(status='ACCEPTED') | Q(status='ADMIN') | Q(status='CREATOR'))
         elif value == 'PENDING':
-            return queryset.filter(Q(status='Pending'))
+            return queryset.filter(Q(status='PENDING'))
 
 
 class UserInfoFilter(filters.FilterSet):
