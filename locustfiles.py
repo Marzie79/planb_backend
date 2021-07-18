@@ -23,7 +23,7 @@ USERS_LIST_URL = reverse('user-list')
 class UserData:
     @staticmethod
     def prepare_login_data():
-        username = "nimapr"
+        username = "superuser"
         password = "123"
         data = {"username": username, "password": password}
         return data
