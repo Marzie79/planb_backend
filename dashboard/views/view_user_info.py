@@ -14,7 +14,7 @@ class UserInfoView(viewsets.ReadOnlyModelViewSet):
         CREATOR OTHER
         """
     filterset_class = UserInfoFilter
-    search_fields = ['username', 'skills__name']
+    search_fields = ['username', 'skills__name', 'first_name', 'last_name']
 
     queryset = User.objects.all().distinct()
     serializer_class = UserInfoSerializer
